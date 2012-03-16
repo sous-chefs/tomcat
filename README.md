@@ -1,20 +1,19 @@
 Description
 ===========
 
-Installs and configures the Tomcat, Java servlet engine and webserver.
+Installs and configures Tomcat version 6, Java servlet engine and webserver.
 
 Requirements
 ============
 
-Platform: 
+Platform:
 
-* Debian, Ubuntu (OpenJDK, Sun)
-* CentOS, Red Hat, Fedora (OpenJDK)
+* Debian, Ubuntu (OpenJDK, Oracle)
+* CentOS 6+, Red Hat 6+, Fedora (OpenJDK, Oracle)
 
 The following Opscode cookbooks are dependencies:
 
 * java
-* jpackage
 
 Attributes
 ==========
