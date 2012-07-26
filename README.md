@@ -45,6 +45,7 @@ License and Author
 ==================
 
 Author:: Seth Chisamore (<schisamo@opscode.com>)
+Author:: Jamie Winsor (<jamie@vialstudios.com>)
 
 Copyright:: 2010-2012, Opscode, Inc
 
