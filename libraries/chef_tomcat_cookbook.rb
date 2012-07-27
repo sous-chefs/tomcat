@@ -22,15 +22,15 @@
 class Chef
   module TomcatCookbook
     class TomcatCookbookError < StandardError; end
-    class InvalidTomcatUserEntry < TomcatCookbookError
-      attr_reader :entry
+    class InvalidUserDataBagItem < TomcatCookbookError
+      attr_reader :item
 
-      def initialize(entry)
-        @entry = entry
+      def initialize(item)
+        @item = item
       end
 
       def to_s
-        msg = "The item you provided: #{entry.inspect} in the #{USERS_DATA_BAG} was invalid. Items "
+        msg = "The item you provided: #{item.inspect} in the #{USERS_DATA_BAG} was invalid. Items "
         msg << "require an 'id', 'password', and 'roles' field. Consult the documentation for further instructions."
       end
     end
@@ -47,7 +47,7 @@ class Chef
       # Returns a array of data bag items for the users in the Tomcat Users
       # data bag. All items are validated before returning.
       #
-      # @raise [TomcatCookbook::InvalidTomcatUserEntry] if an invalid item
+      # @raise [TomcatCookbook::InvalidUserDataBagItem] if an invalid item
       #   was found in the Tomcat users data bag.
       #
       # @return [Array<Chef::DataBagItem>, Array<Chef::EncryptedDataBagItem>]
@@ -58,7 +58,7 @@ class Chef
       # Returns an array of roles assigned to the users in the Tomcat Users
       # data bag.
       #
-      # @raise [TomcatCookbook::InvalidTomcatUserEntry] if an invalid item was
+      # @raise [TomcatCookbook::InvalidUserDataBagItem] if an invalid item was
       #   found in the Tomcat users data bag.
       #
       # @return [Array<String>]
@@ -84,16 +84,16 @@ class Chef
             decrypt_items(items)
           end
 
-          users.each { |user| validate_user_entry(user) }
+          users.each { |user| validate_user_item(user) }
           users
         end
 
-        def validate_user_entry(user)
+        def validate_user_item(user)
           if user['id'].empty? || user['id'].nil? &&
             user['password'].empty? || user['password'].nil? &&
             user['roles'].nil? || !user['roles'].is_a?(Array)
             
-            raise InvalidTomcatUserEntry.new(user)
+            raise InvalidUserDataBagItem.new(user)
           end
         end
 
