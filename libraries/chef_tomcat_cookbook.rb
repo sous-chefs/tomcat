@@ -89,10 +89,9 @@ class Chef
         end
 
         def validate_user_entry(user)
-          unless user.has_key?("id") &&
-            user.has_key?("password") &&
-            user.has_key?("roles") &&
-            user["roles"].is_a?(Array)
+          if user['id'].empty? || user['id'].nil? &&
+            user['password'].empty? || user['password'].nil? &&
+            user['roles'].nil? || !user['roles'].is_a?(Array)
             
             raise InvalidTomcatUserEntry.new(user)
           end
@@ -100,8 +99,12 @@ class Chef
 
         def decrypt_items(items)
           items.collect do |item|
-            EncryptedDataBagItem.new(item, Chef::Config[:encrypted_data_bag_secret])
+            EncryptedDataBagItem.new(item, encrypted_secret)
           end
+        end
+
+        def encrypted_secret
+          @encrypted_secret ||= EncryptedDataBagItem.load_secret
         end
     end
   end
