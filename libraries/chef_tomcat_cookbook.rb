@@ -50,7 +50,7 @@ class Chef
       # @raise [TomcatCookbook::InvalidTomcatUserEntry] if an invalid item
       #   was found in the Tomcat users data bag.
       #
-      # @return [Array<Chef::DataBagItem>]
+      # @return [Array<Chef::DataBagItem>, Array<Chef::EncryptedDataBagItem>]
       def users
         @users ||= find_users
       end
