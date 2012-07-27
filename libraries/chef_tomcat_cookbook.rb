@@ -51,7 +51,7 @@ class Chef
 
       # Returns an array of roles assigned to the users in the Tomcat Users
       # data bag.
-
+      #
       # @raise [TomcatCookbook::InvalidTomcatUserEntry] if an invalid item was
       #   found in the Tomcat users data bag.
       #
