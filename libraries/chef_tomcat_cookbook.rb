@@ -35,6 +35,12 @@ class Chef
       end
     end
 
+    class TomcatUserDataBagNotFound < TomcatCookbookError
+      def to_s
+        "Please create a data bag named '#{USERS_DATA_BAG}' and try again."
+      end
+    end
+
     USERS_DATA_BAG = "tomcat_users"
 
     class << self
@@ -69,7 +75,12 @@ class Chef
               Chef::DataBagItem.load(USERS_DATA_BAG, name)
             end
           else
-            items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
+            begin
+              items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
+            rescue Net::HTTPServerException => e
+              raise TomcatUserDataBagNotFound if e.message.match(/404/)
+              raise e
+            end
             decrypt_items(items)
           end
 
