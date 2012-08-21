@@ -22,14 +22,16 @@
 
 include_recipe "java"
 
+node['tomcat'].each{|k,v| node['tomcat'][k] = v.gsub("tomcat6", "tomcat#{node['tomcat']['base_version']}") if v.kind_of?(String) }
+
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
-    "default" => ["tomcat6","tomcat6-admin"]
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
   },
   ["centos","redhat","fedora"] => {
-    "default" => ["tomcat6","tomcat6-admin-webapps"]
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
-  "default" => ["tomcat6"]
+  "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
 )
 tomcat_pkgs.each do |pkg|
   package pkg do
@@ -59,7 +61,7 @@ unless node['tomcat']['deploy_manager_apps']
 end
 
 service "tomcat" do
-  service_name "tomcat6"
+  service_name "tomcat#{node["tomcat"]["base_version"]}"
   case node["platform"]
   when "centos","redhat","fedora"
     supports :restart => true, :status => true
@@ -82,7 +84,7 @@ end
 
 case node["platform"]
 when "centos","redhat","fedora"
-  template "/etc/sysconfig/tomcat6" do
+  template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
     source "sysconfig_tomcat6.erb"
     owner "root"
     group "root"
@@ -90,7 +92,7 @@ when "centos","redhat","fedora"
     notifies :restart, "service[tomcat]"
   end
 else
-  template "/etc/default/tomcat6" do
+  template "/etc/default/tomcat#{node["tomcat"]["base_version"]}" do
     source "default_tomcat6.erb"
     owner "root"
     group "root"
@@ -99,7 +101,7 @@ else
   end
 end
 
-template "/etc/tomcat6/server.xml" do
+template "/etc/tomcat#{node["tomcat"]["base_version"]}/server.xml" do
   source "server.xml.erb"
   owner "root"
   group "root"
