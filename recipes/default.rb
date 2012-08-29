@@ -42,7 +42,7 @@ service "tomcat" do
   when "debian","ubuntu"
     supports :restart => true, :reload => true, :status => true
   end
-  action [:enable, :start]
+  action [:enable]
 end
 
 case node["platform"]
