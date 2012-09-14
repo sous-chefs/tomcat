@@ -1,7 +1,7 @@
 Description
 ===========
 
-Installs and configures Tomcat version 6, Java servlet engine and webserver.
+Installs and configures Tomcat, Java servlet engine and webserver.
 
 Requirements
 ============
@@ -14,15 +14,18 @@ Platform:
 The following Opscode cookbooks are dependencies:
 
 * java
+* redis (if using redis session store)
 
 Attributes
 ==========
 
+* `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
 * `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
 * `node["tomcat"]["java_options"]` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
 * `node["tomcat"]["use_security_manager"]` - Run Tomcat under the Java Security Manager, default `false`.
+* `node["tomcat"]["redis"]` - Run Tomcat with redis session store, default `false`. See https://github.com/jcoleman/tomcat-redis-session-manager for context configuration.
 
 Usage
 =====
@@ -64,6 +67,7 @@ License and Author
 
 Author:: Seth Chisamore (<schisamo@opscode.com>)
 Author:: Jamie Winsor (<jamie@vialstudios.com>)
+Author:: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
 
 Copyright:: 2010-2012, Opscode, Inc
 

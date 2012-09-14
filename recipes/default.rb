@@ -19,14 +19,16 @@
 
 include_recipe "java"
 
+node['tomcat'].each{|k,v| node['tomcat'][k] = v.gsub("tomcat6", "tomcat#{node['tomcat']['base_version']}") if v.kind_of?(String) }
+
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
-    "default" => ["tomcat6","tomcat6-admin"]
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
   },
   ["centos","redhat","fedora"] => {
-    "default" => ["tomcat6","tomcat6-admin-webapps"]
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
-  "default" => ["tomcat6"]
+  "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
 )
 tomcat_pkgs.each do |pkg|
   package pkg do
@@ -34,8 +36,37 @@ tomcat_pkgs.each do |pkg|
   end
 end
 
+if node["tomcat"]["redis"]
+  include_recipe "redis::failover_client"
+  
+  remote_file "/usr/share/tomcat#{node["tomcat"]["base_version"]}/lib/jedis-2.1.0.jar" do
+    source "https://github.com/downloads/xetorthio/jedis/jedis-2.1.0.jar"
+    mode "0644"
+    checksum "9f26d25f65d71b89756969a0868df17d5beab8a4631f8076441edf890a17b983"
+    owner "tomcat#{node["tomcat"]["base_version"]}"
+    group "tomcat#{node["tomcat"]["base_version"]}"
+    notifies :restart, "service[tomcat]"
+  end
+  
+  if node["tomcat"]["base_version"] == "6"
+    redis_manager_filename = "tomcat-redis-session-manager-1.0.jar"
+    redis_manager_checksum = "2d1eba99f18a9e5c930837fe4826ef8ea29237601ef54a0494c74989f507398b"
+  else
+    redis_manager_filename = "tomcat-redis-session-manager-1.1.jar"
+    redis_manager_checksum = "da9f8d44f0bf40327d47ca54596008bd14c0893503e3eadcea97fdc72da8a0e0"
+  end
+  remote_file "/usr/share/tomcat#{node["tomcat"]["base_version"]}/lib/#{redis_manager_filename}" do
+    source "https://github.com/downloads/jcoleman/tomcat-redis-session-manager/#{redis_manager_filename}"
+    mode "0644"
+    checksum redis_manager_checksum
+    owner "tomcat#{node["tomcat"]["base_version"]}"
+    group "tomcat#{node["tomcat"]["base_version"]}"
+    notifies :restart, "service[tomcat]"
+  end
+end
+
 service "tomcat" do
-  service_name "tomcat6"
+  service_name "tomcat#{node["tomcat"]["base_version"]}"
   case node["platform"]
   when "centos","redhat","fedora"
     supports :restart => true, :status => true
@@ -47,7 +78,7 @@ end
 
 case node["platform"]
 when "centos","redhat","fedora"
-  template "/etc/sysconfig/tomcat6" do
+  template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
     source "sysconfig_tomcat6.erb"
     owner "root"
     group "root"
@@ -55,7 +86,7 @@ when "centos","redhat","fedora"
     notifies :restart, resources(:service => "tomcat")
   end
 else  
-  template "/etc/default/tomcat6" do
+  template "/etc/default/tomcat#{node["tomcat"]["base_version"]}" do
     source "default_tomcat6.erb"
     owner "root"
     group "root"
@@ -64,7 +95,7 @@ else
   end
 end
 
-template "/etc/tomcat6/server.xml" do
+template "/etc/tomcat#{node["tomcat"]["base_version"]}/server.xml" do
   source "server.xml.erb"
   owner "root"
   group "root"
