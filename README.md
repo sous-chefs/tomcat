@@ -14,6 +14,7 @@ Platform:
 The following Opscode cookbooks are dependencies:
 
 * java
+* redis (if using redis session store)
 
 Attributes
 ==========
@@ -24,6 +25,7 @@ Attributes
 * `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
 * `node["tomcat"]["java_options"]` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
 * `node["tomcat"]["use_security_manager"]` - Run Tomcat under the Java Security Manager, default `false`.
+* `node["tomcat"]["redis"]` - Run Tomcat with redis session store, default `false`. See https://github.com/jcoleman/tomcat-redis-session-manager for context configuration.
 
 Usage
 =====

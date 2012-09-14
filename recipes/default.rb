@@ -36,6 +36,35 @@ tomcat_pkgs.each do |pkg|
   end
 end
 
+if node["tomcat"]["redis"]
+  include_recipe "redis::failover_client"
+  
+  remote_file "/usr/share/tomcat#{node["tomcat"]["base_version"]}/lib/jedis-2.1.0.jar" do
+    source "https://github.com/downloads/xetorthio/jedis/jedis-2.1.0.jar"
+    mode "0644"
+    checksum "9f26d25f65d71b89756969a0868df17d5beab8a4631f8076441edf890a17b983"
+    owner "tomcat#{node["tomcat"]["base_version"]}"
+    group "tomcat#{node["tomcat"]["base_version"]}"
+    notifies :restart, "service[tomcat]"
+  end
+  
+  if node["tomcat"]["base_version"] == "6"
+    redis_manager_filename = "tomcat-redis-session-manager-1.0.jar"
+    redis_manager_checksum = "2d1eba99f18a9e5c930837fe4826ef8ea29237601ef54a0494c74989f507398b"
+  else
+    redis_manager_filename = "tomcat-redis-session-manager-1.1.jar"
+    redis_manager_checksum = "da9f8d44f0bf40327d47ca54596008bd14c0893503e3eadcea97fdc72da8a0e0"
+  end
+  remote_file "/usr/share/tomcat#{node["tomcat"]["base_version"]}/lib/#{redis_manager_filename}" do
+    source "https://github.com/downloads/jcoleman/tomcat-redis-session-manager/#{redis_manager_filename}"
+    mode "0644"
+    checksum redis_manager_checksum
+    owner "tomcat#{node["tomcat"]["base_version"]}"
+    group "tomcat#{node["tomcat"]["base_version"]}"
+    notifies :restart, "service[tomcat]"
+  end
+end
+
 service "tomcat" do
   service_name "tomcat#{node["tomcat"]["base_version"]}"
   case node["platform"]
