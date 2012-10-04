@@ -61,4 +61,4 @@ JVM_TMP=<%= node["tomcat"]["tmp_dir"] %>
 # do not need authbind.  It is used for binding Tomcat to lower port numbers.
 # NOTE: authbind works only with IPv4.  Do not enable it when using IPv6.
 # (yes/no, default: no)
-#AUTHBIND=no
+AUTHBIND=<%= node["tomcat"]["authbind"] %>
