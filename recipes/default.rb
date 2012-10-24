@@ -19,15 +19,52 @@
 
 include_recipe "java"
 
+case node["platform"]
+when "centos","redhat","fedora"
+  node.set["tomcat"]["user"] = "tomcat"
+  node.set["tomcat"]["group"] = "tomcat"
+  node.set["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["base"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["log_dir"] = "/var/log/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["tmp_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}/temp"
+  node.set["tomcat"]["work_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}/work"
+  node.set["tomcat"]["context_dir"] = "#{node['tomcat']["config_dir"]}/Catalina/localhost"
+  node.set["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
+when "debian","ubuntu"
+  node.set["tomcat"]["user"] = "tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["group"] = "tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["base"] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["log_dir"] = "/var/log/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["tmp_dir"] = "/tmp/tomcat#{node['tomcat']['base_version']}-tmp"
+  node.set["tomcat"]["work_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["context_dir"] = "#{node['tomcat']["config_dir"]}/Catalina/localhost"
+  node.set["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
+else
+  node.set["tomcat"]["user"] = "tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["group"] = "tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["base"] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["log_dir"] = "/var/log/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["tmp_dir"] = "/tmp/tomcat#{node['tomcat']['base_version']}-tmp"
+  node.set["tomcat"]["work_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}"
+  node.set["tomcat"]["context_dir"] = "#{node['tomcat']["config_dir"]}/Catalina/localhost"
+  node.set["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
+end
+
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
-    "default" => ["tomcat6","tomcat6-admin"]
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
   },
   ["centos","redhat","fedora"] => {
-    "default" => ["tomcat6","tomcat6-admin-webapps"]
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
-  "default" => ["tomcat6"]
+  "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
 )
+
 tomcat_pkgs.each do |pkg|
   package pkg do
     action :install
@@ -35,7 +72,7 @@ tomcat_pkgs.each do |pkg|
 end
 
 service "tomcat" do
-  service_name "tomcat6"
+  service_name "tomcat#{node["tomcat"]["base_version"]}"
   case node["platform"]
   when "centos","redhat","fedora"
     supports :restart => true, :status => true
@@ -47,15 +84,15 @@ end
 
 case node["platform"]
 when "centos","redhat","fedora"
-  template "/etc/sysconfig/tomcat6" do
+  template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
     source "sysconfig_tomcat6.erb"
     owner "root"
     group "root"
     mode "0644"
     notifies :restart, resources(:service => "tomcat")
   end
-else  
-  template "/etc/default/tomcat6" do
+else
+  template "/etc/default/tomcat#{node["tomcat"]["base_version"]}" do
     source "default_tomcat6.erb"
     owner "root"
     group "root"
@@ -64,7 +101,7 @@ else
   end
 end
 
-template "/etc/tomcat6/server.xml" do
+template "#{node["tomcat"]["config_dir"]}/server.xml" do
   source "server.xml.erb"
   owner "root"
   group "root"
