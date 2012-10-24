@@ -71,3 +71,11 @@ template "/etc/tomcat6/server.xml" do
   mode "0644"
   notifies :restart, resources(:service => "tomcat")
 end
+
+template "#{node["tomcat"]["config_dir"]}/context.xml" do
+  source "context.xml.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "tomcat")
+end

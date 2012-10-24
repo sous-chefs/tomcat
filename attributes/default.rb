@@ -57,3 +57,5 @@ else
   set["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
   set["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
 end
+
+default['tomcat']['context']['environment'] = []
