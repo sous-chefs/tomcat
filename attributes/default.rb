@@ -16,8 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+default["tomcat"]["host"] = '*'
 default["tomcat"]["port"] = 8080
+default["tomcat"]["ssl_host"] = '*'
 default["tomcat"]["ssl_port"] = 8443
+default["tomcat"]["ajp_host"] = '*'
 default["tomcat"]["ajp_port"] = 8009
 default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
 default["tomcat"]["use_security_manager"] = false
