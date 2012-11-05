@@ -33,8 +33,12 @@
   <Listener className="org.apache.catalina.core.JasperListener" />
   <!-- Prevent memory leaks due to use of particular java/javax APIs-->
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <% Chef::Log.debug "In template, Tomcat base version: #{node['tomcat']['base_version']}" %>
+  <%# ServerLifeCycleListener doesn't exist in Tomcat 7 %>
+  <% if node["tomcat"]["base_version"] == "6" %>
   <!-- JMX Support for the Tomcat server. Documentation at /docs/non-existent.html -->
   <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+  <% end %>
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
 
   <!-- Global JNDI resources
