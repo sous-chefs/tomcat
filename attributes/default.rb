@@ -26,7 +26,7 @@ default["tomcat"]["loglevel"] = "INFO"
 default["tomcat"]["tomcat_auth"] = "true"
 
 case platform_family
-when "redhat","fedora"
+when "rhel","fedora"
   set["tomcat"]["user"] = "tomcat"
   set["tomcat"]["group"] = "tomcat"
   set["tomcat"]["home"] = "/usr/share/tomcat6"
