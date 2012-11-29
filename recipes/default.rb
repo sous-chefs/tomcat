@@ -23,7 +23,7 @@ tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
     "default" => ["tomcat6","tomcat6-admin"]
   },
-  ["centos","redhat","fedora"] => {
+  ["centos","redhat","fedora","scientific"] => {
     "default" => ["tomcat6","tomcat6-admin-webapps"]
   },
   "default" => ["tomcat6"]
@@ -37,7 +37,7 @@ end
 service "tomcat" do
   service_name "tomcat6"
   case node["platform"]
-  when "centos","redhat","fedora"
+  when "centos","redhat","fedora","scientific"
     supports :restart => true, :status => true
   when "debian","ubuntu"
     supports :restart => true, :reload => true, :status => true
@@ -46,7 +46,7 @@ service "tomcat" do
 end
 
 case node["platform"]
-when "centos","redhat","fedora"
+when "centos","redhat","fedora","scientific"
   template "/etc/sysconfig/tomcat6" do
     source "sysconfig_tomcat6.erb"
     owner "root"

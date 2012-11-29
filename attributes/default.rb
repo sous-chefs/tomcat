@@ -24,7 +24,7 @@ default["tomcat"]["use_security_manager"] = false
 default["tomcat"]["authbind"] = "no"
 
 case platform
-when "centos","redhat","fedora"
+when "centos","redhat","fedora","scientific"
   set["tomcat"]["user"] = "tomcat"
   set["tomcat"]["group"] = "tomcat"
   set["tomcat"]["home"] = "/usr/share/tomcat6"
