@@ -49,6 +49,7 @@ case node["platform"]
 when "centos","redhat","fedora"
   template "/etc/sysconfig/tomcat6" do
     source "sysconfig_tomcat6.erb"
+    cookbook node["tomcat"]["template_cookbook"]
     owner "root"
     group "root"
     mode "0644"
@@ -57,6 +58,7 @@ when "centos","redhat","fedora"
 else  
   template "/etc/default/tomcat6" do
     source "default_tomcat6.erb"
+    cookbook node["tomcat"]["template_cookbook"]
     owner "root"
     group "root"
     mode "0644"
@@ -66,6 +68,7 @@ end
 
 template "/etc/tomcat6/server.xml" do
   source "server.xml.erb"
+  cookbook node["tomcat"]["template_cookbook"]
   owner "root"
   group "root"
   mode "0644"
