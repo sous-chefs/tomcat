@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: jetty
+# Cookbook Name:: tomcat
 # Attributes:: default
 #
 # Copyright 2010, Opscode, Inc.
@@ -17,7 +17,9 @@
 # limitations under the License.
 
 default["tomcat"]["port"] = 8080
+#default["tomcat"]["proxy_port"] = 80
 default["tomcat"]["ssl_port"] = 8443
+#default["tomcat"]["ssl_proxy_port"] = 443
 default["tomcat"]["ajp_port"] = 8009
 default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
 default["tomcat"]["use_security_manager"] = false
