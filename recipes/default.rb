@@ -34,6 +34,23 @@ tomcat_pkgs.each do |pkg|
   end
 end
 
+if not node.tomcat.deploy_manager_apps
+  directory "#{node.tomcat.webapp_dir}/manager" do
+    action :delete
+    recursive true
+  end
+  file "#{node.tomcat.config_dir}/Catalina/localhost/manager.xml" do
+    action :delete
+  end
+  directory "#{node.tomcat.webapp_dir}/host-manager" do
+    action :delete
+    recursive true
+  end
+  file "#{node.tomcat.config_dir}/Catalina/localhost/host-manager.xml" do
+    action :delete
+  end
+end
+
 service "tomcat" do
   service_name "tomcat6"
   case node["platform"]
