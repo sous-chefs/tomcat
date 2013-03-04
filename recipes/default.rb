@@ -71,3 +71,11 @@ template "/etc/tomcat6/server.xml" do
   mode "0644"
   notifies :restart, resources(:service => "tomcat")
 end
+
+template "/etc/tomcat6/logging.properties" do
+  source "logging.properties.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, "service[tomcat]"
+end
