@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: jetty
+# Cookbook Name:: tomcat
 # Attributes:: default
 #
 # Copyright 2010, Opscode, Inc.
