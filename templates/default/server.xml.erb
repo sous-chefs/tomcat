@@ -94,8 +94,10 @@
     -->
 
     <!-- Define an AJP 1.3 Connector on port <%= node["tomcat"]["ajp_port"] %> -->
-    <Connector port="<%= node["tomcat"]["ajp_port"] %>" protocol="AJP/1.3" redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
-
+    <Connector port="<%= node["tomcat"]["ajp_port"] %>"
+               protocol="AJP/1.3"
+               tomcatAuthentication="<%= node["tomcat"]["tomcat_auth"] %>"
+               redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
 
     <!-- An Engine represents the entry point (within Catalina) that processes
          every request.  The Engine implementation for Tomcat stand alone
