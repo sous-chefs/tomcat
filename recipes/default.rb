@@ -34,6 +34,10 @@ tomcat_pkgs.each do |pkg|
   end
 end
 
+directory  "#{node.tomcat.endorsed_dir}" do
+  mode "0755"
+end
+
 if not node.tomcat.deploy_manager_apps
   directory "#{node.tomcat.webapp_dir}/manager" do
     action :delete

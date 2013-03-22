@@ -56,6 +56,9 @@ SECURITY_MANAGER="<%= node["tomcat"]["use_security_manager"] %>"
 # JVM parameters passed only for start and run commands
 CATALINA_OPTS="<%= node["tomcat"]["catalina_options"] %>"
 
+# Endorse .jar files in this directory
+JAVA_ENDORSED_DIRS="<%= node["tomcat"]["endorsed_dir"] %>"
+
 # If you wish to further customize your tomcat environment,
 # put your own definitions here
 # (i.e. LD_LIBRARY_PATH for some jdbc drivers)
