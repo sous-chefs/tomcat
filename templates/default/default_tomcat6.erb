@@ -62,3 +62,6 @@ JVM_TMP=<%= node["tomcat"]["tmp_dir"] %>
 # NOTE: authbind works only with IPv4.  Do not enable it when using IPv6.
 # (yes/no, default: no)
 AUTHBIND=<%= node["tomcat"]["authbind"] %>
+
+# Endorse .jar files in this directory
+JAVA_ENDORSED_DIRS="<%= node["tomcat"]["endorsed_dir"] %>"
