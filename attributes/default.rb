@@ -25,6 +25,7 @@ default["tomcat"]["catalina_options"] = ""
 default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
 default["tomcat"]["use_security_manager"] = false
 default["tomcat"]["authbind"] = "no"
+default["tomcat"]["deploy_manager_apps"] = true
 default["tomcat"]["ssl_cert_file"] = nil
 default["tomcat"]["ssl_key_file"] = nil
 default["tomcat"]["ssl_chain_files"] = [ ]
