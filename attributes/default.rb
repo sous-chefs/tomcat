@@ -25,6 +25,16 @@ default["tomcat"]["catalina_options"] = ""
 default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
 default["tomcat"]["use_security_manager"] = false
 default["tomcat"]["authbind"] = "no"
+default["tomcat"]["ssl_cert_file"] = nil
+default["tomcat"]["ssl_key_file"] = nil
+default["tomcat"]["ssl_chain_files"] = [ ]
+default["tomcat"]["keystore_file"] = "keystore.jks"
+default["tomcat"]["keystore_type"] = "jks"
+default["tomcat"]["keystore_password"] = "ChangeIt"
+default["tomcat"]["truststore_file"] = nil
+default["tomcat"]["truststore_type"] = "jks"
+default["tomcat"]["truststore_password"] = "ChangeIt"
+default["tomcat"]["certificate_dn"] = "cn=localhost"
 default["tomcat"]["loglevel"] = "INFO"
 default["tomcat"]["tomcat_auth"] = "true"
 
@@ -40,6 +50,7 @@ when "centos","redhat","fedora"
   set["tomcat"]["work_dir"] = "/var/cache/tomcat6/work"
   set["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
   set["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
+  set["tomcat"]["keytool"] = "/usr/lib/jvm/java/bin/keytool"
 when "debian","ubuntu"
   set["tomcat"]["user"] = "tomcat6"
   set["tomcat"]["group"] = "tomcat6"
@@ -51,6 +62,7 @@ when "debian","ubuntu"
   set["tomcat"]["work_dir"] = "/var/cache/tomcat6"
   set["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
   set["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
+  set["tomcat"]["keytool"] = "/usr/lib/jvm/default-java/bin/keytool"
 else
   set["tomcat"]["user"] = "tomcat6"
   set["tomcat"]["group"] = "tomcat6"
@@ -62,4 +74,5 @@ else
   set["tomcat"]["work_dir"] = "/var/cache/tomcat6"
   set["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
   set["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
+  set["tomcat"]["keytool"] = "keytool"
 end
