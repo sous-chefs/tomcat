@@ -19,15 +19,15 @@
 
 include_recipe "java"
 
-tomcat_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => ["tomcat6","tomcat6-admin"]
-  },
-  ["centos","redhat","fedora"] => {
-    "default" => ["tomcat6","tomcat6-admin-webapps"]
-  },
-  "default" => ["tomcat6"]
-)
+tomcat_pkgs = case node["platform_family"]
+  when "debian"
+    ["tomcat6","tomcat6-admin"]
+  when "rhel", "fedora"
+    ["tomcat6","tomcat6-admin-webapps"]
+  else
+    ["tomcat6"]
+end
+
 tomcat_pkgs.each do |pkg|
   package pkg do
     action :install
@@ -36,17 +36,17 @@ end
 
 service "tomcat" do
   service_name "tomcat6"
-  case node["platform"]
-  when "centos","redhat","fedora"
+  case node["platform_family"]
+  when "rhel","fedora"
     supports :restart => true, :status => true
-  when "debian","ubuntu"
+  when "debian"
     supports :restart => true, :reload => true, :status => true
   end
   action [:enable, :start]
 end
 
-case node["platform"]
-when "centos","redhat","fedora"
+case node["platform_family"]
+when "rhel","fedora"
   template "/etc/sysconfig/tomcat6" do
     source "sysconfig_tomcat6.erb"
     owner "root"
@@ -54,7 +54,7 @@ when "centos","redhat","fedora"
     mode "0644"
     notifies :restart, resources(:service => "tomcat")
   end
-else  
+else
   template "/etc/default/tomcat6" do
     source "default_tomcat6.erb"
     owner "root"
