@@ -19,15 +19,15 @@
 
 include_recipe "java"
 
-tomcat_pkgs = value_for_platform_family(
-  ["debian"] => {
-    "default" => ["tomcat6","tomcat6-admin"]
-  },
-  ["rhel","fedora"] => {
-    "default" => ["tomcat6","tomcat6-admin-webapps"]
-  },
-  "default" => ["tomcat6"]
-)
+tomcat_pkgs = case node["platform_family"]
+  when "debian"
+    ["tomcat6","tomcat6-admin"]
+  when "rhel", "fedora"
+    ["tomcat6","tomcat6-admin-webapps"]
+  else
+    ["tomcat6"]
+end
+
 tomcat_pkgs.each do |pkg|
   package pkg do
     action :install
