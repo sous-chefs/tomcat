@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "java"
+# [COOK-2695]
+if node[:java][:install_flavor] == 'openjdk'
+  include_recipe 'java'
+end
 
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
@@ -78,4 +81,9 @@ template "/etc/tomcat6/logging.properties" do
   group "root"
   mode "0644"
   notifies :restart, "service[tomcat]"
+end
+
+# [COOK-2695]
+if node[:java][:install_flavor] == 'oracle'
+  include_recipe 'java'
 end
