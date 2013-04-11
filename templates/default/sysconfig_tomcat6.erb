@@ -53,6 +53,9 @@ SECURITY_MANAGER="<%= node["tomcat"]["use_security_manager"] %>"
 # Set the TOMCAT_PID location
 #CATALINA_PID="/var/run/tomcat6.pid"
 
+# JVM parameters passed only for start and run commands
+CATALINA_OPTS="<%= node["tomcat"]["catalina_options"] %>"
+
 # If you wish to further customize your tomcat environment,
 # put your own definitions here
 # (i.e. LD_LIBRARY_PATH for some jdbc drivers)
