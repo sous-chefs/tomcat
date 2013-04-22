@@ -86,7 +86,7 @@
                connectionTimeout="20000" 
                redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
     -->           
-  <% if not default["tomcat"]["ssl_cert_file"].nil? -%>
+  <% if not node["tomcat"]["ssl_cert_file"].nil? -%>
     <!-- Define a SSL HTTP/1.1 Connector on port <%= node["tomcat"]["ssl_port"] %>
          This connector uses the JSSE configuration, when using APR, the 
          connector should be using the OpenSSL style configuration
