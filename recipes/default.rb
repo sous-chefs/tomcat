@@ -52,15 +52,15 @@ when "centos","redhat","fedora"
     owner "root"
     group "root"
     mode "0644"
-    notifies :restart, resources(:service => "tomcat")
+    notifies :restart, "service[tomcat]"
   end
-else  
+else
   template "/etc/default/tomcat6" do
     source "default_tomcat6.erb"
     owner "root"
     group "root"
     mode "0644"
-    notifies :restart, resources(:service => "tomcat")
+    notifies :restart, "service[tomcat]"
   end
 end
 
@@ -69,7 +69,7 @@ template "/etc/tomcat6/server.xml" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]"
 end
 
 template "/etc/tomcat6/logging.properties" do
