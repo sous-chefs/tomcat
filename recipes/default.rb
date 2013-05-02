@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+# required for the secure_password method from the openssl cookbook
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+
 include_recipe "java"
 
 tomcat_pkgs = value_for_platform(
@@ -67,6 +70,8 @@ service "tomcat" do
 end
 
 if not node['tomcat']["truststore_file"].nil?
+  node.set_unless['tomcat']['keystore_password'] = secure_password
+  node.set_unless['tomcat']['truststore_password'] = secure_password
   java_options = node['tomcat']['java_options'].to_s
   java_options << " -Djavax.net.ssl.trustStore=#{node["tomcat"]["config_dir"]}/#{node["tomcat"]["truststore_file"]}"
   java_options << " -Djavax.net.ssl.trustStorePassword=#{node["tomcat"]["truststore_password"]}"
