@@ -28,5 +28,5 @@ template "/etc/tomcat6/tomcat-users.xml" do
     :users => TomcatCookbook.users,
     :roles => TomcatCookbook.roles
   )
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]"
 end
