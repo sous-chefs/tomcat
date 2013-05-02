@@ -13,7 +13,7 @@ TOMCAT6_USER=<%= node["tomcat"]["user"] %>
 TOMCAT6_GROUP=<%= node["tomcat"]["user"] %>
 
 # The home directory of the Java development kit (JDK). You need at least
-# JDK version 1.5. If JAVA_HOME is not set, some common directories for 
+# JDK version 1.5. If JAVA_HOME is not set, some common directories for
 # OpenJDK, the Sun JDK, and various J2SE 1.5 versions are tried.
 JAVA_HOME=<%= node["java"]["java_home"] %>
 
@@ -65,3 +65,6 @@ AUTHBIND=<%= node["tomcat"]["authbind"] %>
 
 # JVM parameters passed only for start and run commands
 CATALINA_OPTS="<%= node["tomcat"]["catalina_options"] %>"
+
+# Endorse .jar files in this directory
+JAVA_ENDORSED_DIRS="<%= node["tomcat"]["endorsed_dir"] %>"

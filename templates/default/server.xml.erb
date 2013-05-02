@@ -75,6 +75,9 @@
     <Connector port="<%= node["tomcat"]["port"] %>" protocol="HTTP/1.1" 
                connectionTimeout="20000" 
                URIEncoding="UTF-8"
+             <% if node["tomcat"].has_key?("proxy_port") -%>
+               proxyPort="<%= node["tomcat"]["proxy_port"] %>"
+             <% end -%>
                redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
     <!-- A "Connector" using the shared thread pool-->
     <!--
@@ -83,15 +86,18 @@
                connectionTimeout="20000" 
                redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
     -->           
+  <% if not node["tomcat"]["ssl_cert_file"].nil? -%>
     <!-- Define a SSL HTTP/1.1 Connector on port <%= node["tomcat"]["ssl_port"] %>
          This connector uses the JSSE configuration, when using APR, the 
          connector should be using the OpenSSL style configuration
          described in the APR documentation -->
-    <!--
     <Connector port="<%= node["tomcat"]["ssl_port"] %>" protocol="HTTP/1.1" SSLEnabled="true"
+             <% if node["tomcat"].has_key?("ssl_proxy_port") -%>
+               proxyPort="<%= node["tomcat"]["ssl_proxy_port"] %>"
+             <% end -%>
                maxThreads="150" scheme="https" secure="true"
                clientAuth="false" sslProtocol="TLS" />
-    -->
+  <% end -%>
 
     <!-- Define an AJP 1.3 Connector on port <%= node["tomcat"]["ajp_port"] %> -->
     <Connector port="<%= node["tomcat"]["ajp_port"] %>"
