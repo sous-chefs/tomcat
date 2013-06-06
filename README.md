@@ -95,7 +95,9 @@ License and Author
 
 * Author: Seth Chisamore (<schisamo@opscode.com>)
 * Author: Jamie Winsor (<jamie@vialstudios.com>)
-* Author:: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
+* Author: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
+* Auther: Mariano Cortesi (<mariano@zauberlabs.com>)
+* Author: Brendan O'Donnell (<brendan.james.odonnell@gmail.com>)
 
 Copyright:: 2010-2013, Opscode, Inc
 
