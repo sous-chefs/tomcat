@@ -22,42 +22,6 @@
 
 include_recipe "java"
 
-case node["platform"]
-when "centos","redhat","fedora"
-  node.default["tomcat"]["user"] = "tomcat"
-  node.default["tomcat"]["group"] = "tomcat"
-  node.default["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["base"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["log_dir"] = "/var/log/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["tmp_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}/temp"
-  node.default["tomcat"]["work_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}/work"
-  node.default["tomcat"]["context_dir"] = "#{node['tomcat']["config_dir"]}/Catalina/localhost"
-  node.default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
-when "debian","ubuntu"
-  node.default["tomcat"]["user"] = "tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["group"] = "tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["base"] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["log_dir"] = "/var/log/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{node['tomcat']['base_version']}-tmp"
-  node.default["tomcat"]["work_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["context_dir"] = "#{node['tomcat']["config_dir"]}/Catalina/localhost"
-  node.default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
-else
-  node.default["tomcat"]["user"] = "tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["group"] = "tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["home"] = "/usr/share/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["base"] = "/var/lib/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["config_dir"] = "/etc/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["log_dir"] = "/var/log/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{node['tomcat']['base_version']}-tmp"
-  node.default["tomcat"]["work_dir"] = "/var/cache/tomcat#{node['tomcat']['base_version']}"
-  node.default["tomcat"]["context_dir"] = "#{node['tomcat']["config_dir"]}/Catalina/localhost"
-  node.default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node['tomcat']['base_version']}/webapps"
-end
-
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
     "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
