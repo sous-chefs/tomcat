@@ -1,7 +1,7 @@
 Description
 ===========
 
-Installs and configures Tomcat version 6, Java servlet engine and webserver.
+Installs and configures Tomcat, Java servlet engine and webserver.
 
 Requirements
 ============
@@ -19,6 +19,7 @@ The following Opscode cookbooks are dependencies:
 Attributes
 ==========
 
+* `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
@@ -94,6 +95,9 @@ License and Author
 
 * Author: Seth Chisamore (<schisamo@opscode.com>)
 * Author: Jamie Winsor (<jamie@vialstudios.com>)
+* Author: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
+* Auther: Mariano Cortesi (<mariano@zauberlabs.com>)
+* Author: Brendan O'Donnell (<brendan.james.odonnell@gmail.com>)
 
 Copyright:: 2010-2013, Opscode, Inc
 
