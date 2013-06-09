@@ -30,4 +30,5 @@ suites:
 
 - name: tomcat7
   run_list: ["recipe[tomcat]"]
+  excludes: ["ubuntu-10.04", "centos-6.4"]
   attributes: {tomcat: {base_version: 7}}
