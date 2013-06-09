@@ -67,7 +67,7 @@ when "debian","ubuntu"
   default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{node["tomcat"]["base_version"]}-tmp"
   default["tomcat"]["work_dir"] = "/var/cache/tomcat#{node["tomcat"]["base_version"]}"
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
-  default["tomcat"]["webapp_dir"] = "/var/lib/#{node["tomcat"]["base_version"]}/webapps"
+  default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node["tomcat"]["base_version"]}/webapps"
   default["tomcat"]["keytool"] = "/usr/lib/jvm/default-java/bin/keytool"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["home"]}/lib/endorsed"
 else
