@@ -42,6 +42,7 @@ default["tomcat"]["truststore_type"] = "jks"
 default["tomcat"]["certificate_dn"] = "cn=localhost"
 default["tomcat"]["loglevel"] = "INFO"
 default["tomcat"]["tomcat_auth"] = "true"
+default["tomcat"]["gzip_enabled"] = true
 
 case node['platform']
 when "centos","redhat","fedora"

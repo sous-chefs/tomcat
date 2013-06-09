@@ -80,7 +80,14 @@
              <% if node["tomcat"].has_key?("proxy_port") -%>
                proxyPort="<%= node["tomcat"]["proxy_port"] %>"
              <% end -%>
-               redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
+               redirectPort="<%= node["tomcat"]["ssl_port"] %>" 
+             <% if node["tomcat"]["gzip_enabled"] -%>
+               compression="on" 
+               compressionMinSize="2048" 
+               noCompressionUserAgents="gozilla, traviata" 
+               compressableMimeType="text/html,text/xml,application/json"
+              <% end -%>
+               />
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
