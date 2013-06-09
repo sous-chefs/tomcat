@@ -108,7 +108,7 @@ template "#{node["tomcat"]["config_dir"]}/server.xml" do
   notifies :restart, "service[tomcat]"
 end
 
-template "/etc/tomcat6/logging.properties" do
+template "/etc/tomcat#{node['tomcat']['base_version']}/logging.properties" do
   source "logging.properties.erb"
   owner "root"
   group "root"
