@@ -1,3 +1,9 @@
+## v0.14.0:
+
+### Sub-task
+
+- [COOK-1808]: Add Support for Tomcat 7 (ubuntu 12.04+, debian 7+)
+
 ## v0.13.0:
 
 ### Improvement
