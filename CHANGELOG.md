@@ -1,3 +1,10 @@
+## v0.14.2:
+
+### Bug
+
+- [COOK-3165]: Typo in tomcat attributes/default.rb file for
+  `webapp_dir` attribute on Debian/Ubuntu
+
 ## v0.14.0:
 
 ### Sub-task
