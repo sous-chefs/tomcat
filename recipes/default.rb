@@ -65,7 +65,7 @@ service "tomcat" do
   when "centos","redhat","fedora"
     supports :restart => true, :status => true
   when "debian","ubuntu"
-    supports :restart => true, :reload => true, :status => true
+    supports :restart => true, :reload => false, :status => true
   end
   action [:enable, :start]
 end
