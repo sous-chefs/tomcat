@@ -1,3 +1,10 @@
+## v0.14.3:
+
+### Bug
+
+- [COOK-3204]: Replace hard-coded path with config_dir
+  attribute.
+
 ## v0.14.2:
 
 ### Bug
