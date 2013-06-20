@@ -1,10 +1,3 @@
-## v0.14.3:
-
-### Bug
-
-- [COOK-3203]: Tomcat init script on Ubuntu does not support
-  `reload` argument.
-
 ## v0.14.2:
 
 ### Bug
