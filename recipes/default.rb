@@ -23,11 +23,11 @@
 include_recipe "java"
 
 tomcat_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
+  ["debian", "ubuntu"] => {
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}", "tomcat#{node["tomcat"]["base_version"]}-admin"]
   },
-  ["centos","redhat","fedora"] => {
-    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
+  ["centos", "redhat", "fedora"] => {
+    "default" => ["tomcat#{node["tomcat"]["base_version"]}", "tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
   "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
 )
@@ -62,9 +62,9 @@ end
 service "tomcat" do
   service_name "tomcat#{node["tomcat"]["base_version"]}"
   case node["platform"]
-  when "centos","redhat","fedora"
+  when "centos", "redhat", "fedora"
     supports :restart => true, :status => true
-  when "debian","ubuntu"
+  when "debian", "ubuntu"
     supports :restart => true, :reload => false, :status => true
   end
   action [:enable, :start]
@@ -82,7 +82,7 @@ unless node['tomcat']["truststore_file"].nil?
 end
 
 case node["platform"]
-when "centos","redhat","fedora"
+when "centos", "redhat", "fedora"
   template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
     source "sysconfig_tomcat6.erb"
     owner "root"
@@ -157,8 +157,7 @@ else
   end
 end
 
-unless node['tomcat']["truststore_file"].nil?
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['truststore_file']}" do
-    mode "0644"
-  end
+cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['truststore_file']}" do
+  mode "0644"
+  not_if { node['tomcat']["truststore_file"].nil? }
 end
