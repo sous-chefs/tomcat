@@ -1,0 +1,11 @@
+language: ruby
+bundler_args: --without integration
+script: "bundle exec rake build"
+rvm:
+  - 1.9.3
+gemfile:
+  - Gemfile
+branches:
+  only:
+    - master
+    - - /^COOK-.*$/
