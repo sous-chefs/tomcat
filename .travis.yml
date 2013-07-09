@@ -8,4 +8,4 @@ gemfile:
 branches:
   only:
     - master
-    - - /^COOK-.*$/
+    - /^COOK-.*$/
