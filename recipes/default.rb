@@ -67,7 +67,7 @@ service "tomcat" do
   when "debian","ubuntu"
     supports :restart => true, :reload => false, :status => true
   end
-  action [:enable, :start]
+  action [:enable]
 end
 
 node.set_unless['tomcat']['keystore_password'] = secure_password
