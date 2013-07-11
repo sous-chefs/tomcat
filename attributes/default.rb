@@ -55,8 +55,8 @@ when "centos","redhat","fedora"
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
   default["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
   default["tomcat"]["keytool"] = "/usr/lib/jvm/java/bin/keytool"
-  default["tomcat"]["lib_dir"] = ::File.join( node["tomcat"]["home"], "lib")
-  default["tomcat"]["endorsed_dir"] = ::File.join( node["tomcat"]["lib_dir"], "endorsed")
+  default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
+  default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when "debian","ubuntu"
   default["tomcat"]["user"] = "tomcat6"
   default["tomcat"]["group"] = "tomcat6"
@@ -69,8 +69,8 @@ when "debian","ubuntu"
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
   default["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
   default["tomcat"]["keytool"] = "/usr/lib/jvm/default-java/bin/keytool"
-  default["tomcat"]["lib_dir"] = ::File.join( node["tomcat"]["home"], "lib")
-  default["tomcat"]["endorsed_dir"] = ::File.join( node["tomcat"]["lib_dir"], "endorsed")
+  default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
+  default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 else
   default["tomcat"]["user"] = "tomcat6"
   default["tomcat"]["group"] = "tomcat6"
@@ -83,8 +83,8 @@ else
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
   default["tomcat"]["webapp_dir"] = "/var/lib/tomcat6/webapps"
   default["tomcat"]["keytool"] = "keytool"
-  default["tomcat"]["lib_dir"] = ::File.join( node["tomcat"]["home"], "lib")
-  default["tomcat"]["endorsed_dir"] = ::File.join( node["tomcat"]["lib_dir"], "endorsed")
+  default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
+  default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 end
 
 
