@@ -40,6 +40,7 @@ end
 
 directory node['tomcat']['endorsed_dir'] do
   mode "0755"
+  recursive true
 end
 
 unless node['tomcat']['deploy_manager_apps']
