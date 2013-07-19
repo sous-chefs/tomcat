@@ -20,8 +20,17 @@
 # required for the secure_password method from the openssl cookbook
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
-include_recipe "java"
+unless node['tomcat']['custom_java']
+  include_recipe "java"
+end
 
+case node['platform']
+when 'smartos'
+  package "apache-tomcat" do
+    version node["tomcat"]["base_version"].to_s
+    action :install
+  end
+else
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
     "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
@@ -37,6 +46,24 @@ tomcat_pkgs.each do |pkg|
     action :install
   end
 end
+end
+
+case node["platform"]
+when "smartos"
+  template "/opt/local/share/smf/apache-tomcat/manifest.xml" do
+    source "tomcat.xml.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    notifies :run, "execute[tomcat_manifest]"
+  end
+  execute "tomcat_manifest" do
+    command "svccfg import /opt/local/share/smf/apache-tomcat/manifest.xml"
+    action :nothing
+    notifies :restart, "service[tomcat]"
+  end
+end
+    
 
 directory node['tomcat']['endorsed_dir'] do
   mode "0755"
@@ -66,6 +93,9 @@ service "tomcat" do
   when "centos","redhat","fedora"
     supports :restart => true, :status => true
   when "debian","ubuntu"
+    supports :restart => true, :reload => false, :status => true
+  when "smartos"
+    service_name "tomcat"
     supports :restart => true, :reload => false, :status => true
   end
   action [:enable, :start]
@@ -109,7 +139,7 @@ template "#{node["tomcat"]["config_dir"]}/server.xml" do
   notifies :restart, "service[tomcat]"
 end
 
-template "/etc/tomcat#{node['tomcat']['base_version']}/logging.properties" do
+template "#{node["tomcat"]["config_dir"]}/logging.properties" do
   source "logging.properties.erb"
   owner "root"
   group "root"
