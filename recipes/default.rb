@@ -22,15 +22,17 @@
 
 include_recipe "java"
 
-tomcat_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
-  },
-  ["centos","redhat","fedora"] => {
-    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
-  },
-  "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
-)
+tomcat_pkgs = ["tomcat#{node["tomcat"]["base_version"]}"]
+if node['tomcat']['deploy_manager_apps']
+  tomcat_pkgs << value_for_platform(
+    ["debian","ubuntu"] => {
+      "default" => "tomcat#{node["tomcat"]["base_version"]}-admin"
+    },
+    ["centos","redhat","fedora"] => {
+      "default" => "tomcat#{node["tomcat"]["base_version"]}-admin-webapps"
+    }
+  )
+end
 
 tomcat_pkgs.each do |pkg|
   package pkg do
