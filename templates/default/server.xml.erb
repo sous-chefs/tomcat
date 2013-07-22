@@ -80,6 +80,9 @@
              <% if node["tomcat"].has_key?("proxy_port") -%>
                proxyPort="<%= node["tomcat"]["proxy_port"] %>"
              <% end -%>
+             <% if node["tomcat"].has_key?("max_threads") -%>
+               maxThreads="<%= node["tomcat"]["max_threads"] %>"
+             <% end -%>
                redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
     <!-- A "Connector" using the shared thread pool-->
     <!--
@@ -97,7 +100,7 @@
              <% if node["tomcat"].has_key?("ssl_proxy_port") -%>
                proxyPort="<%= node["tomcat"]["ssl_proxy_port"] %>"
              <% end -%>
-               maxThreads="150" scheme="https" secure="true"
+               maxThreads="<%= node["tomcat"]["ssl_max_threads"] %>" scheme="https" secure="true"
                clientAuth="false" sslProtocol="TLS" />
   <% end -%>
 
