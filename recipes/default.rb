@@ -118,24 +118,12 @@ template "/etc/tomcat#{node['tomcat']['base_version']}/logging.properties" do
 end
 
 unless node['tomcat']["ssl_cert_file"].nil?
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_cert_file']}" do
-    mode "0644"
-  end
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_key_file']}" do
-    mode "0644"
-  end
-  cacerts = ""
-  node['tomcat']['ssl_chain_files'].each do |cert|
-    cookbook_file "#{node['tomcat']['config_dir']}/#{cert}" do
-      mode "0644"
-    end
-    cacerts = cacerts + "#{cert} "
-  end
   script "create_tomcat_keystore" do
     interpreter "bash"
+    action :nothing
     cwd node['tomcat']['config_dir']
     code <<-EOH
-      cat #{cacerts} > cacerts.pem
+      cat #{node['tomcat']['ssl_chain_files'].join(' ')} > cacerts.pem
       openssl pkcs12 -export \
        -inkey #{node['tomcat']['ssl_key_file']} \
        -in #{node['tomcat']['ssl_cert_file']} \
@@ -145,7 +133,20 @@ unless node['tomcat']["ssl_cert_file"].nil?
        -out #{node['tomcat']['keystore_file']}
     EOH
     notifies :restart, "service[tomcat]"
-    creates "#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}"
+  end
+  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_cert_file']}" do
+    mode "0644"
+    notifies :run, "script[create_tomcat_keystore]"
+  end
+  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_key_file']}" do
+    mode "0644"
+    notifies :run, "script[create_tomcat_keystore]"
+  end
+  node['tomcat']['ssl_chain_files'].each do |cert|
+    cookbook_file "#{node['tomcat']['config_dir']}/#{cert}" do
+      mode "0644"
+      notifies :run, "script[create_tomcat_keystore]"
+    end
   end
 else
   execute "Create Tomcat SSL certificate" do
