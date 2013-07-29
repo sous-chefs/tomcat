@@ -1,3 +1,6 @@
+[![Build Status](https://secure.travis-ci.org/opscode-cookbooks/tomcat.png)](http://travis-ci.org/opscode-cookbooks/tomcat)
+
+
 Description
 ===========
 

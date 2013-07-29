@@ -68,44 +68,44 @@ class Chef
 
       private
 
-        def find_users
-          users = if Chef::Config[:solo]
-            data_bag = Chef::DataBag.load(USERS_DATA_BAG)
-            data_bag.keys.collect do |name|
-              Chef::DataBagItem.load(USERS_DATA_BAG, name)
-            end
-          else
-            begin
-              items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
-            rescue Net::HTTPServerException => e
-              raise TomcatUserDataBagNotFound if e.message.match(/404/)
-              raise e
-            end
-            decrypt_items(items)
+      def find_users
+        users = if Chef::Config[:solo]
+          data_bag = Chef::DataBag.load(USERS_DATA_BAG)
+          data_bag.keys.collect do |name|
+            Chef::DataBagItem.load(USERS_DATA_BAG, name)
           end
-
-          users.each { |user| validate_user_item(user) }
-          users
-        end
-
-        def validate_user_item(user)
-          if user['id'].empty? || user['id'].nil? &&
-            user['password'].empty? || user['password'].nil? &&
-            user['roles'].nil? || !user['roles'].is_a?(Array)
-            
-            raise InvalidUserDataBagItem.new(user)
+        else
+          begin
+            items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
+          rescue Net::HTTPServerException => e
+            raise TomcatUserDataBagNotFound if e.message.match(/404/)
+            raise e
           end
+          decrypt_items(items)
         end
 
-        def decrypt_items(items)
-          items.collect do |item|
-            EncryptedDataBagItem.new(item, encrypted_secret)
-          end
-        end
+        users.each { |user| validate_user_item(user) }
+        users
+      end
 
-        def encrypted_secret
-          @encrypted_secret ||= EncryptedDataBagItem.load_secret
+      def validate_user_item(user)
+        if user['id'].empty? || user['id'].nil? &&
+          user['password'].empty? || user['password'].nil? &&
+          user['roles'].nil? || !user['roles'].is_a?(Array)
+
+          raise InvalidUserDataBagItem.new(user)
         end
+      end
+
+      def decrypt_items(items)
+        items.collect do |item|
+          EncryptedDataBagItem.new(item, encrypted_secret)
+        end
+      end
+
+      def encrypted_secret
+        @encrypted_secret ||= EncryptedDataBagItem.load_secret
+      end
     end
   end
 end
