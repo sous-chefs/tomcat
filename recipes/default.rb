@@ -42,6 +42,17 @@ directory node['tomcat']['endorsed_dir'] do
   mode "0755"
 end
 
+node.set_unless['tomcat']['keystore_password'] = secure_password
+node.set_unless['tomcat']['truststore_password'] = secure_password
+
+unless node['tomcat']["truststore_file"].nil?
+  java_options = node['tomcat']['java_options'].to_s
+  java_options << " -Djavax.net.ssl.trustStore=#{node["tomcat"]["config_dir"]}/#{node["tomcat"]["truststore_file"]}"
+  java_options << " -Djavax.net.ssl.trustStorePassword=#{node["tomcat"]["truststore_password"]}"
+
+  node.set['tomcat']['java_options'] = java_options
+end
+
 unless node['tomcat']['deploy_manager_apps']
   directory "#{node['tomcat']['webapp_dir']}/manager" do
     action :delete
@@ -57,28 +68,6 @@ unless node['tomcat']['deploy_manager_apps']
   file "#{node['tomcat']['config_dir']}/Catalina/localhost/host-manager.xml" do
     action :delete
   end
-end
-
-service "tomcat" do
-  service_name "tomcat#{node["tomcat"]["base_version"]}"
-  case node["platform"]
-  when "centos","redhat","fedora"
-    supports :restart => true, :status => true
-  when "debian","ubuntu"
-    supports :restart => true, :reload => true, :status => true
-  end
-  action [:enable, :start]
-end
-
-node.set_unless['tomcat']['keystore_password'] = secure_password
-node.set_unless['tomcat']['truststore_password'] = secure_password
-
-unless node['tomcat']["truststore_file"].nil?
-  java_options = node['tomcat']['java_options'].to_s
-  java_options << " -Djavax.net.ssl.trustStore=#{node["tomcat"]["config_dir"]}/#{node["tomcat"]["truststore_file"]}"
-  java_options << " -Djavax.net.ssl.trustStorePassword=#{node["tomcat"]["truststore_password"]}"
-
-  node.set['tomcat']['java_options'] = java_options
 end
 
 case node["platform"]
@@ -114,6 +103,17 @@ template "/etc/tomcat#{node["tomcat"]["base_version"]}/logging.properties" do
   group "root"
   mode "0644"
   notifies :restart, "service[tomcat]"
+end
+
+service "tomcat" do
+  service_name "tomcat#{node["tomcat"]["base_version"]}"
+  case node["platform"]
+  when "centos","redhat","fedora"
+    supports :restart => true, :status => true
+  when "debian","ubuntu"
+    supports :restart => true, :reload => true, :status => true
+  end
+  action [:enable, :start]
 end
 
 unless node['tomcat']["ssl_cert_file"].nil?
