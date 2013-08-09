@@ -86,5 +86,3 @@ else
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 end
-
-
