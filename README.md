@@ -42,6 +42,7 @@ Attributes
 * `node["tomcat"]["work_dir"]` -
 * `node["tomcat"]["context_dir"]` -
 * `node["tomcat"]["webapp_dir"]` -
+* `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
 
 ## Attributes for SSL
