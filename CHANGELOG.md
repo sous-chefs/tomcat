@@ -3,6 +3,17 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.14.4
+-------
+### Bug
+- **[COOK-3378](https://tickets.opscode.com/browse/COOK-3378)** - Use keystore in the port 8443 connector
+- **[COOK-3204](https://tickets.opscode.com/browse/COOK-3204)** - Fix hard-coded path to `tomcat-users.xml`
+- **[COOK-3203](https://tickets.opscode.com/browse/COOK-3203)** - Support "reload" on Ubuntu 12.04
+
+### Improvement
+- **[COOK-3195](https://tickets.opscode.com/browse/COOK-3195)** - Fix error for creating endorsed dir
+- **[COOK-3083](https://tickets.opscode.com/browse/COOK-3083)** - Add an attribute to lib directory
+
 v0.14.2
 -------
 ### Bug
