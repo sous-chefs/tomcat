@@ -1,24 +1,21 @@
-Description
-===========
-
+tomcat Cookbook
+===============
 Installs and configures Tomcat, Java servlet engine and webserver.
 
+
 Requirements
-============
+------------
+### Platforms
+- Debian, Ubuntu (OpenJDK, Oracle)
+- CentOS 6+, Red Hat 6+, Fedora (OpenJDK, Oracle)
 
-Platform:
+### Dependencies
+- java
+- openssl
 
-* Debian, Ubuntu (OpenJDK, Oracle)
-* CentOS 6+, Red Hat 6+, Fedora (OpenJDK, Oracle)
-
-The following Opscode cookbooks are dependencies:
-
-* java
-* openssl
 
 Attributes
-==========
-
+----------
 * `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
@@ -45,8 +42,7 @@ Attributes
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
 
-## Attributes for SSL
-
+### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
 * `node["tomcat"]["ssl_chain_files"]` - SSL CAcert chain files used for generating the SSL certificates
 * `node["tomcat"]["keystore_file"]` - Location of the file where the SSL keystore is located
@@ -56,50 +52,53 @@ Attributes
 * `node["tomcat"]["certificate_dn"]` - DN for the certificate
 * `node["tomcat"]["keytool"]` - path to keytool, used for generating the certificate, location varies by platform
 
-Usage
-=====
 
+Usage
+-----
 Simply include the recipe where you want Tomcat installed.
 
-Due to the ways that some system init scripts call the configuration,
-you may wish to set the java options to include `JAVA_OPTS`. As an
-example for a java app server role:
+Due to the ways that some system init scripts call the configuration, you may wish to set the java options to include `JAVA_OPTS`. As an example for a java app server role:
 
-    name "java-app-server"
-    run_list("recipe[tomcat]")
-    override_attributes(
-      'tomcat' => {
-        'java_options' => "${JAVA_OPTS} -Xmx128M -Djava.awt.headless=true"
-      }
-    )
+```ruby
+name "java-app-server"
+run_list("recipe[tomcat]")
+override_attributes(
+  'tomcat' => {
+    'java_options' => "${JAVA_OPTS} -Xmx128M -Djava.awt.headless=true"
+  }
+)
+```
+
 
 Managing Tomcat Users
-=====================
-
+---------------------
 The recipe `tomcat::users` included in this cookbook is used for managing Tomcat users. The recipe adds users and roles to the `tomcat-users.xml` conf file.
 
 Users are defined by creating a `tomcat_users` data bag and placing [Encrypted Data Bag Items](http://wiki.opscode.com/display/chef/Encrypted+Data+Bags) in that data bag. Each encrypted data bag item requires an 'id', 'password', and a 'roles' field.
 
-    {
-      "id": "reset",
-      "password": "supersecret",
-      "roles": [
-        "manager",
-        "admin"
-      ]
-    }
+```javascript
+{
+  "id": "reset",
+  "password": "supersecret",
+  "roles": [
+    "manager",
+    "admin"
+  ]
+}
+```
 
 If you are a Chef Solo user the data bag items are not required to be encrypted and should not be.
 
-License and Author
-==================
 
-* Author: Seth Chisamore (<schisamo@opscode.com>)
-* Author: Jamie Winsor (<jamie@vialstudios.com>)
-* Author: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
-* Auther: Mariano Cortesi (<mariano@zauberlabs.com>)
-* Author: Brendan O'Donnell (<brendan.james.odonnell@gmail.com>)
+License & Authors
+-----------------
+- Author: Seth Chisamore (<schisamo@opscode.com>)
+- Author: Jamie Winsor (<jamie@vialstudios.com>)
+- Author: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
+- Auther: Mariano Cortesi (<mariano@zauberlabs.com>)
+- Author: Brendan O'Donnell (<brendan.james.odonnell@gmail.com>)
 
+```text
 Copyright:: 2010-2013, Opscode, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -113,3 +112,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```
