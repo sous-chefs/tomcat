@@ -92,7 +92,7 @@ class Chef
           if user['id'].empty? || user['id'].nil? &&
             user['password'].empty? || user['password'].nil? &&
             user['roles'].nil? || !user['roles'].is_a?(Array)
-            
+
             raise InvalidUserDataBagItem.new(user)
           end
         end
