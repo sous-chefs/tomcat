@@ -26,7 +26,7 @@ tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
     "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
   },
-  ["centos","redhat","fedora"] => {
+  ["centos","redhat","fedora","amazon"] => {
     "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
   ["smartos"] => {
@@ -82,7 +82,7 @@ end
 
 service "tomcat" do
   case node["platform"]
-  when "centos","redhat","fedora"
+  when "centos","redhat","fedora","amazon"
     service_name "tomcat#{node["tomcat"]["base_version"]}"
     supports :restart => true, :status => true
   when "debian","ubuntu"
@@ -109,7 +109,7 @@ unless node['tomcat']["truststore_file"].nil?
 end
 
 case node["platform"]
-when "centos","redhat","fedora"
+when "centos","redhat","fedora","amazon"
   template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
     source "sysconfig_tomcat6.erb"
     owner "root"
