@@ -29,12 +29,16 @@ tomcat_pkgs = value_for_platform(
   ["centos","redhat","fedora"] => {
     "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
+  ["smartos"] => {
+    "default" => ["apache-tomcat"]
+  },
   "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
 )
 
 tomcat_pkgs.each do |pkg|
   package pkg do
     action :install
+    version node["tomcat"]["base_version"].to_s if platform_family?("smartos")
   end
 end
 
@@ -60,13 +64,35 @@ unless node['tomcat']['deploy_manager_apps']
   end
 end
 
+case node["platform"]
+when "smartos"
+  template "/opt/local/share/smf/apache-tomcat/manifest.xml" do
+    source "manifest.xml.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    notifies :run, "execute[tomcat_manifest]"
+  end
+  execute "tomcat_manifest" do
+    command "svccfg import /opt/local/share/smf/apache-tomcat/manifest.xml"
+    action :nothing
+    notifies :restart, "service[tomcat]"
+  end
+end
+
 service "tomcat" do
-  service_name "tomcat#{node["tomcat"]["base_version"]}"
   case node["platform"]
   when "centos","redhat","fedora"
+    service_name "tomcat#{node["tomcat"]["base_version"]}"
     supports :restart => true, :status => true
   when "debian","ubuntu"
+    service_name "tomcat#{node["tomcat"]["base_version"]}"
     supports :restart => true, :reload => false, :status => true
+  when "smartos"
+    service_name "tomcat"
+    supports :restart => true, :reload => false, :status => true
+  else
+    service_name "tomcat#{node["tomcat"]["base_version"]}"
   end
   action [:enable, :start]
 end
@@ -91,6 +117,7 @@ when "centos","redhat","fedora"
     mode "0644"
     notifies :restart, "service[tomcat]"
   end
+when "smartos"
 else
   template "/etc/default/tomcat#{node["tomcat"]["base_version"]}" do
     source "default_tomcat6.erb"
@@ -109,7 +136,7 @@ template "#{node["tomcat"]["config_dir"]}/server.xml" do
   notifies :restart, "service[tomcat]"
 end
 
-template "/etc/tomcat#{node['tomcat']['base_version']}/logging.properties" do
+template "#{node["tomcat"]["config_dir"]}/logging.properties" do
   source "logging.properties.erb"
   owner "root"
   group "root"
