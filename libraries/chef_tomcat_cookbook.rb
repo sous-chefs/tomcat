@@ -104,7 +104,7 @@ class Chef
         end
 
         def encrypted_secret
-          @encrypted_secret ||= EncryptedDataBagItem.load_secret
+          @encrypted_secret ||= EncryptedDataBagItem.load_secret("/etc/chef/encrypted_data_bag_secret")
         end
     end
   end
