@@ -19,6 +19,9 @@
 default["tomcat"]["base_version"] = 6
 default["tomcat"]["port"] = 8080
 default["tomcat"]["proxy_port"] = nil
+default["tomcat"]["scheme"] = nil
+default["tomcat"]["secure"] = nil
+default["tomcat"]["proxy_name"] = nil
 default["tomcat"]["ssl_port"] = 8443
 default["tomcat"]["ssl_proxy_port"] = nil
 default["tomcat"]["ajp_port"] = 8009

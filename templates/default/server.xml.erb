@@ -80,6 +80,15 @@
              <% if node["tomcat"].has_key?("proxy_port") -%>
                proxyPort="<%= node["tomcat"]["proxy_port"] %>"
              <% end -%>
+             <% if node["tomcat"].has_key?("scheme") -%>
+               scheme="<%= node["tomcat"]["scheme"] %>"
+             <% end -%>
+             <% if node["tomcat"].has_key?("secure") -%>
+               secure="<%= node["tomcat"]["secure"] %>"
+             <% end -%>
+             <% if node["tomcat"].has_key?("proxy_name") -%>
+               proxyName="<%= node["tomcat"]["proxy_name"] %>"
+             <% end -%>
                redirectPort="<%= node["tomcat"]["ssl_port"] %>" />
     <!-- A "Connector" using the shared thread pool-->
     <!--
