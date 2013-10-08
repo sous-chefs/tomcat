@@ -3,6 +3,15 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.15.0
+-------
+### Improvement
+- **[COOK-3565](https://tickets.opscode.com/browse/COOK-3565)** - Make server.xml connectors maxThreads params configurable via attributes
+
+### New Feature
+- **[COOK-3333](https://tickets.opscode.com/browse/COOK-3333)** - Add SmartOS support
+
+
 v0.14.4
 -------
 ### Bug
