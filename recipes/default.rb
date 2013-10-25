@@ -95,6 +95,8 @@ service "tomcat" do
     service_name "tomcat#{node["tomcat"]["base_version"]}"
   end
   action [:enable, :start]
+  retries 4
+  retry_delay 30
 end
 
 node.set_unless['tomcat']['keystore_password'] = secure_password
