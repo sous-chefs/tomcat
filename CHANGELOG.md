@@ -3,6 +3,16 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.15.2
+-------
+### New Feature
+- [COOK-3622] - Add support for Amazon platform to the tomcat cookbook.
+
+### Bug
+- [COOK-3379] - Only regenerate keystore and restart tomcat when source files change
+- [COOK-1599] - Add retry and delay to tomcat service definition
+
+
 v0.15.0
 -------
 ### Improvement
