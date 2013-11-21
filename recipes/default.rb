@@ -99,8 +99,10 @@ service "tomcat" do
   retry_delay 30
 end
 
-node.set_unless['tomcat']['keystore_password'] = secure_password
-node.set_unless['tomcat']['truststore_password'] = secure_password
+if node['tomcat']['use_ssl_connector'] then
+  node.set_unless['tomcat']['keystore_password'] = secure_password
+  node.set_unless['tomcat']['truststore_password'] = secure_password
+end
 
 unless node['tomcat']["truststore_file"].nil?
   java_options = node['tomcat']['java_options'].to_s
@@ -146,45 +148,47 @@ template "#{node["tomcat"]["config_dir"]}/logging.properties" do
   notifies :restart, "service[tomcat]"
 end
 
-unless node['tomcat']["ssl_cert_file"].nil?
-  script "create_tomcat_keystore" do
-    interpreter "bash"
-    action :nothing
-    cwd node['tomcat']['config_dir']
-    code <<-EOH
-      cat #{node['tomcat']['ssl_chain_files'].join(' ')} > cacerts.pem
-      openssl pkcs12 -export \
-       -inkey #{node['tomcat']['ssl_key_file']} \
-       -in #{node['tomcat']['ssl_cert_file']} \
-       -chain \
-       -CAfile cacerts.pem \
-       -password pass:#{node['tomcat']['keystore_password']} \
-       -out #{node['tomcat']['keystore_file']}
-    EOH
-    notifies :restart, "service[tomcat]"
-  end
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_cert_file']}" do
-    mode "0644"
-    notifies :run, "script[create_tomcat_keystore]"
-  end
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_key_file']}" do
-    mode "0644"
-    notifies :run, "script[create_tomcat_keystore]"
-  end
-  node['tomcat']['ssl_chain_files'].each do |cert|
-    cookbook_file "#{node['tomcat']['config_dir']}/#{cert}" do
+if node['tomcat']['use_ssl_connector'] then
+  unless node['tomcat']["ssl_cert_file"].nil?
+    script "create_tomcat_keystore" do
+      interpreter "bash"
+      action :nothing
+      cwd node['tomcat']['config_dir']
+      code <<-EOH
+        cat #{node['tomcat']['ssl_chain_files'].join(' ')} > cacerts.pem
+        openssl pkcs12 -export \
+         -inkey #{node['tomcat']['ssl_key_file']} \
+         -in #{node['tomcat']['ssl_cert_file']} \
+         -chain \
+         -CAfile cacerts.pem \
+         -password pass:#{node['tomcat']['keystore_password']} \
+         -out #{node['tomcat']['keystore_file']}
+      EOH
+      notifies :restart, "service[tomcat]"
+    end
+    cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_cert_file']}" do
       mode "0644"
       notifies :run, "script[create_tomcat_keystore]"
     end
-  end
-else
-  execute "Create Tomcat SSL certificate" do
-    group node['tomcat']['group']
-    command "#{node['tomcat']['keytool']} -genkeypair -keystore \"#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}\" -storepass \"#{node['tomcat']['keystore_password']}\" -keypass \"#{node['tomcat']['keystore_password']}\" -dname \"#{node['tomcat']['certificate_dn']}\""
-    umask 0007
-    creates "#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}"
-    action :run
-    notifies :restart, "service[tomcat]"
+    cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_key_file']}" do
+      mode "0644"
+      notifies :run, "script[create_tomcat_keystore]"
+    end
+    node['tomcat']['ssl_chain_files'].each do |cert|
+      cookbook_file "#{node['tomcat']['config_dir']}/#{cert}" do
+        mode "0644"
+        notifies :run, "script[create_tomcat_keystore]"
+      end
+    end
+  else
+    execute "Create Tomcat SSL certificate" do
+      group node['tomcat']['group']
+      command "#{node['tomcat']['keytool']} -genkeypair -keystore \"#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}\" -storepass \"#{node['tomcat']['keystore_password']}\" -keypass \"#{node['tomcat']['keystore_password']}\" -dname \"#{node['tomcat']['certificate_dn']}\""
+      umask 0007
+      creates "#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}"
+      action :run
+      notifies :restart, "service[tomcat]"
+    end
   end
 end
 
