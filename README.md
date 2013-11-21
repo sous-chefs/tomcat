@@ -17,10 +17,13 @@ Requirements
 Attributes
 ----------
 * `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
+* `node["tomcat"]["use_http_connector"]` - The HTTP connector master switch, default `true`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
+* `node["tomcat"]["use_ssl_connector"]` - The SSL connector master switch, default `true`.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
 * `node["tomcat"]["ssl_proxy_port"]` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
+* `node["tomcat"]["use_ajp_connector"]` - The AJP13 connector master switch, default `true`.
 * `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
 * `node["tomcat"]["catalina_options"]` - Extra options to pass to the JVM only during start and run commands, default "".
 * `node["tomcat"]["java_options"]` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
