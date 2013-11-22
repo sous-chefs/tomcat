@@ -21,6 +21,7 @@
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 include_recipe "java"
+include_recipe "tomcat::_attributes"
 
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
