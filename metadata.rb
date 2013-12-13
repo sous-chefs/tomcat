@@ -10,7 +10,7 @@ version          "0.15.3"
   depends cb
 end
 
-%w{ debian ubuntu centos redhat fedora amazon }.each do |os|
+%w{ debian ubuntu centos redhat fedora amazon smartos}.each do |os|
   supports os
 end
 

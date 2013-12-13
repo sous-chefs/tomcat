@@ -44,8 +44,9 @@ default["tomcat"]["certificate_dn"] = "cn=localhost"
 default["tomcat"]["loglevel"] = "INFO"
 default["tomcat"]["tomcat_auth"] = "true"
 
-case node['platform']
-when "centos","redhat","fedora","amazon"
+case node['platform_family']
+when "rhel"
+  default["tomcat"]["packages"] = ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   default["tomcat"]["user"] = "tomcat"
   default["tomcat"]["group"] = "tomcat"
   default["tomcat"]["home"] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
@@ -59,7 +60,8 @@ when "centos","redhat","fedora","amazon"
   default["tomcat"]["keytool"] = "/usr/lib/jvm/java/bin/keytool"
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
-when "debian","ubuntu"
+when "debian"
+  default["tomcat"]["packages"] = ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
   default["tomcat"]["user"] = "tomcat#{node["tomcat"]["base_version"]}"
   default["tomcat"]["group"] = "tomcat#{node["tomcat"]["base_version"]}"
   default["tomcat"]["home"] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
@@ -74,6 +76,7 @@ when "debian","ubuntu"
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when "smartos"
+  default["tomcat"]["packages"] = ["apache-tomcat"]
   default["tomcat"]["user"] = "tomcat"
   default["tomcat"]["group"] = "tomcat"
   default["tomcat"]["home"] = "/opt/local/share/tomcat"
@@ -88,6 +91,7 @@ when "smartos"
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["home"]}/lib/endorsed"
 else
+  default["tomcat"]["packages"] = ["tomcat#{node["tomcat"]["base_version"]}"]
   default["tomcat"]["user"] = "tomcat#{node["tomcat"]["base_version"]}"
   default["tomcat"]["group"] = "tomcat#{node["tomcat"]["base_version"]}"
   default["tomcat"]["home"] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
