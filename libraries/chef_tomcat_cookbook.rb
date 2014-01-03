@@ -41,7 +41,7 @@ class Chef
       end
     end
 
-    USERS_DATA_BAG = "tomcat_users"
+    USERS_DATA_BAG = node["tomcat"]["users_databag"]
 
     class << self
       # Returns a array of data bag items for the users in the Tomcat Users
