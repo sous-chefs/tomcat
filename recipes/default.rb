@@ -64,22 +64,6 @@ unless node['tomcat']['deploy_manager_apps']
   end
 end
 
-case node["platform"]
-when "smartos"
-  template "/opt/local/share/smf/apache-tomcat/manifest.xml" do
-    source "manifest.xml.erb"
-    owner "root"
-    group "root"
-    mode "0644"
-    notifies :run, "execute[tomcat_manifest]"
-  end
-  execute "tomcat_manifest" do
-    command "svccfg import /opt/local/share/smf/apache-tomcat/manifest.xml"
-    action :nothing
-    notifies :restart, "service[tomcat]"
-  end
-end
-
 service "tomcat" do
   case node["platform"]
   when "centos","redhat","fedora","amazon"
@@ -120,6 +104,13 @@ when "centos","redhat","fedora","amazon"
     notifies :restart, "service[tomcat]"
   end
 when "smartos"
+  template "#{node["tomcat"]["base"]}/bin/setenv.sh" do
+    source "setenv.sh.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    notifies :restart, "service[tomcat]"
+  end
 else
   template "/etc/default/tomcat#{node["tomcat"]["base_version"]}" do
     source "default_tomcat6.erb"
