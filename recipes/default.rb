@@ -23,17 +23,22 @@
 include_recipe "java"
 
 tomcat_pkgs = value_for_platform(
-  ["debian","ubuntu"] => {
-    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
-  },
-  ["centos","redhat","fedora","amazon"] => {
-    "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
-  },
+["tomcat#{node["tomcat"]["base_version"]}"]
   ["smartos"] => {
     "default" => ["apache-tomcat"]
   },
   "default" => ["tomcat#{node["tomcat"]["base_version"]}"]
 )
+if node['tomcat']['deploy_manager_apps']
+  tomcat_pkgs << value_for_platform(
+    ["debian","ubuntu"] => {
+      "default" => "tomcat#{node["tomcat"]["base_version"]}-admin"
+    },
+    ["centos","redhat","fedora","amazon"] => {
+      "default" => "tomcat#{node["tomcat"]["base_version"]}-admin-webapps"
+    }
+  )
+end
 
 tomcat_pkgs.each do |pkg|
   package pkg do
@@ -103,7 +108,7 @@ node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
 unless node['tomcat']["truststore_file"].nil?
-  java_options = node['tomcat']['java_options'].to_s
+  java_options = node['tomcat']['java_options'].to_s.gsub(/-Djavax.net.ssl.trustStore[^ ]+ ?/, '')
   java_options << " -Djavax.net.ssl.trustStore=#{node["tomcat"]["config_dir"]}/#{node["tomcat"]["truststore_file"]}"
   java_options << " -Djavax.net.ssl.trustStorePassword=#{node["tomcat"]["truststore_password"]}"
 
