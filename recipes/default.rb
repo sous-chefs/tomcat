@@ -103,7 +103,7 @@ node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
 unless node['tomcat']["truststore_file"].nil?
-  java_options = node['tomcat']['java_options'].to_s
+  java_options = node['tomcat']['java_options'].to_s.gsub(/-Djavax.net.ssl.trustStore[^ ]+ ?/, '')
   java_options << " -Djavax.net.ssl.trustStore=#{node["tomcat"]["config_dir"]}/#{node["tomcat"]["truststore_file"]}"
   java_options << " -Djavax.net.ssl.trustStorePassword=#{node["tomcat"]["truststore_password"]}"
 
