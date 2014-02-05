@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_attribute "java"
+
 default["tomcat"]["base_version"] = 6
 default["tomcat"]["port"] = 8080
 default["tomcat"]["proxy_port"] = nil
@@ -56,7 +58,7 @@ when "centos","redhat","fedora","amazon"
   default["tomcat"]["work_dir"] = "/var/cache/tomcat#{node["tomcat"]["base_version"]}/work"
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
   default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node["tomcat"]["base_version"]}/webapps"
-  default["tomcat"]["keytool"] = "/usr/lib/jvm/java/bin/keytool"
+  default["tomcat"]["keytool"] = "#{node["java"]["java_home"]}/bin/keytool"
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when "debian","ubuntu"
@@ -70,7 +72,7 @@ when "debian","ubuntu"
   default["tomcat"]["work_dir"] = "/var/cache/tomcat#{node["tomcat"]["base_version"]}"
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
   default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{node["tomcat"]["base_version"]}/webapps"
-  default["tomcat"]["keytool"] = "/usr/lib/jvm/default-java/bin/keytool"
+  default["tomcat"]["keytool"] = "#{node["java"]["java_home"]}/bin/keytool"
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when "smartos"
@@ -84,7 +86,7 @@ when "smartos"
   default["tomcat"]["work_dir"] = "/opt/local/share/tomcat/work"
   default["tomcat"]["context_dir"] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
   default["tomcat"]["webapp_dir"] = "/opt/local/share/tomcat/webapps"
-  default["tomcat"]["keytool"] = "/opt/local/bin/keytool"
+  default["tomcat"]["keytool"] = "#{node["java"]["java_home"]}/bin/keytool"
   default["tomcat"]["lib_dir"] = "#{node["tomcat"]["home"]}/lib"
   default["tomcat"]["endorsed_dir"] = "#{node["tomcat"]["home"]}/lib/endorsed"
 else
