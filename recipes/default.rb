@@ -23,7 +23,6 @@
 include_recipe "java"
 
 tomcat_pkgs = value_for_platform(
-["tomcat#{node["tomcat"]["base_version"]}"]
   ["smartos"] => {
     "default" => ["apache-tomcat"]
   },
