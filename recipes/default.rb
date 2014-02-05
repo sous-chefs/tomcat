@@ -22,6 +22,12 @@
 
 include_recipe "java"
 
+user node["tomcat"]["user"] do
+  system true
+  shell "/bin/false"
+  notifies :restart, "service[tomcat]"
+end
+
 tomcat_pkgs = value_for_platform(
   ["debian","ubuntu"] => {
     "default" => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
