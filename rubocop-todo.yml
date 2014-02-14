@@ -14,21 +14,10 @@ CyclomaticComplexity:
 Documentation:
   Enabled: false
 
-
-# Offence count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-#HashSyntax:
-  #  EnforcedStyle: hash_rockets
-
-# Offence count: 1
-IndentationConsistency:
-  Enabled: false
-
 # Offence count: 2
 # Cop supports --auto-correct.
-LeadingCommentSpace:
-  Enabled: false
+#LeadingCommentSpace:
+#  Enabled: false
 
 # Offence count: 36
 LineLength:
@@ -58,7 +47,7 @@ SpaceAfterComma:
 # Offence count: 1
 # Cop supports --auto-correct.
 SpaceInsideBrackets:
-  Enabled: false
+  Enabled: true
 
 # Offence count: 274
 # Cop supports --auto-correct.
