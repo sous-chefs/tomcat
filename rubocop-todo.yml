@@ -14,16 +14,12 @@ CyclomaticComplexity:
 Documentation:
   Enabled: false
 
-# Offence count: 1
-# Configuration parameters: AlignWith, SupportedStyles.
-EndAlignment:
-  Enabled: true 
 
 # Offence count: 10
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
-HashSyntax:
-  EnforcedStyle: hash_rockets
+#HashSyntax:
+  #  EnforcedStyle: hash_rockets
 
 # Offence count: 1
 IndentationConsistency:
