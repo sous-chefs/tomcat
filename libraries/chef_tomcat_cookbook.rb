@@ -63,7 +63,7 @@ class Chef
       #
       # @return [Array<String>]
       def roles
-        users.collect { |item| item['roles'] }.flatten.uniq
+        users.map { |item| item['roles'] }.flatten.uniq
       end
 
       private
@@ -71,7 +71,7 @@ class Chef
         def find_users
           users = if Chef::Config[:solo]
             data_bag = Chef::DataBag.load(USERS_DATA_BAG)
-            data_bag.keys.collect do |name|
+            data_bag.keys.map do |name|
               Chef::DataBagItem.load(USERS_DATA_BAG, name)
             end
           else
@@ -98,7 +98,7 @@ class Chef
         end
 
         def decrypt_items(items)
-          items.collect do |item|
+          items.map do |item|
             EncryptedDataBagItem.new(item, encrypted_secret)
           end
         end
