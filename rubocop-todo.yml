@@ -33,17 +33,6 @@ MethodLength:
 RaiseArgs:
   EnforcedStyle: compact
 
-# Offence count: 17
-# Cop supports --auto-correct.
-SpaceAfterComma:
-  Enabled: true 
-
-# Offence count: 274
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-StringLiterals:
-  Enabled: true
-
 # Offence count: 1
 UnlessElse:
   Enabled: false
