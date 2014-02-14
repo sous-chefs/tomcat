@@ -17,7 +17,7 @@ Documentation:
 # Offence count: 2
 # Cop supports --auto-correct.
 #LeadingCommentSpace:
-#  Enabled: false
+  Enabled: false 
 
 # Offence count: 36
 LineLength:
@@ -44,16 +44,11 @@ SignalException:
 SpaceAfterComma:
   Enabled: false
 
-# Offence count: 1
-# Cop supports --auto-correct.
-SpaceInsideBrackets:
-  Enabled: true
-
 # Offence count: 274
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 StringLiterals:
-  Enabled: false
+  Enabled: true
 
 # Offence count: 1
 UnlessElse:
