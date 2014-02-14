@@ -23,11 +23,11 @@
 include_recipe 'java'
 
 tomcat_pkgs = value_for_platform(
-  ['debian','ubuntu'] => {
-    'default' => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin"]
+  ['debian', 'ubuntu'] => {
+    'default' => ["tomcat#{node["tomcat"]["base_version"]}", "tomcat#{node["tomcat"]["base_version"]}-admin"]
   },
-  ['centos','redhat','fedora','amazon'] => {
-    'default' => ["tomcat#{node["tomcat"]["base_version"]}","tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
+  ['centos', 'redhat', 'fedora', 'amazon'] => {
+    'default' => ["tomcat#{node["tomcat"]["base_version"]}", "tomcat#{node["tomcat"]["base_version"]}-admin-webapps"]
   },
   ['smartos'] => {
     'default' => ['apache-tomcat']
@@ -82,10 +82,10 @@ end
 
 service 'tomcat' do
   case node['platform']
-  when 'centos','redhat','fedora','amazon'
+  when 'centos', 'redhat', 'fedora', 'amazon'
     service_name "tomcat#{node["tomcat"]["base_version"]}"
     supports restart:  true, status: true
-  when 'debian','ubuntu'
+  when 'debian', 'ubuntu'
     service_name "tomcat#{node["tomcat"]["base_version"]}"
     supports restart:  true, reload: false, status: true
   when 'smartos'
@@ -111,7 +111,7 @@ unless node['tomcat']['truststore_file'].nil?
 end
 
 case node['platform']
-when 'centos','redhat','fedora','amazon'
+when 'centos', 'redhat', 'fedora', 'amazon'
   template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
     source 'sysconfig_tomcat6.erb'
     owner 'root'

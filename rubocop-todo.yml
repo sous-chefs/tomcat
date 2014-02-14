@@ -36,7 +36,7 @@ RaiseArgs:
 # Offence count: 17
 # Cop supports --auto-correct.
 SpaceAfterComma:
-  Enabled: false
+  Enabled: true 
 
 # Offence count: 274
 # Cop supports --auto-correct.

@@ -45,7 +45,7 @@ default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 
 case node['platform']
-when 'centos','redhat','fedora','amazon'
+when 'centos', 'redhat', 'fedora', 'amazon'
   default['tomcat']['user'] = 'tomcat'
   default['tomcat']['group'] = 'tomcat'
   default['tomcat']['home'] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
@@ -59,7 +59,7 @@ when 'centos','redhat','fedora','amazon'
   default['tomcat']['keytool'] = '/usr/lib/jvm/java/bin/keytool'
   default['tomcat']['lib_dir'] = "#{node["tomcat"]["home"]}/lib"
   default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["lib_dir"]}/endorsed"
-when 'debian','ubuntu'
+when 'debian', 'ubuntu'
   default['tomcat']['user'] = "tomcat#{node["tomcat"]["base_version"]}"
   default['tomcat']['group'] = "tomcat#{node["tomcat"]["base_version"]}"
   default['tomcat']['home'] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
