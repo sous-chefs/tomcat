@@ -68,44 +68,44 @@ class Chef
 
       private
 
-        def find_users
-          users = if Chef::Config[:solo]
-            data_bag = Chef::DataBag.load(USERS_DATA_BAG)
-            data_bag.keys.map do |name|
-              Chef::DataBagItem.load(USERS_DATA_BAG, name)
-            end
-          else
-            begin
-              items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
-            rescue Net::HTTPServerException => e
-              raise TomcatUserDataBagNotFound if e.message.match(/404/)
-              raise e
-            end
-            decrypt_items(items)
-          end
+      def find_users
+        users = if Chef::Config[:solo]
+                  data_bag = Chef::DataBag.load(USERS_DATA_BAG)
+                  data_bag.keys.map do |name|
+                    Chef::DataBagItem.load(USERS_DATA_BAG, name)
+                  end
+                else
+                  begin
+                    items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
+                  rescue Net::HTTPServerException => e
+                    raise TomcatUserDataBagNotFound if e.message.match(/404/)
+                    raise e
+                  end
+                  decrypt_items(items)
+                end
 
-          users.each { |user| validate_user_item(user) }
-          users
+        users.each { |user| validate_user_item(user) }
+        users
+      end
+
+      def validate_user_item(user)
+        if user['id'].empty? || user['id'].nil? &&
+          user['password'].empty? || user['password'].nil? &&
+          user['roles'].nil? || !user['roles'].is_a?(Array)
+
+          raise InvalidUserDataBagItem.new(user)
         end
+      end
 
-        def validate_user_item(user)
-          if user['id'].empty? || user['id'].nil? &&
-            user['password'].empty? || user['password'].nil? &&
-            user['roles'].nil? || !user['roles'].is_a?(Array)
-
-            raise InvalidUserDataBagItem.new(user)
-          end
+      def decrypt_items(items)
+        items.map do |item|
+          EncryptedDataBagItem.new(item, encrypted_secret)
         end
+      end
 
-        def decrypt_items(items)
-          items.map do |item|
-            EncryptedDataBagItem.new(item, encrypted_secret)
-          end
-        end
-
-        def encrypted_secret
-          @encrypted_secret ||= EncryptedDataBagItem.load_secret
-        end
+      def encrypted_secret
+        @encrypted_secret ||= EncryptedDataBagItem.load_secret
+      end
     end
   end
 end
