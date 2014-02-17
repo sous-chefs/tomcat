@@ -41,7 +41,7 @@ class Chef
       end
     end
 
-    USERS_DATA_BAG = "tomcat_users"
+    USERS_DATA_BAG = 'tomcat_users'
 
     class << self
       # Returns a array of data bag items for the users in the Tomcat Users
@@ -63,49 +63,49 @@ class Chef
       #
       # @return [Array<String>]
       def roles
-        users.collect { |item| item['roles'] }.flatten.uniq
+        users.map { |item| item['roles'] }.flatten.uniq
       end
 
       private
 
-        def find_users
-          users = if Chef::Config[:solo]
-            data_bag = Chef::DataBag.load(USERS_DATA_BAG)
-            data_bag.keys.collect do |name|
-              Chef::DataBagItem.load(USERS_DATA_BAG, name)
-            end
-          else
-            begin
-              items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
-            rescue Net::HTTPServerException => e
-              raise TomcatUserDataBagNotFound if e.message.match(/404/)
-              raise e
-            end
-            decrypt_items(items)
+      def find_users
+        users = if Chef::Config[:solo]
+                  data_bag = Chef::DataBag.load(USERS_DATA_BAG)
+                  data_bag.keys.map do |name|
+            Chef::DataBagItem.load(USERS_DATA_BAG, name)
           end
+                else
+                  begin
+                    items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
+                  rescue Net::HTTPServerException => e
+                    raise TomcatUserDataBagNotFound if e.message.match(/404/)
+                    raise e
+                  end
+                  decrypt_items(items)
+                end
 
-          users.each { |user| validate_user_item(user) }
-          users
-        end
+        users.each { |user| validate_user_item(user) }
+        users
+      end
 
-        def validate_user_item(user)
-          if user['id'].empty? || user['id'].nil? &&
+      def validate_user_item(user)
+        if user['id'].empty? || user['id'].nil? &&
             user['password'].empty? || user['password'].nil? &&
             user['roles'].nil? || !user['roles'].is_a?(Array)
 
-            raise InvalidUserDataBagItem.new(user)
-          end
+          fail InvalidUserDataBagItem.new(user), 'Invalid User Databag Item'
         end
+      end
 
-        def decrypt_items(items)
-          items.collect do |item|
-            EncryptedDataBagItem.new(item, encrypted_secret)
-          end
+      def decrypt_items(items)
+        items.map do |item|
+          EncryptedDataBagItem.new(item, encrypted_secret)
         end
+      end
 
-        def encrypted_secret
-          @encrypted_secret ||= EncryptedDataBagItem.load_secret
-        end
+      def encrypted_secret
+        @encrypted_secret ||= EncryptedDataBagItem.load_secret
+      end
     end
   end
 end

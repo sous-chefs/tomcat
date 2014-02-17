@@ -1,18 +1,19 @@
-name             "tomcat"
-maintainer       "Opscode, Inc."
-maintainer_email "cookbooks@opscode.com"
-license          "Apache 2.0"
-description      "Installs/Configures tomcat"
+name             'tomcat'
+maintainer       'Opscode, Inc.'
+maintainer_email 'cookbooks@opscode.com'
+license          'Apache 2.0'
+description      'Installs/Configures tomcat'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.15.3"
+version          '0.15.3'
 
-%w{ java openssl }.each do |cb|
-  depends cb
-end
+depends 'java'
+depends 'openssl'
 
-%w{ debian ubuntu centos redhat fedora amazon }.each do |os|
-  supports os
-end
+supports 'debian'
+supports 'ubuntu'
+supports 'centos'
+supports 'redhat'
+supports 'amazon'
 
-recipe "tomcat::default", "Installs and configures Tomcat"
-recipe "tomcat::users", "Setup users and roles for Tomcat"
+recipe 'tomcat::default', 'Installs and configures Tomcat'
+recipe 'tomcat::users', 'Setup users and roles for Tomcat'
