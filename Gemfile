@@ -4,6 +4,7 @@ group :lint do
   gem 'foodcritic', '~> 3.0'
   gem 'rubocop', '~> 0.18'
   gem 'rainbow', '< 2.0'
+  gem 'rake'
 end
 
 group :unit do
@@ -34,5 +35,4 @@ group :development do
   gem 'guard-foodcritic'
   gem 'guard-rspec'
   gem 'guard-rubocop'
-  gem 'rake'
 end
