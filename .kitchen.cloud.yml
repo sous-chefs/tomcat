@@ -42,32 +42,21 @@ platforms:
   run_list:
   - recipe[apt]
 
-- name: ubuntu-1004
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 14097
-    flavor_id: 63
-    region_id: 4
-    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
-    ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
-  run_list:
-  - recipe[apt]
+# - name: ubuntu-1004
+#   driver_plugin: digitalocean
+#   driver_config:
+#     image_id: 14097
+#     flavor_id: 63
+#     region_id: 4
+#     ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
+#     ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
+#   run_list:
+#   - recipe[apt]
 
 - name: ubuntu-1204
   driver_plugin: digitalocean
   driver_config:
     image_id: 1505447
-    flavor_id: 63
-    region_id: 4
-    ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
-    ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
-  run_list:
-  - recipe[apt]
-
-- name: ubuntu-1304
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 350076
     flavor_id: 63
     region_id: 4
     ssh_key_ids: <%= ENV['DIGITAL_OCEAN_SSH_KEY_IDS'] %>
@@ -107,4 +96,8 @@ suites:
 - name: tomcat7
   run_list: ["recipe[tomcat]"]
   excludes: ["ubuntu-10.04", "centos-6.4"]
-  attributes: {tomcat: {base_version: 7}}
+  attributes:
+    java:
+      accept_license_agreement: true
+    tomcat: 
+      base_version: 7
