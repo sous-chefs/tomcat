@@ -26,18 +26,20 @@ tomcat_pkgs = value_for_platform(
   ['smartos'] => {
     'default' => ['apache-tomcat'],
   },
-  'default' => ["tomcat#{node["tomcat"]["base_version"]}"],
-)
+  'default' => ["tomcat#{node['tomcat']['base_version']}"],
+  )
 if node['tomcat']['deploy_manager_apps']
   tomcat_pkgs << value_for_platform(
     %w{ debian  ubuntu } => {
-      'default' => "tomcat#{node["tomcat"]["base_version"]}-admin",
+      'default' => "tomcat#{node['tomcat']['base_version']}-admin",
     },
     %w{ centos redhat fedora amazon } => {
-      'default' => "tomcat#{node["tomcat"]["base_version"]}-admin-webapps",
+      'default' => "tomcat#{node['tomcat']['base_version']}-admin-webapps",
     },
-  )
+    )
 end
+
+tomcat_pkgs.compact!
 
 tomcat_pkgs.each do |pkg|
   package pkg do
@@ -68,39 +70,20 @@ unless node['tomcat']['deploy_manager_apps']
   end
 end
 
-service 'tomcat' do
-  case node['platform']
-  when 'centos', 'redhat', 'fedora', 'amazon'
-    service_name "tomcat#{node["tomcat"]["base_version"]}"
-    supports :restart => true, :status => true
-  when 'debian', 'ubuntu'
-    service_name "tomcat#{node["tomcat"]["base_version"]}"
-    supports :restart => true, :reload => false, :status => true
-  when 'smartos'
-    service_name 'tomcat'
-    supports :restart => true, :reload => false, :status => true
-  else
-    service_name "tomcat#{node["tomcat"]["base_version"]}"
-  end
-  action [:enable, :start]
-  retries 4
-  retry_delay 30
-end
-
 node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
 unless node['tomcat']['truststore_file'].nil?
   java_options = node['tomcat']['java_options'].to_s
-  java_options << " -Djavax.net.ssl.trustStore=#{node["tomcat"]["config_dir"]}/#{node["tomcat"]["truststore_file"]}"
-  java_options << " -Djavax.net.ssl.trustStorePassword=#{node["tomcat"]["truststore_password"]}"
+  java_options << " -Djavax.net.ssl.trustStore=#{node['tomcat']['config_dir']}/#{node['tomcat']['truststore_file']}"
+  java_options << " -Djavax.net.ssl.trustStorePassword=#{node['tomcat']['truststore_password']}"
 
   node.set['tomcat']['java_options'] = java_options
 end
 
 case node['platform']
 when 'centos', 'redhat', 'fedora', 'amazon'
-  template "/etc/sysconfig/tomcat#{node["tomcat"]["base_version"]}" do
+  template "/etc/sysconfig/tomcat#{node['tomcat']['base_version']}" do
     source 'sysconfig_tomcat6.erb'
     owner 'root'
     group 'root'
@@ -108,7 +91,7 @@ when 'centos', 'redhat', 'fedora', 'amazon'
     notifies :restart, 'service[tomcat]'
   end
 when 'smartos'
-  template "#{node["tomcat"]["base"]}/bin/setenv.sh" do
+  template "#{node['tomcat']['base']}/bin/setenv.sh" do
     source 'setenv.sh.erb'
     owner 'root'
     group 'root'
@@ -116,7 +99,7 @@ when 'smartos'
     notifies :restart, 'service[tomcat]'
   end
 else
-  template "/etc/default/tomcat#{node["tomcat"]["base_version"]}" do
+  template "/etc/default/tomcat#{node['tomcat']['base_version']}" do
     source 'default_tomcat6.erb'
     owner 'root'
     group 'root'
@@ -125,7 +108,7 @@ else
   end
 end
 
-template "#{node["tomcat"]["config_dir"]}/server.xml" do
+template "#{node['tomcat']['config_dir']}/server.xml" do
   source 'server.xml.erb'
   owner 'root'
   group 'root'
@@ -133,7 +116,7 @@ template "#{node["tomcat"]["config_dir"]}/server.xml" do
   notifies :restart, 'service[tomcat]'
 end
 
-template "#{node["tomcat"]["config_dir"]}/logging.properties" do
+template "#{node['tomcat']['config_dir']}/logging.properties" do
   source 'logging.properties.erb'
   owner 'root'
   group 'root'
@@ -190,4 +173,29 @@ unless node['tomcat']['truststore_file'].nil?
   cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['truststore_file']}" do
     mode '0644'
   end
+end
+
+service 'tomcat' do
+  case node['platform']
+  when 'centos', 'redhat', 'fedora', 'amazon'
+    service_name "tomcat#{node['tomcat']['base_version']}"
+    supports :restart => true, :status => true
+  when 'debian', 'ubuntu'
+    service_name "tomcat#{node['tomcat']['base_version']}"
+    supports :restart => true, :reload => false, :status => true
+  when 'smartos'
+    service_name 'tomcat'
+    supports :restart => false, :reload => false, :status => true
+  else
+    service_name "tomcat#{node['tomcat']['base_version']}"
+  end
+  action [:start, :enable]
+  notifies :run, 'execute[wait for tomcat]', :immediately
+  retries 4
+  retry_delay 30
+end
+
+execute 'wait for tomcat' do
+  command 'sleep 5'
+  action :nothing
 end
