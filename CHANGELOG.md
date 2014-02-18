@@ -3,6 +3,17 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.15.4 (2014-02-18)
+--------------------
+### Improvement
+- **[COOK-4258](https://tickets.opscode.com/browse/COOK-4258)** - tomcat: support for Apache mod_jk load balancing with jvmRoute
+- **[COOK-3370](https://tickets.opscode.com/browse/COOK-3370)** - Don't install the tomcat manager apps package if we're not going to use it
+
+### Bug
+- **[COOK-4257](https://tickets.opscode.com/browse/COOK-4257)** - tomcat: broken on SmartOS SmartMachine images 13.3.0+
+- **[COOK-4097](https://tickets.opscode.com/browse/COOK-4097)** - default["tomcat"]["keytool"] is set to non-existent file on Debian/Ubuntu
+
+
 v0.15.2
 -------
 ### New Feature
