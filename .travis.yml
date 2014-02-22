@@ -14,7 +14,8 @@ before_install:
 - echo `md5sum ~/.ssh/id_joyent.pem`
 - ls -la ~/.ssh
 script:
-- bundle exec rake travis --trace
+#- bundle exec rake travis --trace
+- bundle exec kitchen test $KITCHEN_INSTANCE
 after_script:
 - bundle exec kitchen destroy
 env:
@@ -108,3 +109,15 @@ env:
   - secure: bmF4WBIsMM/qvJ/UHElbHO5yQp5QxGpe+KAwGrztjb9x2lJG+Zc26aI5aJT+/8O+/FJ0tFuegT9Tl89v3kANt/zCRPO0Pgzb0WqoCu4bEt7uEZrRIwhdzdlw0jyIO4Vnm9Z0jgtj4RmAT15aBsGBsmak7Ycdjgere2U+Cn4SzA4=
   - secure: skt40h5AEtQQDyBMMycAV74MKDiX8ie1KA19+3DYsfXUxWQPafPNsBUF0VJoy9RUOd187pfRyAznFxCKmQRczdo/XpYoS0wPLuRFrMb1dssVBKejOPguQzE/jRPPCPRvLCt5FCb+IQ+i85e4yey7QiPk2urbjUfC9GC/2CH/61o=
   - secure: G8WugcCIjA7ppAgsVEJCwta8AtjV6lB939p1mcg+/nvU0dKTynGqybpQtK0YDMn4kyGOYcbc9/NykDIYOARnzSmx/SabQzKNg+wnx+cMDYDpJVuRubfrJHkIa1j2YUKoTaXZAceV43Ao5B1pzxO7HOfskb2o+H8fKDo5xnAtreQ=
+  matrix:
+  - KITCHEN_INSTANCE='default-centos-64'
+  - KITCHEN_INSTANCE='default-amazon-201309'
+  - KITCHEN_INSTANCE='default-debian-70'
+  - KITCHEN_INSTANCE='default-ubuntu-1204'
+  - KITCHEN_INSTANCE='default-ubuntu-1310'
+  - KITCHEN_INSTANCE='default-smartos-1330'
+  - KITCHEN_INSTANCE='tomcat7-amazon-201309'
+  - KITCHEN_INSTANCE='tomcat7-debian-70'
+  - KITCHEN_INSTANCE='tomcat7-ubuntu-1204'
+  - KITCHEN_INSTANCE='tomcat7-ubuntu-1310'
+  - KITCHEN_INSTANCE='tomcat7-smartos-1330'
