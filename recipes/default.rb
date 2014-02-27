@@ -88,7 +88,7 @@ when 'centos', 'redhat', 'fedora', 'amazon'
     owner 'root'
     group 'root'
     mode '0644'
-    notifies :restart, 'service[tomcat]'
+    notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
   end
 when 'smartos'
   template "#{node['tomcat']['base']}/bin/setenv.sh" do
@@ -96,7 +96,7 @@ when 'smartos'
     owner 'root'
     group 'root'
     mode '0644'
-    notifies :restart, 'service[tomcat]'
+    notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
   end
 else
   template "/etc/default/tomcat#{node['tomcat']['base_version']}" do
@@ -104,7 +104,7 @@ else
     owner 'root'
     group 'root'
     mode '0644'
-    notifies :restart, 'service[tomcat]'
+    notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
   end
 end
 
@@ -113,7 +113,7 @@ template "#{node['tomcat']['config_dir']}/server.xml" do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :restart, 'service[tomcat]'
+  notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
 end
 
 template "#{node['tomcat']['config_dir']}/logging.properties" do
@@ -121,50 +121,52 @@ template "#{node['tomcat']['config_dir']}/logging.properties" do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :restart, 'service[tomcat]'
+  notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
 end
 
-if node['tomcat']['ssl_cert_file'].nil?
-  execute 'Create Tomcat SSL certificate' do
-    group node['tomcat']['group']
-    command "#{node['tomcat']['keytool']} -genkeypair -keystore \"#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}\" -storepass \"#{node['tomcat']['keystore_password']}\" -keypass \"#{node['tomcat']['keystore_password']}\" -dname \"#{node['tomcat']['certificate_dn']}\""
-    umask 0007
-    creates "#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}"
-    action :run
-    notifies :restart, 'service[tomcat]'
-  end
-else
-  script 'create_tomcat_keystore' do
-    interpreter 'bash'
-    action :nothing
-    cwd node['tomcat']['config_dir']
-    code <<-EOH
-      cat #{node['tomcat']['ssl_chain_files'].join(' ')} > cacerts.pem
-      openssl pkcs12 -export \
-       -inkey #{node['tomcat']['ssl_key_file']} \
-       -in #{node['tomcat']['ssl_cert_file']} \
-       -chain \
-       -CAfile cacerts.pem \
-       -password pass:#{node['tomcat']['keystore_password']} \
-       -out #{node['tomcat']['keystore_file']}
-    EOH
-    notifies :restart, 'service[tomcat]'
-  end
-
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_cert_file']}" do
-    mode '0644'
-    notifies :run, 'script[create_tomcat_keystore]'
-  end
-
-  cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_key_file']}" do
-    mode '0644'
-    notifies :run, 'script[create_tomcat_keystore]'
-  end
-
-  node['tomcat']['ssl_chain_files'].each do |cert|
-    cookbook_file "#{node['tomcat']['config_dir']}/#{cert}" do
+if node['tomcat']['ssl_enable']
+  if node['tomcat']['ssl_cert_file'].nil?
+    execute 'Create Tomcat SSL certificate' do
+      group node['tomcat']['group']
+      command "#{node['tomcat']['keytool']} -genkeypair -keystore \"#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}\" -storepass \"#{node['tomcat']['keystore_password']}\" -keypass \"#{node['tomcat']['keystore_password']}\" -dname \"#{node['tomcat']['certificate_dn']}\""
+      umask 0007
+      creates "#{node['tomcat']['config_dir']}/#{node['tomcat']['keystore_file']}"
+      action :run
+      notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
+    end
+  else
+    script 'create_tomcat_keystore' do
+      interpreter 'bash'
+      action :nothing
+      cwd node['tomcat']['config_dir']
+      code <<-EOH
+        cat #{node['tomcat']['ssl_chain_files'].join(' ')} > cacerts.pem
+        openssl pkcs12 -export \
+         -inkey #{node['tomcat']['ssl_key_file']} \
+         -in #{node['tomcat']['ssl_cert_file']} \
+         -chain \
+         -CAfile cacerts.pem \
+         -password pass:#{node['tomcat']['keystore_password']} \
+         -out #{node['tomcat']['keystore_file']}
+      EOH
+      notifies :restart, 'service[tomcat]' if node['tomcat']['autostart']
+    end
+  
+    cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_cert_file']}" do
       mode '0644'
       notifies :run, 'script[create_tomcat_keystore]'
+    end
+  
+    cookbook_file "#{node['tomcat']['config_dir']}/#{node['tomcat']['ssl_key_file']}" do
+      mode '0644'
+      notifies :run, 'script[create_tomcat_keystore]'
+    end
+  
+    node['tomcat']['ssl_chain_files'].each do |cert|
+      cookbook_file "#{node['tomcat']['config_dir']}/#{cert}" do
+        mode '0644'
+        notifies :run, 'script[create_tomcat_keystore]'
+      end
     end
   end
 end
@@ -175,24 +177,26 @@ unless node['tomcat']['truststore_file'].nil?
   end
 end
 
-service 'tomcat' do
-  case node['platform']
-  when 'centos', 'redhat', 'fedora', 'amazon'
-    service_name "tomcat#{node['tomcat']['base_version']}"
-    supports :restart => true, :status => true
-  when 'debian', 'ubuntu'
-    service_name "tomcat#{node['tomcat']['base_version']}"
-    supports :restart => true, :reload => false, :status => true
-  when 'smartos'
-    service_name 'tomcat'
-    supports :restart => false, :reload => false, :status => true
-  else
-    service_name "tomcat#{node['tomcat']['base_version']}"
+if node['tomcat']['autostart']
+  service 'tomcat' do
+    case node['platform']
+    when 'centos', 'redhat', 'fedora', 'amazon'
+      service_name "tomcat#{node['tomcat']['base_version']}"
+      supports :restart => true, :status => true
+    when 'debian', 'ubuntu'
+      service_name "tomcat#{node['tomcat']['base_version']}"
+      supports :restart => true, :reload => false, :status => true
+    when 'smartos'
+      service_name 'tomcat'
+      supports :restart => false, :reload => false, :status => true
+    else
+      service_name "tomcat#{node['tomcat']['base_version']}"
+    end
+    action [:start, :enable]
+    notifies :run, 'execute[wait for tomcat]', :immediately
+    retries 4
+    retry_delay 30
   end
-  action [:start, :enable]
-  notifies :run, 'execute[wait for tomcat]', :immediately
-  retries 4
-  retry_delay 30
 end
 
 execute 'wait for tomcat' do
