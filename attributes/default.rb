@@ -27,6 +27,7 @@ default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
 default['tomcat']['use_security_manager'] = false
 default['tomcat']['authbind'] = 'no'
 default['tomcat']['deploy_manager_apps'] = true
+default['tomcat']['ssl_enable'] = true
 default['tomcat']['ssl_max_threads'] = 150
 default['tomcat']['ssl_cert_file'] = nil
 default['tomcat']['ssl_key_file'] = nil
@@ -43,6 +44,7 @@ default['tomcat']['truststore_type'] = 'jks'
 default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
+default['tomcat']['autostart'] = 'true'
 
 case node['platform']
 when 'centos', 'redhat', 'fedora', 'amazon'
