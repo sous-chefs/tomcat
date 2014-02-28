@@ -19,6 +19,7 @@ Attributes
 * `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
+* `node["tomcat"]["ssl_enable"]` - if set to false, skip SSL configuration, default `true`.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
 * `node["tomcat"]["ssl_proxy_port"]` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
 * `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
@@ -29,6 +30,7 @@ Attributes
 * `node["tomcat"]["deploy_manager_apps"]` - whether to deploy manager apps, default `true`.
 * `node["tomcat"]["authbind"]` - whether to bind tomcat on lower port numbers, default `no`.
 * `node["tomcat"]["max_threads"]` - maximum number of threads in the connector pool.
+* `node["tomcat"]["autostart"]` - if set to false, don't start Tomcat or restart it in case of config change, default `true`.
 * `node["tomcat"]["tomcat_auth"]` -
 * `node["tomcat"]["user"]` -
 * `node["tomcat"]["group"]` -
