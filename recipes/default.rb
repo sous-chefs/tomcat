@@ -78,7 +78,7 @@ unless node['tomcat']['truststore_file'].nil?
   java_options << " -Djavax.net.ssl.trustStore=#{node['tomcat']['config_dir']}/#{node['tomcat']['truststore_file']}"
   java_options << " -Djavax.net.ssl.trustStorePassword=#{node['tomcat']['truststore_password']}"
 
-  node.set['tomcat']['java_options'] = java_options
+  node.default['tomcat']['java_options'] = java_options
 end
 
 case node['platform']
