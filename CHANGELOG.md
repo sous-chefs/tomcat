@@ -3,6 +3,11 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.15.8 (2014-03-19)
+--------------------
+- [COOK-4209] - Remove "Host element/XML Validation" in tomcat 7 and above
+
+
 v0.15.6 (2014-03-12)
 --------------------
 - [COOK-4301] - Duplicate truststore settings added to java_options every chef-client run
