@@ -149,7 +149,10 @@
        -->
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true"
-            xmlValidation="false" xmlNamespaceAware="false">
+            <% if node['tomcat']['base_version'].to_i < 7 -%>
+            xmlValidation="false" xmlNamespaceAware="false"
+            <% end -%>
+            >
 
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
