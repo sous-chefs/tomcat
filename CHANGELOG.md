@@ -3,6 +3,11 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.15.10 (2014-03-27)
+---------------------
+- [COOK-4487] - Use tomcat group in /etc/default template
+
+
 v0.15.8 (2014-03-19)
 --------------------
 - [COOK-4209] - Remove "Host element/XML Validation" in tomcat 7 and above
