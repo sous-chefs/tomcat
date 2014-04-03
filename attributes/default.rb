@@ -43,6 +43,7 @@ default['tomcat']['truststore_type'] = 'jks'
 default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
+default['tomcat']['retry_delay'] = 30
 
 case node['platform']
 when 'centos', 'redhat', 'fedora', 'amazon'

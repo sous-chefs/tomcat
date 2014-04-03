@@ -192,7 +192,7 @@ service 'tomcat' do
   action [:start, :enable]
   notifies :run, 'execute[wait for tomcat]', :immediately
   retries 4
-  retry_delay 30
+  retry_delay node['tomcat']['retry_delay']
 end
 
 execute 'wait for tomcat' do
