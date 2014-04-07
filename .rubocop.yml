@@ -1,1 +1,20 @@
 inherit_from: rubocop-todo.yml
+
+
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  ()
+    '%i': ()
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': '{}'
+    '%W': '{}'
+    '%x': ()
+
+AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+SingleSpaceBeforeFirstArg: 
+  Enabled: false  
