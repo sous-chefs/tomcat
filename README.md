@@ -42,6 +42,7 @@ Attributes
 * `node["tomcat"]["webapp_dir"]` -
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
+* `node["tomcat"]["users"]` - Ability to setup tomcat users via node config file
 
 ### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
@@ -90,6 +91,24 @@ Users are defined by creating a `tomcat_users` data bag and placing [Encrypted D
 ```
 
 If you are a Chef Solo user the data bag items are not required to be encrypted and should not be.
+
+Users are defined in node config exmaple:
+
+```javascript
+{
+  "tomcat": {
+    "users": {
+      "tomcat": {
+        "password": "supersecretpassword",
+        "roles": [
+            "manager",
+            "admin"
+        ]
+      }
+    }
+  }
+}
+```
 
 
 License & Authors

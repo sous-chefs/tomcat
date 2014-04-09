@@ -21,7 +21,8 @@
 
 class Chef
   module TomcatCookbook
-    class TomcatCookbookError < StandardError; end
+    class TomcatCookbookError < StandardError;
+    end
     class InvalidUserDataBagItem < TomcatCookbookError
       attr_reader :item
 
@@ -51,8 +52,8 @@ class Chef
       #   was found in the Tomcat users data bag.
       #
       # @return [Array<Chef::DataBagItem>, Array<Chef::EncryptedDataBagItem>]
-      def users
-        @users ||= find_users
+      def users(node=nil)
+        @users ||= find_users(node)
       end
 
       # Returns an array of roles assigned to the users in the Tomcat Users
@@ -62,30 +63,39 @@ class Chef
       #   found in the Tomcat users data bag.
       #
       # @return [Array<String>]
-      def roles
-        users.map { |item| item['roles'] }.flatten.uniq
+      def roles(node=nil)
+        users(node).map { |item| item['roles'] }.flatten.uniq
       end
 
       private
 
-      def find_users
-        users = if Chef::Config[:solo]
-                  data_bag = Chef::DataBag.load(USERS_DATA_BAG)
-                  data_bag.keys.map do |name|
-            Chef::DataBagItem.load(USERS_DATA_BAG, name)
+      def find_users(node=nil)
+        result = []
+        if node
+          node['tomcat']['users'].each do |id, attrs|
+            result << attrs.merge({'id' => id})
           end
-                else
-                  begin
-                    items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
-                  rescue Net::HTTPServerException => e
-                    raise TomcatUserDataBagNotFound if e.message.match(/404/)
-                    raise e
-                  end
-                  decrypt_items(items)
-                end
+        end
 
-        users.each { |user| validate_user_item(user) }
-        users
+        if result.empty?
+          result = if Chef::Config[:solo]
+                     data_bag = Chef::DataBag.load(USERS_DATA_BAG)
+                     data_bag.keys.map do |name|
+                       Chef::DataBagItem.load(USERS_DATA_BAG, name)
+                     end
+                   else
+                     begin
+                       items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
+                     rescue Net::HTTPServerException => e
+                       raise TomcatUserDataBagNotFound if e.message.match(/404/)
+                       raise e
+                     end
+                     decrypt_items(items)
+                   end
+        end
+
+        result.each { |user| validate_user_item(user) }
+        result
       end
 
       def validate_user_item(user)
