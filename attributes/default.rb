@@ -45,7 +45,7 @@ default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 
 case node['platform']
-when 'centos', 'redhat', 'fedora', 'amazon'
+when 'centos', 'redhat', 'fedora', 'amazon', 'oracle'
   default['tomcat']['user'] = 'tomcat'
   default['tomcat']['group'] = 'tomcat'
   default['tomcat']['home'] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
