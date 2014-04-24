@@ -33,7 +33,7 @@ if node['tomcat']['deploy_manager_apps']
     %w{ debian  ubuntu } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin",
     },
-    %w{ centos redhat fedora amazon } => {
+    %w{ centos redhat fedora amazon oracle } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin-webapps",
     },
     )
@@ -82,7 +82,7 @@ unless node['tomcat']['truststore_file'].nil?
 end
 
 case node['platform']
-when 'centos', 'redhat', 'fedora', 'amazon'
+when 'centos', 'redhat', 'fedora', 'amazon', 'oracle'
   template "/etc/sysconfig/tomcat#{node['tomcat']['base_version']}" do
     source 'sysconfig_tomcat6.erb'
     owner 'root'
