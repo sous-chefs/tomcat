@@ -3,6 +3,14 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.15.12 (2014-04-23)
+---------------------
+- [COOK-3745] - Scientific Linux support for Tomcat
+- [COOK-4573] - Oracle Linux support for Tomcat
+- [COOK-4574] - genkeypair is not a valid parameter to keytool
+- [COOK-4575] - update test harness for Ubuntu 14.04'
+
+
 v0.15.10 (2014-03-27)
 ---------------------
 - [COOK-4487] - Use tomcat group in /etc/default template
