@@ -33,7 +33,7 @@ if node['tomcat']['deploy_manager_apps']
     %w{ debian  ubuntu } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin",
     },
-    %w{ centos redhat fedora amazon } => {
+    %w{ centos redhat fedora amazon scientific } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin-webapps",
     },
     )

@@ -7,7 +7,7 @@ Requirements
 ------------
 ### Platforms
 - Debian, Ubuntu (OpenJDK, Oracle)
-- CentOS 6+, Red Hat 6+, Fedora, Amazon (OpenJDK, Oracle)
+- CentOS 6+, Red Hat 6+, Fedora, Amaxon (OpenJDK, Oracle), Scientific Linux 6
 
 ### Dependencies
 - java

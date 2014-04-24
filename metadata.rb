@@ -14,6 +14,7 @@ supports 'ubuntu'
 supports 'centos'
 supports 'redhat'
 supports 'amazon'
+supports 'scientific'
 
 recipe 'tomcat::default', 'Installs and configures Tomcat'
 recipe 'tomcat::users', 'Setup users and roles for Tomcat'
