@@ -44,6 +44,8 @@ default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 
+default['tomcat']['hosts'] = [{'name'=>'localhost','appBase'=>'webapps'}]
+
 case node['platform']
 
 when 'centos', 'redhat', 'fedora', 'amazon', 'scientific', 'oracle'

@@ -147,13 +147,14 @@
       <!-- Define the default virtual host
            Note: XML Schema validation will not work with Xerces 2.2.
        -->
-      <Host name="localhost"  appBase="webapps"
+      <% node['tomcat']['hosts'].each do |c| %>
+      <Host name="<%= c.name %>"  appBase="<%= c.appBase %>"
             unpackWARs="true" autoDeploy="true"
             <% if node['tomcat']['base_version'].to_i < 7 -%>
             xmlValidation="false" xmlNamespaceAware="false"
             <% end -%>
             >
-
+      <% end %>
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
         <!--
