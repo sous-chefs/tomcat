@@ -154,6 +154,7 @@
             xmlValidation="false" xmlNamespaceAware="false"
             <% end -%>
             >
+      </Host>
       <% end %>
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
@@ -167,8 +168,6 @@
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
         -->
-
-      </Host>
     </Engine>
   </Service>
 </Server>
