@@ -149,6 +149,20 @@
        -->
       <% node['tomcat']['hosts'].each do |c| %>
       <Host name="<%= c.name %>"  appBase="<%= c.appBase %>"
+          <% if c.name == 'localhost' -%>
+	        <!-- SingleSignOn valve, share authentication between web applications
+	             Documentation at: /docs/config/valve.html -->
+	        <!--
+	        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+	        -->
+
+	        <!-- Access log processes all example.
+	             Documentation at: /docs/config/valve.html -->
+	        <!--
+	        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+	               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
+	        -->
+          <% end -%>
             unpackWARs="true" autoDeploy="true"
             <% if node['tomcat']['base_version'].to_i < 7 -%>
             xmlValidation="false" xmlNamespaceAware="false"
@@ -156,18 +170,6 @@
             >
       </Host>
       <% end %>
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
-
-        <!-- Access log processes all example.
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
-        -->
     </Engine>
   </Service>
 </Server>
