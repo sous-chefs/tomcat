@@ -18,6 +18,7 @@ Attributes
 ----------
 * `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
+* `node["tomcat"]["address"]` - The network address used by Tomcat's HTTP connector, default `nil`. For servers with more than one IP address, this attribute specifies which address will be used for listening on the specified port. By default, this port will be used on all IP addresses associated with the server.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
 * `node["tomcat"]["ssl_proxy_port"]` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
