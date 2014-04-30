@@ -77,6 +77,9 @@
     <Connector port="<%= node["tomcat"]["port"] %>" protocol="HTTP/1.1"
                connectionTimeout="20000"
                URIEncoding="UTF-8"
+             <% if node['tomcat']['address'] -%>
+               address="<%= node['tomcat']['address'] %>"
+             <% end -%>
              <% if node["tomcat"].has_key?("proxy_port") -%>
                proxyPort="<%= node["tomcat"]["proxy_port"] %>"
              <% end -%>
