@@ -22,11 +22,13 @@ default['tomcat']['proxy_port'] = nil
 default['tomcat']['ssl_port'] = 8443
 default['tomcat']['ssl_proxy_port'] = nil
 default['tomcat']['ajp_port'] = 8009
+default['tomcat']['shutdown_port'] = 8005
 default['tomcat']['catalina_options'] = ''
 default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
 default['tomcat']['use_security_manager'] = false
 default['tomcat']['authbind'] = 'no'
 default['tomcat']['deploy_manager_apps'] = true
+default['tomcat']['max_threads'] = nil
 default['tomcat']['ssl_max_threads'] = 150
 default['tomcat']['ssl_cert_file'] = nil
 default['tomcat']['ssl_key_file'] = nil
@@ -43,6 +45,8 @@ default['tomcat']['truststore_type'] = 'jks'
 default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
+default['tomcat']['instances'] = {}
+default['tomcat']['run_base_instance'] = true
 
 case node['platform']
 
