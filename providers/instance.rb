@@ -201,7 +201,7 @@ action :configure do
       notifies :restart, "service[#{instance}]"
     end
   else
-    script "create_keystore_#{instance}" do
+    script "create_keystore-#{instance}" do
       interpreter 'bash'
       action :nothing
       cwd new_resource.config_dir
