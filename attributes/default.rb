@@ -44,7 +44,7 @@ default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 # this hash can hold additional environment variables to 
-# be added to the /etc/sysconfig/tomcat.conf or setenv.sh files. 
+# be added to the /etc/sysconfig or setenv.sh files. 
 default['tomcat']['environment'] = {}
 
 case node['platform']
