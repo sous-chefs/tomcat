@@ -42,7 +42,7 @@ Attributes
 * `node["tomcat"]["webapp_dir"]` -
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
-* `node["tomcat"]["environment"]` - A hash of additional custom envionment variables.
+* `node["tomcat"]["environment"]` - A hash of additional custom envionment variables to use in sysconfig or setenv configs.
 
 ### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
