@@ -13,5 +13,5 @@ export CATALINA_OPTS='<%= node["tomcat"]["catalina_options"] %>'
 export CATALINA_PID='<%= node["tomcat"]["log_dir"] %>/catalina.pid'
 <% node["tomcat"]["environment"].sort.each do |key, value| %>
 <% next if value.nil? -%>
-export <%= key %>='<%= value %>'
+export <%= key %>="<%= value %>"
 <% end %>
