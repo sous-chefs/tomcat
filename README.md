@@ -31,6 +31,7 @@ Attributes
 * `node["tomcat"]["max_threads"]` - maximum number of threads in the connector pool.
 * `node["tomcat"]["tomcat_auth"]` -
 * `node["tomcat"]["user"]` -
+* `node["tomcat"]["service_action"]` - Action to be passed to the tomcat service resource.
 * `node["tomcat"]["group"]` -
 * `node["tomcat"]["home"]` -
 * `node["tomcat"]["base"]` -
