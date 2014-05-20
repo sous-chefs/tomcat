@@ -43,6 +43,7 @@ default['tomcat']['truststore_type'] = 'jks'
 default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
+default['tomcat']['service_action'] = 'enable_start'
 
 case node['platform']
 
