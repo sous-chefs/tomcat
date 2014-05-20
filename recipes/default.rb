@@ -189,7 +189,7 @@ service 'tomcat' do
   else
     service_name "tomcat#{node['tomcat']['base_version']}"
   end
-  action [:start, :enable]
+  action :nothing
   notifies :run, 'execute[wait for tomcat]', :immediately
   retries 4
   retry_delay 30
@@ -198,4 +198,40 @@ end
 execute 'wait for tomcat' do
   command 'sleep 5'
   action :nothing
+end
+
+case node['tomcat']['service_action']
+when 'start'
+  service 'tomcat' do
+    action :start
+  end
+when 'enable'
+  service 'tomcat' do
+    action :enable
+  end
+when 'enable_start'
+  service 'tomcat' do
+    action [ :enable, :start ]
+  end
+when 'stop'
+  service 'tomcat' do
+    action :stop
+  end
+when 'disable'
+  service 'tomcat' do
+    action :disable
+  end
+when 'disable_stop' 
+  service 'tomcat' do
+    action :disable_stop
+  end
+when 'nothing'
+  service 'tomcat' do
+    action :nothing
+  end
+else
+  Chef::Log.warn("node['tomcat']['service_action'] was set to: '#{node['tomcat']['service_action']}', setting to :nothing. Acceptable attributes 'start, enable, enable_start, stop, disable, disable_stop, nothing'")
+  service 'tomcat' do
+    action :nothing
+  end
 end
