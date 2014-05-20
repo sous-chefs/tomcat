@@ -229,4 +229,9 @@ when 'nothing'
   service 'tomcat' do
     action :nothing
   end
+else
+  Chef::Log.warn("node['tomcat']['service_action'] was set to: '#{node['tomcat']['service_action']}', setting to :nothing. Acceptable attributes 'start, enable, enable_start, stop, disable, disable_stop, nothing'")
+  service 'tomcat' do
+    action :nothing
+  end
 end
