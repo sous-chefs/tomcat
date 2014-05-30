@@ -99,7 +99,7 @@
              <% if node["tomcat"].has_key?("ssl_proxy_port") -%>
                proxyPort="<%= node["tomcat"]["ssl_proxy_port"] %>"
              <% end -%>
-               keystoreFile="<%= node["tomcat"]["config_dir"] %>/<%= node["tomcat"]["keystore_file"] %>"
+               keystoreFile="<%= node["tomcat"]["keystore_file"] %>"
                keystorePass="<%= node["tomcat"]["keystore_password"] %>"
                keystoreType="<%= node["tomcat"]["keystore_type"] %>"
                truststorePass="<%= node['tomcat']['keystore_password'] %>"
