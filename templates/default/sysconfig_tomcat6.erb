@@ -24,25 +24,25 @@
 JAVA_HOME=<%= node["java"]["java_home"] %>
 
 # Where your tomcat installation lives
-CATALINA_BASE="<%= node["tomcat"]["base"] %>"
-CATALINA_HOME="<%= node["tomcat"]["home"] %>"
-JASPER_HOME="<%= node["tomcat"]["home"] %>"
-CATALINA_TMPDIR="<%= node["tomcat"]["tmp_dir"] %>"
+CATALINA_BASE="<%= @base %>"
+CATALINA_HOME="<%= @home %>"
+JASPER_HOME="<%= @home %>"
+CATALINA_TMPDIR="<%= @tmp_dir %>"
 
 # You can pass some parameters to java here if you wish to
-JAVA_OPTS="<%= node["tomcat"]["java_options"] %>"
+JAVA_OPTS="<%= @java_options %>"
 
 # Use JAVA_OPTS to set java.library.path for libtcnative.so
 #JAVA_OPTS="-Djava.library.path=/usr/lib64"
 
 # What user should run tomcat
-TOMCAT_USER="<%= node["tomcat"]["user"] %>"
+TOMCAT_USER="<%= @user %>"
 
 # You can change your tomcat locale here
 #LANG="en_US"
 
 # Run tomcat under the Java Security Manager
-SECURITY_MANAGER="<%= node["tomcat"]["use_security_manager"] %>"
+SECURITY_MANAGER="<%= @use_security_manager %>"
 
 # Time to wait in seconds, before killing process
 #SHUTDOWN_WAIT="30"
@@ -54,10 +54,10 @@ SECURITY_MANAGER="<%= node["tomcat"]["use_security_manager"] %>"
 #CATALINA_PID="/var/run/tomcat6.pid"
 
 # JVM parameters passed only for start and run commands
-CATALINA_OPTS="<%= node["tomcat"]["catalina_options"] %>"
+CATALINA_OPTS="<%= @catalina_options %>"
 
 # Endorse .jar files in this directory
-JAVA_ENDORSED_DIRS="<%= node["tomcat"]["endorsed_dir"] %>"
+JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
 
 # If you wish to further customize your tomcat environment,
 # put your own definitions here

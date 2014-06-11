@@ -22,6 +22,7 @@ Attributes
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
 * `node["tomcat"]["ssl_proxy_port"]` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
 * `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
+* `node["tomcat"]["shutdown_port"]` - The network port used by Tomcat to listen for shutdown requests, default `8005`.
 * `node["tomcat"]["catalina_options"]` - Extra options to pass to the JVM only during start and run commands, default "".
 * `node["tomcat"]["java_options"]` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
 * `node["tomcat"]["use_security_manager"]` - Run Tomcat under the Java Security Manager, default `false`.
@@ -30,6 +31,8 @@ Attributes
 * `node["tomcat"]["authbind"]` - whether to bind tomcat on lower port numbers, default `no`.
 * `node["tomcat"]["max_threads"]` - maximum number of threads in the connector pool.
 * `node["tomcat"]["tomcat_auth"]` -
+* `node["tomcat"]["instances"]` - A dictionary defining additional tomcat instances to run.
+* `node["tomcat"]["run_base_instance"]` - Whether or not to run the "base" tomcat instance, default `true`.
 * `node["tomcat"]["user"]` -
 * `node["tomcat"]["group"]` -
 * `node["tomcat"]["home"]` -
@@ -70,6 +73,37 @@ override_attributes(
   }
 )
 ```
+
+
+Running Multiple Instances
+--------------------------
+To run multiple instances of Tomcat, populate the `instances` attribute, which is a dictionary of instance name => array of attributes.  Most of the same attributes that can be used globally for the tomcat cookbook can also be set per-instance - see resources/instance.rb for details.
+
+If they are not set for a particular instance, the `base`, `home`, `config_dir`, `log_dir`, `work_dir`, `context_dir`, and `webapp_dir` attributes are created by modifying the global values to use the instance name.  For example, under Tomcat 7, with `home` /usr/share/tomcat7, `home` for instance "instance1" would be set to /usr/share/tomcat7-instance1.  The port attributes - `port`, `proxy_port`, `ssl_port`, `ssl_proxy_port`, `ajp_port`, and `shutdown_port` - are not inherited and must be set per-instance.  Other attributes that are not set are inherited unmodified from the global attributes.  Each instance must define `shutdown_port`, and at least one of `port`, `ssl_port` or `ajp_port`.
+
+If you only want to run specific instances and not the "base" tomcat instances, you can set `run_base_instance` to `false`.
+
+Here is an example partial role:
+
+```...
+"override_attributes": {
+  "tomcat": {
+    "run_base_instance": false,
+    "instances": {
+      "instance1": {
+        "port": 8081,
+        "shutdown_port": 8006
+      },
+      "lookup": {
+        "port": 8082,
+        "shutdown_port": 8007,
+        "java_options": "-Xms1G -Xmx2G"
+      }
+    },
+    ...
+  }
+  ...
+}```
 
 
 Managing Tomcat Users
