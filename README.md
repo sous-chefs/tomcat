@@ -110,7 +110,7 @@ Managing Tomcat Users
 ---------------------
 The recipe `tomcat::users` included in this cookbook is used for managing Tomcat users. The recipe adds users and roles to the `tomcat-users.xml` conf file.
 
-Users are defined by creating a `tomcat_users` data bag and placing [Encrypted Data Bag Items](http://docs.opscode.com/chef/essentials_data_bags.html) in that data bag. Each encrypted data bag item requires an 'id', 'password', and a 'roles' field.
+Users are defined by creating a `tomcat_users` data bag and placing [Encrypted Data Bag Items](http://docs.opscode.com/chef/essentials_data_bags.html) in that data bag. Each encrypted data bag item requires an 'id', 'password', and a 'roles' field. The data bag key is retrieved from the default location `/etc/chef/encrypted_data_bag_secret`.
 
 ```javascript
 {
