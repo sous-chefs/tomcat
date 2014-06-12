@@ -3,6 +3,12 @@ tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
 
+v0.16.0 (2014-06-11)
+--------------------
+- #70 - [COOK-4332] Support running multiple instance
+- #73 - Be pedantic on where the data bag secret should be placed.
+
+
 v0.15.12 (2014-04-23)
 ---------------------
 - [COOK-3745] - Scientific Linux support for Tomcat
