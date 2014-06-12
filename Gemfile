@@ -4,12 +4,11 @@ group :lint do
   gem 'foodcritic', '~> 3.0'
   gem 'rubocop', '~> 0.18'
   gem 'rainbow', '< 2.0'
-  gem 'rake'
 end
 
 group :unit do
-  gem 'berkshelf',  '~> 3.0.0.beta6'
-  gem 'chefspec',   '~> 3.1'
+  gem 'berkshelf',  '~> 3.1'
+  gem 'chefspec',   '~> 3.4'
 end
 
 group :kitchen_common do
@@ -24,6 +23,7 @@ group :kitchen_cloud do
   gem 'kitchen-digitalocean'
   gem 'kitchen-ec2'
   gem 'kitchen-joyent'
+  gem 'kitchen-gce'
 end
 
 group :development do
@@ -35,4 +35,7 @@ group :development do
   gem 'guard-foodcritic'
   gem 'guard-rspec'
   gem 'guard-rubocop'
+  gem 'rake'
+  gem 'fauxhai'
+  gem 'pry-nav'
 end
