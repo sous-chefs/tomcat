@@ -108,7 +108,7 @@
                keystoreFile="<%= @config_dir %>/<%= @keystore_file %>"
                keystorePass="<%= node['tomcat']['keystore_password'] %>"
                keystoreType="<%= @keystore_type %>"
-               truststorePass="<%= node['tomcat']['keystore_password'] %>"
+               truststorePass="<%= node['tomcat']['truststore_password'] %>"
                maxThreads="<%= @ssl_max_threads %>" scheme="https" secure="true"
                clientAuth="false" sslProtocol="TLS" />
   <% end -%>
