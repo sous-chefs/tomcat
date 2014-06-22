@@ -8,7 +8,8 @@ action :configure do
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
-   :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
+   :group, :tmp_dir, :lib_dir, :endorsed_dir, :cluster_multicast_port, 
+   :cluster_multicast_freq, :cluster_multicast_drop].each do |attr|
     if not new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
@@ -62,25 +63,34 @@ action :configure do
     end
 
     # config_dir needs symlinks to the files we're not going to create
-    ['catalina.policy', 'catalina.properties', 'context.xml',
+    ['catalina.properties', 'context.xml',
      'tomcat-users.xml', 'web.xml'].each do |file|
       link "#{new_resource.config_dir}/#{file}" do
         to "#{node['tomcat']['config_dir']}/#{file}"
+      end
+    end
+    
+    #some systems put policy in a file, some in a directory
+    ['catalina.policy', 'policy.d'].each do |file|
+      link "#{new_resource.config_dir}/#{file}" do
+        to "#{node['tomcat']['config_dir']}/#{file}"
+        only_if do ::File.exists?("#{node['tomcat']['config_dir']}/#{file}") end
       end
     end
 
     # The base also needs a bunch of to symlinks inside it
     ['bin', 'lib'].each do |dir|
       link "#{new_resource.base}/#{dir}" do
-        to "#{node['tomcat']['base']}/#{dir}"
+        to "#{node['tomcat']['home']}/#{dir}"
       end
     end
+
     {'conf' => 'config_dir', 'logs' => 'log_dir', 'temp' => 'tmp_dir',
      'work' => 'work_dir', 'webapps' => 'webapp_dir'}.each do |name, attr|
       link "#{new_resource.base}/#{name}" do
         to new_resource.instance_variable_get("@#{attr}")
-      end
-    end
+      end unless "#{new_resource.base}/#{name}" == new_resource.instance_variable_get("@#{attr}")
+    end 
 
     # Make a copy of the init script for this instance
     execute "/etc/init.d/#{instance}" do
@@ -88,6 +98,17 @@ action :configure do
         cp /etc/init.d/#{base_instance} /etc/init.d/#{instance}
         perl -i -pe 's/#{base_instance}/#{instance}/g' /etc/init.d/#{instance}
       EOH
+    end
+    
+    #tomcat init script copy above does a blind copy/replace,
+    #so the script name is renamed too...
+    link "/usr/sbin/#{instance}" do
+      to "/usr/sbin/tomcat6"
+      only_if do ::File.exists?("/usr/sbin/tomcat6") end
+    end
+    link "/usr/sbin/d#{instance}" do
+      to "/usr/sbin/dtomcat7"
+      only_if do ::File.exists?("/usr/sbin/dtomcat7") end
     end
   end
 
@@ -123,6 +144,15 @@ action :configure do
       mode '0644'
       notifies :restart, "service[#{instance}]"
     end
+    
+    #tomcat6 init script expects this file to exist
+    file "/etc/#{instance}/#{instance}.conf" do
+      owner 'root'
+      group 'root'
+      mode '0644'
+      action :create_if_missing
+    end
+    
   when 'smartos'
     # SmartOS doesn't support multiple instances
     template "#{new_resource.base}/bin/setenv.sh" do
@@ -169,6 +199,10 @@ action :configure do
         :keystore_type => new_resource.keystore_type,
         :tomcat_auth => new_resource.tomcat_auth,
         :config_dir => new_resource.config_dir,
+        :cluster_multicast_ip => new_resource.cluster_multicast_ip,
+        :cluster_multicast_port => new_resource.cluster_multicast_port,
+        :cluster_multicast_freq => new_resource.cluster_multicast_freq,
+        :cluster_multicast_drop => new_resource.cluster_multicast_drop,
       })
     owner 'root'
     group 'root'
