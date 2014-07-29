@@ -26,6 +26,9 @@ tomcat_pkgs = value_for_platform(
   ['smartos'] => {
     'default' => ['apache-tomcat'],
   },
+  ['opensuse'] => {
+    'default' => ['tomcat'],
+  },
   'default' => ["tomcat#{node['tomcat']['base_version']}"]
   )
 if node['tomcat']['deploy_manager_apps']
@@ -35,6 +38,9 @@ if node['tomcat']['deploy_manager_apps']
     },    
     %w{ centos redhat fedora amazon scientific oracle } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin-webapps",
+    },
+    %w{ opensuse } => {
+      'default' => "tomcat-admin-webapps",
     }
     )
 end

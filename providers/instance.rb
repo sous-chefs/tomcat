@@ -123,6 +123,25 @@ action :configure do
       mode '0644'
       notifies :restart, "service[#{instance}]"
     end
+   when 'opensuse'
+    template "/etc/tomcat/tomcat.conf" do
+      source 'sysconfig_tomcat7.erb'
+      variables ({
+        :user => new_resource.user,
+        :home => new_resource.home,
+        :base => new_resource.base,
+        :java_options => new_resource.java_options,
+        :use_security_manager => new_resource.use_security_manager,
+        :tmp_dir => new_resource.tmp_dir,
+        :catalina_options => new_resource.catalina_options,
+        :endorsed_dir => new_resource.endorsed_dir
+      })
+      owner 'root'
+      group 'root'
+      mode '0644'
+      #don't want automatic restarts.
+	  #notifies :restart, "service[tomcat]"
+    end
   when 'smartos'
     # SmartOS doesn't support multiple instances
     template "#{new_resource.base}/bin/setenv.sh" do
@@ -246,6 +265,9 @@ action :configure do
     case node['platform']
     when 'centos', 'redhat', 'fedora', 'amazon'
       service_name "#{instance}"
+      supports :restart => true, :status => true
+    when 'opensuse'
+      service_name "tomcat"
       supports :restart => true, :status => true
     when 'debian', 'ubuntu'
       service_name "#{instance}"

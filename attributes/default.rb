@@ -92,6 +92,20 @@ when 'smartos'
   default['tomcat']['keytool'] = '/opt/local/bin/keytool'
   default['tomcat']['lib_dir'] = "#{node["tomcat"]["home"]}/lib"
   default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["home"]}/lib/endorsed"
+when 'opensuse'
+  default['tomcat']['user'] = 'tomcat'
+  default['tomcat']['group'] = 'tomcat'
+  default['tomcat']['home'] = "/usr/share/tomcat"
+  default['tomcat']['base'] = "/usr/share/tomcat"
+  default['tomcat']['config_dir'] = "/etc/tomcat"
+  default['tomcat']['log_dir'] = "/var/log/tomcat"
+  default['tomcat']['tmp_dir'] = "/var/cache/tomcat/temp"
+  default['tomcat']['work_dir'] = "/var/cache/tomcat/work"
+  default['tomcat']['context_dir'] = "#{node["tomcat"]["config_dir"]}/Catalina/localhost"
+  default['tomcat']['webapp_dir'] = "/srv/tomcat/webapps"
+  default['tomcat']['keytool'] = 'keytool'
+  default['tomcat']['lib_dir'] = "#{node["tomcat"]["home"]}/lib"
+  default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 else
   default['tomcat']['user'] = "tomcat#{node["tomcat"]["base_version"]}"
   default['tomcat']['group'] = "tomcat#{node["tomcat"]["base_version"]}"
