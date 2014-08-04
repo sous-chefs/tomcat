@@ -86,6 +86,7 @@ If you only want to run specific instances and not the "base" tomcat instances, 
 Here is an example partial role:
 
 ```javascript
+...
 "override_attributes": {
   "tomcat": {
     "run_base_instance": false,
