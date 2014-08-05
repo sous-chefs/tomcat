@@ -84,8 +84,9 @@
                maxThreads="<%= @max_threads %>"
              <% end -%>
              <% if @ssl_port -%>
-               redirectPort="<%= @ssl_port %>" />
+               redirectPort="<%= @ssl_port %>"
              <% end -%>
+               />
   <% end -%>
     <!-- A "Connector" using the shared thread pool-->
     <!--
@@ -93,8 +94,9 @@
                port="<%= @port %>" protocol="HTTP/1.1"
                connectionTimeout="20000"
              <% if @ssl_port -%>
-               redirectPort="<%= @ssl_port %>" />
+               redirectPort="<%= @ssl_port %>"
              <% end -%>
+               />
     -->
   <% if @ssl_port -%>
     <!-- Define a SSL HTTP/1.1 Connector on port <%= @ssl_port %>
