@@ -17,6 +17,7 @@ Requirements
 Attributes
 ----------
 * `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
+* `node["tomcat"]["list_address"]` - The network address to bind to, defaults to binding to all interfaces.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.

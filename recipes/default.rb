@@ -81,6 +81,7 @@ end
 
 node['tomcat']['instances'].each do |name, attrs|
   tomcat_instance "#{name}" do
+    listen_address attrs['listen_address']
     port attrs['port']
     proxy_port attrs['proxy_port']
     ssl_port attrs['ssl_port']

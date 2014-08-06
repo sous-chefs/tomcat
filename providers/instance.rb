@@ -157,6 +157,7 @@ action :configure do
   template "#{new_resource.config_dir}/server.xml" do
     source 'server.xml.erb'
       variables ({
+        :listen_address => new_resource.listen_address,
         :port => new_resource.port,
         :proxy_port => new_resource.proxy_port,
         :ssl_port => new_resource.ssl_port,
