@@ -70,6 +70,7 @@ node.set_unless['tomcat']['truststore_password'] = secure_password
 
 if node['tomcat']['run_base_instance']
   tomcat_instance "base" do
+    listen_address node['tomcat']['listen_address']
     port node['tomcat']['port']
     proxy_port node['tomcat']['proxy_port']
     ssl_port node['tomcat']['ssl_port']
