@@ -93,6 +93,9 @@
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
+              <% if @listen_address -%>
+               address="<%= @listen_address %>"
+              <% end -%>
                port="<%= @port %>" protocol="HTTP/1.1"
                connectionTimeout="20000"
              <% if @ssl_port -%>
@@ -122,9 +125,9 @@
   <% if @ajp_port -%>
     <!-- Define an AJP 1.3 Connector on port <%= @ajp_port %> -->
     <Connector port="<%= @ajp_port %>"
-               <% if @listen_address -%>
-                 address="<%= @listen_address %>"
-               <% end -%>
+              <% if @listen_address -%>
+               address="<%= @listen_address %>"
+              <% end -%>
                protocol="AJP/1.3"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ssl_port %>" />
