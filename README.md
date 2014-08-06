@@ -45,6 +45,10 @@ Attributes
 * `node["tomcat"]["webapp_dir"]` -
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
+* `node["tomcat"]["cluster_multicast_ip"]` - Multicast address for clustering. Unique clusters should have a unique ip:port.
+* `node["tomcat"]["cluster_multicast_port"]` -
+* `node["tomcat"]["cluster_multicast_freq"]` -
+* `node["tomcat"]["cluster_multicast_drop"]` -
 
 ### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
@@ -79,7 +83,7 @@ Running Multiple Instances
 --------------------------
 To run multiple instances of Tomcat, populate the `instances` attribute, which is a dictionary of instance name => array of attributes.  Most of the same attributes that can be used globally for the tomcat cookbook can also be set per-instance - see resources/instance.rb for details.
 
-If they are not set for a particular instance, the `base`, `home`, `config_dir`, `log_dir`, `work_dir`, `context_dir`, and `webapp_dir` attributes are created by modifying the global values to use the instance name.  For example, under Tomcat 7, with `home` /usr/share/tomcat7, `home` for instance "instance1" would be set to /usr/share/tomcat7-instance1.  The port attributes - `port`, `proxy_port`, `ssl_port`, `ssl_proxy_port`, `ajp_port`, and `shutdown_port` - are not inherited and must be set per-instance.  Other attributes that are not set are inherited unmodified from the global attributes.  Each instance must define `shutdown_port`, and at least one of `port`, `ssl_port` or `ajp_port`.
+If they are not set for a particular instance, the `base`, `home`, `config_dir`, `log_dir`, `work_dir`, `context_dir`, and `webapp_dir` attributes are created by modifying the global values to use the instance name.  For example, under Tomcat 7, with `home` /usr/share/tomcat7, `home` for instance "instance1" would be set to /usr/share/tomcat7-instance1.  The port attributes - `port`, `proxy_port`, `ssl_port`, `ssl_proxy_port`, `ajp_port`, and `shutdown_port` - are not inherited and must be set per-instance. If clustering is used, `cluster_multicast_ip` must be set for each instance. Other attributes that are not set are inherited unmodified from the global attributes.  Each instance must define `shutdown_port`, and at least one of `port`, `ssl_port` or `ajp_port`.
 
 If you only want to run specific instances and not the "base" tomcat instances, you can set `run_base_instance` to `false`.
 

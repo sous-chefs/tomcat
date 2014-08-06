@@ -84,8 +84,9 @@
                maxThreads="<%= @max_threads %>"
              <% end -%>
              <% if @ssl_port -%>
-               redirectPort="<%= @ssl_port %>" />
-             <% end -%>
+               redirectPort="<%= @ssl_port %>" 
+             <% end -%> 
+             />
   <% end -%>
     <!-- A "Connector" using the shared thread pool-->
     <!--
@@ -93,8 +94,9 @@
                port="<%= @port %>" protocol="HTTP/1.1"
                connectionTimeout="20000"
              <% if @ssl_port -%>
-               redirectPort="<%= @ssl_port %>" />
+               redirectPort="<%= @ssl_port %>" 
              <% end -%>
+             />
     -->
   <% if @ssl_port -%>
     <!-- Define a SSL HTTP/1.1 Connector on port <%= @ssl_port %>
@@ -138,6 +140,18 @@
       <!--
       <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
       -->
+      <% if @cluster_multicast_ip -%>
+      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"
+               channelSendOptions="8">
+                <Channel className="org.apache.catalina.tribes.group.GroupChannel">
+                    <Membership className="org.apache.catalina.tribes.membership.McastService"
+                                address="<%= @cluster_multicast_ip -%>"
+                                port="<%= @cluster_multicast_port -%>"
+                                frequency="<%= @cluster_multicast_freq -%>"
+                                dropTime="<%= @cluster_multicast_drop -%>"/>
+                </Channel>
+      </Cluster>
+      <% end -%>
 
       <!-- The request dumper valve dumps useful debugging information about
            the request and response data received and sent by Tomcat.

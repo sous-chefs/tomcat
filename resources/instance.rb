@@ -20,6 +20,8 @@ attribute :ajp_port,
 attribute :shutdown_port,
   :kind_of => Fixnum,
   :required => true
+attribute :cluster_multicast_ip,
+  :kind_of => String
 
 # The rest will inherit from node attributes
 attribute :config_dir,
@@ -84,3 +86,10 @@ attribute :lib_dir,
   :kind_of => String
 attribute :endorsed_dir,
   :kind_of => String
+
+attribute :cluster_multicast_port,
+  :kind_of => Fixnum
+attribute :cluster_multicast_freq,
+  :kind_of => Fixnum
+attribute :cluster_multicast_drop,
+  :kind_of => Fixnum

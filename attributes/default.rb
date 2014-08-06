@@ -23,6 +23,10 @@ default['tomcat']['ssl_port'] = 8443
 default['tomcat']['ssl_proxy_port'] = nil
 default['tomcat']['ajp_port'] = 8009
 default['tomcat']['shutdown_port'] = 8005
+default['tomcat']['cluster_multicast_ip'] = nil #"228.0.0.4"
+default['tomcat']['cluster_multicast_port'] = 45564
+default['tomcat']['cluster_multicast_freq'] = 500
+default['tomcat']['cluster_multicast_drop'] = 15000
 default['tomcat']['catalina_options'] = ''
 default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
 default['tomcat']['use_security_manager'] = false

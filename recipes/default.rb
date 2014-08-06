@@ -76,6 +76,7 @@ if node['tomcat']['run_base_instance']
     ssl_proxy_port node['tomcat']['ssl_proxy_port']
     ajp_port node['tomcat']['ajp_port']
     shutdown_port node['tomcat']['shutdown_port']
+    cluster_multicast_ip node['tomcat']['cluster_multicast_ip']
   end
 end
 
@@ -87,6 +88,10 @@ node['tomcat']['instances'].each do |name, attrs|
     ssl_proxy_port attrs['ssl_proxy_port']
     ajp_port attrs['ajp_port']
     shutdown_port attrs['shutdown_port']
+    cluster_multicast_ip attrs['cluster_multicast_ip']
+    cluster_multicast_port attrs['cluster_multicast_port']
+    cluster_multicast_freq attrs['cluster_multicast_freq']
+    cluster_multicast_drop attrs['cluster_multicast_drop']
     config_dir attrs['config_dir']
     log_dir attrs['log_dir']
     work_dir attrs['work_dir']
