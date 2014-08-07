@@ -121,7 +121,9 @@ action :configure do
       owner 'root'
       group 'root'
       mode '0644'
-      notifies :restart, "service[#{instance}]"
+      if node['tomcat']['auto_start']
+        notifies :restart, "service[#{instance}]"
+      end
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
@@ -130,7 +132,9 @@ action :configure do
       owner 'root'
       group 'root'
       mode '0644'
-      notifies :restart, "service[#{instance}]"
+      if node['tomcat']['auto_start']
+        notifies :restart, "service[#{instance}]"
+      end
     end
   else
     template "/etc/default/#{instance}" do
@@ -150,7 +154,9 @@ action :configure do
       owner 'root'
       group 'root'
       mode '0644'
-      notifies :restart, "service[#{instance}]"
+      if node['tomcat']['auto_start']
+        notifies :restart, "service[#{instance}]"
+      end
     end
   end
 
@@ -173,7 +179,9 @@ action :configure do
     owner 'root'
     group 'root'
     mode '0644'
-    notifies :restart, "service[#{instance}]"
+    if node['tomcat']['auto_start']
+      notifies :restart, "service[#{instance}]"
+    end
   end
 
   template "#{new_resource.config_dir}/logging.properties" do
@@ -181,7 +189,9 @@ action :configure do
     owner 'root'
     group 'root'
     mode '0644'
-    notifies :restart, "service[#{instance}]"
+    if node['tomcat']['auto_start']
+      notifies :restart, "service[#{instance}]"
+    end
   end
 
   if new_resource.ssl_cert_file.nil?
@@ -198,7 +208,9 @@ action :configure do
       umask 0007
       creates "#{new_resource.config_dir}/#{new_resource.keystore_file}"
       action :run
-      notifies :restart, "service[#{instance}]"
+      if node['tomcat']['auto_start']
+        notifies :restart, "service[#{instance}]"
+      end
     end
   else
     script "create_keystore-#{instance}" do
@@ -215,7 +227,9 @@ action :configure do
          -password pass:#{node['tomcat']['keystore_password']} \
          -out #{new_resource.keystore_file}
       EOH
-      notifies :restart, "service[tomcat]"
+      if node['tomcat']['auto_start']
+        notifies :restart, "service[tomcat]"
+      end
     end
 
     cookbook_file "#{new_resource.config_dir}/#{new_resource.ssl_cert_file}" do
@@ -257,7 +271,7 @@ action :configure do
     else
       service_name "#{instance}"
     end
-    action [:start, :enable]
+    action node['tomcat']['service_actions']
     notifies :run, "execute[wait for #{instance}]", :immediately
     retries 4
     retry_delay 30
@@ -267,4 +281,5 @@ action :configure do
     command 'sleep 5'
     action :nothing
   end
+
 end
