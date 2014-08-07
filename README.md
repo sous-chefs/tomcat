@@ -33,6 +33,8 @@ Attributes
 * `node["tomcat"]["tomcat_auth"]` -
 * `node["tomcat"]["instances"]` - A dictionary defining additional tomcat instances to run.
 * `node["tomcat"]["run_base_instance"]` - Whether or not to run the "base" tomcat instance, default `true`.
+* `node["tomcat"]["service_actions"]` - Defines actions to be executed on the Tomcat instance service. By default it is :start and :enable. But for Docker images it is better to use :nothing or :disabled
+* `node["tomcat"]["auto_start"]` - Whether or not to start tomcat instances, default `true`. Suitable e.g. for creating Docker image where you don't want to. See in conjunction with service_actions attribute
 * `node["tomcat"]["user"]` -
 * `node["tomcat"]["group"]` -
 * `node["tomcat"]["home"]` -
