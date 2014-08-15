@@ -85,7 +85,7 @@ when 'debian', 'ubuntu'
   default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when 'smartos'
   default['tomcat']['package_name'] = 'apache-tomcat'
-  default['tomcat']['version'] = node['tomcat']['base_version']
+  default['tomcat']['version'] = "#{node['tomcat']['base_version']}"
   default['tomcat']['user'] = 'tomcat'
   default['tomcat']['group'] = 'tomcat'
   default['tomcat']['home'] = '/opt/local/share/tomcat'
