@@ -17,6 +17,9 @@
 # limitations under the License.
 
 default['tomcat']['base_version'] = 6
+default['tomcat']['package_name'] = "tomcat#{node['tomcat']['base_version']}"
+default['tomcat']['manager_package_name'] = "tomcat#{node['tomcat']['base_version']}-admin-webapps"
+default['tomcat']['version'] = nil
 default['tomcat']['port'] = 8080
 default['tomcat']['proxy_port'] = nil
 default['tomcat']['ssl_port'] = 8443
@@ -47,6 +50,7 @@ default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
+  
 
 case node['platform']
 
@@ -65,6 +69,7 @@ when 'centos', 'redhat', 'fedora', 'amazon', 'scientific', 'oracle'
   default['tomcat']['lib_dir'] = "#{node["tomcat"]["home"]}/lib"
   default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when 'debian', 'ubuntu'
+  default['tomcat']['manager_package_name'] = "tomcat#{node['tomcat']['base_version']}-admin"
   default['tomcat']['user'] = "tomcat#{node["tomcat"]["base_version"]}"
   default['tomcat']['group'] = "tomcat#{node["tomcat"]["base_version"]}"
   default['tomcat']['home'] = "/usr/share/tomcat#{node["tomcat"]["base_version"]}"
@@ -79,6 +84,8 @@ when 'debian', 'ubuntu'
   default['tomcat']['lib_dir'] = "#{node["tomcat"]["home"]}/lib"
   default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["lib_dir"]}/endorsed"
 when 'smartos'
+  default['tomcat']['package_name'] = 'apache-tomcat'
+  default['tomcat']['version'] = node['tomcat']['base_version']
   default['tomcat']['user'] = 'tomcat'
   default['tomcat']['group'] = 'tomcat'
   default['tomcat']['home'] = '/opt/local/share/tomcat'
