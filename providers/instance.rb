@@ -1,5 +1,5 @@
 action :configure do
-  base_instance = "tomcat#{node['tomcat']['base_version']}"
+  base_instance = node['tomcat']['package_name']
 
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
