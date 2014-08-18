@@ -154,6 +154,7 @@ action :configure do
     end
   end
 
+  Chef::Log.info "Creating template resource : #{new_resource.config_dir}/server.xml"
   template "#{new_resource.config_dir}/server.xml" do
     source 'server.xml.erb'
       variables ({
