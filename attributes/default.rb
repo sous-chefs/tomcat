@@ -49,7 +49,6 @@ default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
 default['tomcat']['output_access_log'] = false
 default['tomcat']['access_log']['dir'] = 'logs'
-default['tomcat']['access_log']['dir'] = 'logs'
 default['tomcat']['access_log']['prefix'] = 'localhost_access_log.'
 default['tomcat']['access_log']['suffix'] = '.txt'
 default['tomcat']['access_log']['pattern'] = 'common'
