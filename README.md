@@ -45,6 +45,12 @@ Attributes
 * `node["tomcat"]["webapp_dir"]` -
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
+* `node["tomcat"]["output_access_log"]` - Whether or not to output access log, default `false`
+* `node["tomcat"]["access_log"]["dir"]` - Absolute or relative pathname of a directory in which log files created, default `logs`
+* `node["tomcat"]["access_log"]["prefix"]` - The prefix added to the start of log file's name, default `localhost_access_log.`
+* `node["tomcat"]["access_log"]["suffix"]` - The suffix added to the end of each log file's name, default `.txt`
+* `node["tomcat"]["access_log"]["pattern"]` - A formatting layout, default `common`
+* `node["tomcat"]["access_log"]["resolve_hosts"]` - Whether or not to convert the IP address into the corresponding host name via a DNS lookup, default `false`
 
 ### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
