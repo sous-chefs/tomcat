@@ -172,10 +172,10 @@
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
-        -->
+  <% if node['tomcat']['access_log'] -%>
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="<%= node['tomcat']['access_log']['dir'] %>"
+               prefix="<%= node['tomcat']['access_log']['prefix'] %>" suffix="<%= node['tomcat']['access_log']['suffix'] %>" pattern="<%= node['tomcat']['access_log']['pattern'] %>" resolveHosts="<%= node['tomcat']['access_log']['resolve_hosts'] %>"/>
+  <% end -%>
 
       </Host>
     </Engine>
