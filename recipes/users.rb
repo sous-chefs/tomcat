@@ -18,6 +18,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+base_instance = "tomcat#{node['tomcat']['base_version']}"
+instance = base_instance
+
+service "#{instance}" do
+  case node['platform']
+  when 'centos', 'redhat', 'fedora', 'amazon'
+    service_name "#{instance}"
+    supports :restart => true, :status => true
+  when 'debian', 'ubuntu'
+    service_name "#{instance}"
+    supports :restart => true, :reload => false, :status => true
+  when 'smartos'
+    # SmartOS doesn't support multiple instances
+    service_name 'tomcat'
+    supports :restart => false, :reload => false, :status => true
+  else
+    service_name "#{instance}"
+  end
+  action [:start, :enable]
+  notifies :run, "execute[wait for #{instance}]", :immediately
+  retries 4
+  retry_delay 30
+end
+
+execute "wait for #{instance}" do
+  command 'sleep 5'
+  action :nothing
+end
 
 template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
   source 'tomcat-users.xml.erb'
@@ -28,5 +56,5 @@ template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
     :users => TomcatCookbook.users,
     :roles => TomcatCookbook.roles,
   )
-  notifies :restart, 'service[tomcat]'
+  notifies :restart, "service[#{instance}]"
 end
