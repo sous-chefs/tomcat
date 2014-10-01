@@ -32,7 +32,7 @@ if node['tomcat']['deploy_manager_apps']
   tomcat_pkgs << value_for_platform(
     %w{ debian  ubuntu } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin",
-    },    
+    },
     %w{ centos redhat fedora amazon scientific oracle } => {
       'default' => "tomcat#{node['tomcat']['base_version']}-admin-webapps",
     }
@@ -70,6 +70,7 @@ node.set_unless['tomcat']['truststore_password'] = secure_password
 
 if node['tomcat']['run_base_instance']
   tomcat_instance "base" do
+    address node['tomcat']['address']
     port node['tomcat']['port']
     proxy_port node['tomcat']['proxy_port']
     ssl_port node['tomcat']['ssl_port']
@@ -81,6 +82,7 @@ end
 
 node['tomcat']['instances'].each do |name, attrs|
   tomcat_instance "#{name}" do
+    address attrs['address']
     port attrs['port']
     proxy_port attrs['proxy_port']
     ssl_port attrs['ssl_port']
