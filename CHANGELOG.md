@@ -2,6 +2,9 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.16.2 (2014-08-06)
+--------------------
+- #80 - Fix broken server.xml when not using ssl
 
 v0.16.0 (2014-06-11)
 --------------------
