@@ -28,5 +28,5 @@ template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
     :users => TomcatCookbook.users,
     :roles => TomcatCookbook.roles,
   )
-  notifies :restart, 'service[tomcat]'
+  notifies :restart, "service[#{base_instance}]"
 end
