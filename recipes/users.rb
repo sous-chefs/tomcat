@@ -18,6 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+base_instance = "tomcat#{node['tomcat']['base_version']}"
 
 template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
   source 'tomcat-users.xml.erb'
