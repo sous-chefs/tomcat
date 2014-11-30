@@ -86,6 +86,9 @@
              <% if @ssl_port -%>
                redirectPort="<%= @ssl_port %>"
              <% end -%>
+             <% if @server_name %>
+               Server="<%= @server_name %>"
+             <% end -%>
              />
   <% end -%>
     <!-- A "Connector" using the shared thread pool-->
@@ -105,6 +108,9 @@
     <Connector port="<%= @ssl_port %>" protocol="HTTP/1.1" SSLEnabled="true"
              <% if @ssl_proxy_port -%>
                proxyPort="<%= @ssl_proxy_port %>"
+             <% end -%>
+             <% if @server_name %>
+               Server="<%= @server_name %>"
              <% end -%>
                keystoreFile="<%= @config_dir %>/<%= @keystore_file %>"
                keystorePass="<%= node['tomcat']['keystore_password'] %>"
