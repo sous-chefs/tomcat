@@ -19,6 +19,8 @@
 # limitations under the License.
 #
 
+base_instance = "tomcat#{node['tomcat']['base_version']}"
+
 template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
   source 'tomcat-users.xml.erb'
   owner 'root'
@@ -28,5 +30,5 @@ template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
     :users => TomcatCookbook.users,
     :roles => TomcatCookbook.roles,
   )
-  notifies :restart, 'service[tomcat]'
+  notifies :restart, "service[#{base_instance}]"
 end
