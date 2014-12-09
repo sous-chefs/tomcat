@@ -83,11 +83,25 @@ action :configure do
     end
 
     # Make a copy of the init script for this instance
-    execute "/etc/init.d/#{instance}" do
-      command <<-EOH
-        cp /etc/init.d/#{base_instance} /etc/init.d/#{instance}
-        perl -i -pe 's/#{base_instance}/#{instance}/g' /etc/init.d/#{instance}
-      EOH
+    if node['init_package'] == 'systemd' and not platform_family?('debian')
+      template "/usr/lib/systemd/system/#{instance}.service" do
+        source 'tomcat.service.erb'
+        variables ({
+          :instance => instance,
+          :user => new_resource.user,
+          :group => new_resource.group
+        })
+        owner 'root'
+        group 'root'
+        mode '0644'
+      end
+    else
+      execute "/etc/init.d/#{instance}" do
+        command <<-EOH
+          cp /etc/init.d/#{base_instance} /etc/init.d/#{instance}
+          perl -i -pe 's/#{base_instance}/#{instance}/g' /etc/init.d/#{instance}
+        EOH
+      end
     end
   end
 

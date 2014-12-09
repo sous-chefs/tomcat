@@ -1,0 +1,17 @@
+# Systemd unit file for <%= @instance %>
+
+[Unit]
+Description=<%= @instance %> Apache Tomcat Application
+After=syslog.target network.target
+
+[Service]
+Type=forking
+Environment="SERVICE_NAME=<%= @instance %>"
+ExecStart=/usr/sbin/tomcat-sysd start
+ExecStop=/usr/sbin/tomcat-sysd stop
+SuccessExitStatus=143
+User=<%= @user %>
+Group=<%= @group %>
+
+[Install]
+WantedBy=multi-user.target
