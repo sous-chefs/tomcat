@@ -22,12 +22,15 @@ platforms:
 
 - name: centos-6.5
 
+- name: centos-7.0
+
 suites:
 - name: tomcat6
   run_list: ["recipe[tomcat]"]
+  excludes: ["centos-7.0"]
   attributes: {}
 
 - name: tomcat7
   run_list: ["recipe[tomcat]"]
-  excludes: ["ubuntu-10.04", "centos-6.5"]
+  excludes: ["ubuntu-10.04"]
   attributes: {tomcat: {base_version: 7}}

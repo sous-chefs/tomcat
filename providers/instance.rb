@@ -1,5 +1,5 @@
 action :configure do
-  base_instance = "tomcat#{node['tomcat']['base_version']}"
+  base_instance = node['tomcat']['base_instance']
 
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
@@ -33,7 +33,7 @@ action :configure do
     [:base, :home, :config_dir, :log_dir, :work_dir, :context_dir,
      :webapp_dir].each do |attr|
       if not new_resource.instance_variable_get("@#{attr}") and node["tomcat"][attr]
-        new = node["tomcat"][attr].sub("tomcat#{node['tomcat']['base_version']}", "#{instance}")
+        new = node["tomcat"][attr].sub(base_instance, instance)
         new_resource.instance_variable_set("@#{attr}", new)
       end
     end
@@ -118,8 +118,8 @@ action :configure do
     new_resource.java_options = java_options
   end
 
-  case node['platform']
-  when 'centos', 'redhat', 'fedora', 'amazon', 'oracle'
+  case node['platform_family']
+  when 'rhel', 'fedora'
     template "/etc/sysconfig/#{instance}" do
       source 'sysconfig_tomcat6.erb'
       variables ({
@@ -257,11 +257,11 @@ action :configure do
   end
 
   service "#{instance}" do
-    case node['platform']
-    when 'centos', 'redhat', 'fedora', 'amazon'
+    case node['platform_family']
+    when 'rhel', 'fedora'
       service_name "#{instance}"
       supports :restart => true, :status => true
-    when 'debian', 'ubuntu'
+    when 'debian'
       service_name "#{instance}"
       supports :restart => true, :reload => false, :status => true
     when 'smartos'
