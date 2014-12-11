@@ -17,6 +17,11 @@ CATALINA_HOME="<%= @home %>"
 JASPER_HOME="<%= @home %>"
 CATALINA_TMPDIR="<%= @tmp_dir %>"
 
+# If you wish to further customize your tomcat environment,
+# put your own definitions here
+# (i.e. LD_LIBRARY_PATH for some jdbc drivers)
+<%= @custom_env_vars %>
+
 # You can pass some parameters to java here if you wish to
 JAVA_OPTS="<%= @java_options %>"
 
@@ -46,8 +51,4 @@ CATALINA_OPTS="<%= @catalina_options %>"
 
 # Endorse .jar files in this directory
 #JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
-
-# If you wish to further customize your tomcat environment,
-# put your own definitions here
-# (i.e. LD_LIBRARY_PATH for some jdbc drivers)
 

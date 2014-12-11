@@ -4,7 +4,7 @@ action :configure do
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
   # that runs
-  [:catalina_options, :java_options, :use_security_manager, :authbind,
+  [:catalina_options, :java_options, :custom_env_vars, :use_security_manager, :authbind,
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
@@ -116,7 +116,8 @@ action :configure do
         :use_security_manager => new_resource.use_security_manager,
         :tmp_dir => new_resource.tmp_dir,
         :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir
+        :endorsed_dir => new_resource.endorsed_dir,
+		:custom_env_vars => new_resource.custom_env_vars
       })
       owner 'root'
       group 'root'
@@ -134,7 +135,8 @@ action :configure do
         :use_security_manager => new_resource.use_security_manager,
         :tmp_dir => new_resource.tmp_dir,
         :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir
+        :endorsed_dir => new_resource.endorsed_dir,
+		:custom_env_vars => new_resource.custom_env_vars
       })
       owner 'root'
       group 'root'
@@ -164,7 +166,8 @@ action :configure do
         :tmp_dir => new_resource.tmp_dir,
         :authbind => new_resource.authbind,
         :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir
+        :endorsed_dir => new_resource.endorsed_dir,
+		:custom_env_vars => new_resource.custom_env_vars
       })
       owner 'root'
       group 'root'
@@ -187,7 +190,7 @@ action :configure do
         :keystore_file => new_resource.keystore_file,
         :keystore_type => new_resource.keystore_type,
         :tomcat_auth => new_resource.tomcat_auth,
-        :config_dir => new_resource.config_dir,
+        :config_dir => new_resource.config_dir
       })
     owner 'root'
     group 'root'

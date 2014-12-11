@@ -33,6 +33,8 @@ attribute :context_dir,
 attribute :webapp_dir,
   :kind_of => String
 
+attribute :custom_env_vars,
+  :kind_of => String
 attribute :catalina_options,
   :kind_of => String
 attribute :java_options,

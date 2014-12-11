@@ -100,6 +100,7 @@ node['tomcat']['instances'].each do |name, attrs|
     webapp_dir attrs['webapp_dir']
     catalina_options attrs['catalina_options']
     java_options attrs['java_options']
+    custom_env_vars attrs['custom_env_vars']
     use_security_manager attrs['use_security_manager']
     authbind attrs['authbind']
     max_threads attrs['max_threads']
