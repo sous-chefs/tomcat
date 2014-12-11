@@ -58,9 +58,18 @@ Attributes
 * `node["tomcat"]["keytool"]` - path to keytool, used for generating the certificate, location varies by platform
 
 
+Prerequisites
+-------------
+Due to the multitude of Java implementations you might want to use,
+this cookbook does not attempt to address the installation of a
+JRE/JDK. Please make sure that Java has been configured on the machine
+prior to the application any resources or recipes shipped in this
+cookbook.
+
 Usage
 -----
 Simply include the recipe where you want Tomcat installed.
+
 
 Due to the ways that some system init scripts call the configuration, you may wish to set the java options to include `JAVA_OPTS`. As an example for a java app server role:
 
