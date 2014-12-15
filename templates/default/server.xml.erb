@@ -157,27 +157,29 @@
       <!-- Define the default virtual host
            Note: XML Schema validation will not work with Xerces 2.2.
        -->
-      <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true"
-            <% if node['tomcat']['base_version'].to_i < 7 -%>
-            xmlValidation="false" xmlNamespaceAware="false"
-            <% end -%>
-            >
+      <% node['tomcat']['hosts'].each do |c| %>
+      <Host name="<%= c.name %>"  appBase="<%= c.appBase %>"
+          unpackWARs="true" autoDeploy="true"
+          <% if node['tomcat']['base_version'].to_i < 7 -%>
+          xmlValidation="false" xmlNamespaceAware="false"
+          <% end -%>
+          >
+          <% if c.name == 'localhost' -%>
+	        <!-- SingleSignOn valve, share authentication between web applications
+	             Documentation at: /docs/config/valve.html -->
+	        <!--
+	        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+	        -->
 
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
-
-        <!-- Access log processes all example.
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
-        -->
-
+	        <!-- Access log processes all example.
+	             Documentation at: /docs/config/valve.html -->
+	        <!--
+	        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+	               prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
+	        -->
+          <% end -%>
       </Host>
+      <% end %>
     </Engine>
   </Service>
 </Server>
