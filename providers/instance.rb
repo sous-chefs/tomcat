@@ -147,7 +147,7 @@ action :configure do
       group 'root'
       mode '0644'
       #don't want automatic restarts.
-	  notifies :restart, "service[tomcat]"
+	  #notifies :restart, "service[tomcat]"
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
@@ -277,6 +277,7 @@ action :configure do
     when 'opensuse'
       service_name "tomcat"
       supports :restart => true, :status => true
+	  init_command "/usr/sbin/rctomcat"
     when 'debian', 'ubuntu'
       service_name "#{instance}"
       supports :restart => true, :reload => false, :status => true
