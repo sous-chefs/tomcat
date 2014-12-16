@@ -1,5 +1,10 @@
 action :configure do
-  base_instance = "tomcat#{node['tomcat']['base_version']}"
+  case node['platform']
+  when 'opensuse'
+  	base_instance = "tomcat"
+  else
+  	base_instance = "tomcat#{node['tomcat']['base_version']}"
+  end
 
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
@@ -142,7 +147,7 @@ action :configure do
       group 'root'
       mode '0644'
       #don't want automatic restarts.
-	  #notifies :restart, "service[tomcat]"
+	  notifies :restart, "service[tomcat]"
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
