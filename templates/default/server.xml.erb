@@ -77,6 +77,9 @@
     <Connector port="<%= @port %>" protocol="HTTP/1.1"
                connectionTimeout="20000"
                URIEncoding="UTF-8"
+             <% if @listen_address -%>
+               address="<%= @listen_address %>"
+             <% end -%>            
              <% if @proxy_port -%>
                proxyPort="<%= @proxy_port %>"
              <% end -%>
@@ -91,6 +94,9 @@
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
+              <% if @listen_address -%>
+               address="<%= @listen_address %>"
+              <% end -%>
                port="<%= @port %>" protocol="HTTP/1.1"
                connectionTimeout="20000"
              <% if @ssl_port -%>
@@ -103,6 +109,9 @@
          connector should be using the OpenSSL style configuration
          described in the APR documentation -->
     <Connector port="<%= @ssl_port %>" protocol="HTTP/1.1" SSLEnabled="true"
+             <% if @listen_address -%>
+               address="<%= @listen_address %>"
+             <% end -%>
              <% if @ssl_proxy_port -%>
                proxyPort="<%= @ssl_proxy_port %>"
              <% end -%>
@@ -117,6 +126,9 @@
   <% if @ajp_port -%>
     <!-- Define an AJP 1.3 Connector on port <%= @ajp_port %> -->
     <Connector port="<%= @ajp_port %>"
+              <% if @listen_address -%>
+               address="<%= @listen_address %>"
+              <% end -%>
                protocol="AJP/1.3"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ssl_port %>" />

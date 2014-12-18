@@ -69,6 +69,7 @@ node.set_unless['tomcat']['truststore_password'] = secure_password
 
 if node['tomcat']['run_base_instance']
   tomcat_instance "base" do
+    listen_address node['tomcat']['listen_address']
     port node['tomcat']['port']
     proxy_port node['tomcat']['proxy_port']
     ssl_port node['tomcat']['ssl_port']
@@ -80,6 +81,7 @@ end
 
 node['tomcat']['instances'].each do |name, attrs|
   tomcat_instance "#{name}" do
+    listen_address attrs['listen_address']
     port attrs['port']
     proxy_port attrs['proxy_port']
     ssl_port attrs['ssl_port']

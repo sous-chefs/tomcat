@@ -7,6 +7,8 @@ attribute :name,
   :kind_of => String,
   :required => true,
   :name_attribute => true
+attribute :listen_address,
+  :kind_of => String
 attribute :port,
   :kind_of => Fixnum
 attribute :proxy_port,
