@@ -60,6 +60,9 @@ CATALINA_OPTS="<%= @catalina_options %>"
 JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
 
 # If you wish to further customize your tomcat environment,
-# put your own definitions here
-# (i.e. LD_LIBRARY_PATH for some jdbc drivers)
-
+# put your own definitions in node["tomcat"]["environment"]
+# (e.g. node.default["tomcat"]["environment"]["LD_LIBRARY_PATH"]="/usr/local/tomcat6/lib" )
+<% node['tomcat']['environment'].sort.each do |key, value| %>
+<% next if value.nil? -%>
+<%= key %>="<%= value %>"
+<% end %>

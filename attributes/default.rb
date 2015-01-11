@@ -48,6 +48,10 @@ default['tomcat']['tomcat_auth'] = 'true'
 default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
 
+# this hash can hold additional environment variables to 
+# be added to the /etc/sysconfig or setenv.sh files. 
+default['tomcat']['environment'] = {}
+
 case node['platform']
 
 when 'centos', 'redhat', 'fedora', 'amazon', 'scientific', 'oracle'
