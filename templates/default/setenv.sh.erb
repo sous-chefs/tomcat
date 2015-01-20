@@ -13,6 +13,6 @@ export CATALINA_OPTS='<%= node["tomcat"]["catalina_options"] %>'
 export CATALINA_PID='<%= node["tomcat"]["log_dir"] %>/catalina.pid'
 
 # User-defined Environment variables
-<% @node["tomcat"]["environment"].each do |env| -%>
-<% env['VariableName']-%>='<% env['VariableValue']-%>'
+<% @node["tomcat"]["environment"].each do |envvar| -%>
+<%= envvar['VariableName']-%>='<%= envvar['VariableValue']-%>'
 <% end -%>

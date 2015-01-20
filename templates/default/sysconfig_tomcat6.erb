@@ -64,6 +64,7 @@ JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
 # (i.e. LD_LIBRARY_PATH for some jdbc drivers)
 
 # User-defined Environment variables
-<% @node["tomcat"]["environment"].each do |env| -%>
-<% env['VariableName']-%>="<% env['VariableValue']-%>"
+<% @node["tomcat"]["environment"].each do |envvar| -%>
+<%= envvar['VariableName']-%>="<%= envvar['VariableValue']-%>"
 <% end -%>
+
