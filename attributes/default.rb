@@ -47,6 +47,7 @@ default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
+default['tomcat']['environment'] = []
 
 case node['platform']
 

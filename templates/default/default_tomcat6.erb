@@ -68,3 +68,8 @@ CATALINA_OPTS="<%= @catalina_options %>"
 
 # Endorse .jar files in this directory
 JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
+
+#Environment variables
+<% @node["tomcat"]["environment"].each do |env| -%>
+<% env['VariableName']-%>="<% env['VariableValue']-%>"
+<% end -%>
