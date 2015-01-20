@@ -33,6 +33,7 @@ Attributes
 * `node["tomcat"]["tomcat_auth"]` -
 * `node["tomcat"]["instances"]` - A dictionary defining additional tomcat instances to run.
 * `node["tomcat"]["run_base_instance"]` - Whether or not to run the "base" tomcat instance, default `true`.
+* `node["tomcat"]["environment"]` - Environment variables to be setup when starting Tomcat
 * `node["tomcat"]["user"]` -
 * `node["tomcat"]["group"]` -
 * `node["tomcat"]["home"]` -
