@@ -51,7 +51,7 @@ SECURITY_MANAGER="<%= @use_security_manager %>"
 #SHUTDOWN_VERBOSE="false"
 
 # Set the TOMCAT_PID location
-#CATALINA_PID="/var/run/tomcat6.pid"
+CATALINA_PID="/var/run/<%= @instance %>.pid"
 
 # JVM parameters passed only for start and run commands
 CATALINA_OPTS="<%= @catalina_options %>"
