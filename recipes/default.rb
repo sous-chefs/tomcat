@@ -18,7 +18,7 @@
 #
 
 # required for the secure_password method from the openssl cookbook
-::Chef::Recipe.send(:include, Chef::OpenSSL::Password)
+::Chef::Recipe.send(:include, OpenSSLCookbook::Password)
 
 
 tomcat_pkgs = value_for_platform(
