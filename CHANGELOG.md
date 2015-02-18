@@ -2,6 +2,10 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.17.1 (2015-02-17)
+--------------------
+- updating to use the latest openssl
+
 v0.17.0 (2014-12-11)
 --------------------
 - Removed installation of Java
