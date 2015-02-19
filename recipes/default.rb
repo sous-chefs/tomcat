@@ -75,6 +75,7 @@ if node['tomcat']['run_base_instance']
     ssl_proxy_port node['tomcat']['ssl_proxy_port']
     ajp_port node['tomcat']['ajp_port']
     shutdown_port node['tomcat']['shutdown_port']
+    write_access_logs node['tomcat']['write_access_logs']
   end
 end
 
@@ -86,6 +87,7 @@ node['tomcat']['instances'].each do |name, attrs|
     ssl_proxy_port attrs['ssl_proxy_port']
     ajp_port attrs['ajp_port']
     shutdown_port attrs['shutdown_port']
+    write_access_logs attrs['write_access_logs']
     config_dir attrs['config_dir']
     log_dir attrs['log_dir']
     work_dir attrs['work_dir']

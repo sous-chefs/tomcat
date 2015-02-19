@@ -84,3 +84,5 @@ attribute :lib_dir,
   :kind_of => String
 attribute :endorsed_dir,
   :kind_of => String
+attribute :write_access_logs,
+  :kind_of => [ TrueClass, FalseClass ]
