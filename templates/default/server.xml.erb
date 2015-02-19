@@ -170,12 +170,12 @@
         <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
         -->
 
+        <% if @write_access_logs -%>
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="<%= node["tomcat"]["log_dir"] %>"
                prefix="localhost_access_log." suffix=".txt" pattern="common" resolveHosts="false"/>
-        -->
+        <% end -%>
 
       </Host>
     </Engine>
