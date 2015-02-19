@@ -2,6 +2,10 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.17.2 (2015-02-18)
+--------------------
+- reverting OpenSSL module namespace change
+
 v0.17.1 (2015-02-17)
 --------------------
 - updating to use the latest openssl
