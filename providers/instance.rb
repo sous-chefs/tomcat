@@ -8,7 +8,7 @@ action :configure do
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
-   :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
+   :group, :tmp_dir, :lib_dir, :endorsed_dir, :server_name].each do |attr|
     if not new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
@@ -169,6 +169,7 @@ action :configure do
         :keystore_type => new_resource.keystore_type,
         :tomcat_auth => new_resource.tomcat_auth,
         :config_dir => new_resource.config_dir,
+        :server_name => new_resource.server_name
       })
     owner 'root'
     group 'root'

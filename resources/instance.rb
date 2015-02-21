@@ -69,6 +69,8 @@ attribute :loglevel,
 attribute :tomcat_auth,
   :kind_of => String,
   :equal_to => ['true', 'false']
+attribute :server_name,
+  :kind_of => String
 
 attribute :user,
   :kind_of => String
