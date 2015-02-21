@@ -74,7 +74,11 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL HTTP/1.1 Connector on port <%= @port %>
     -->
+    <% if @address -%>
+    <Connector address="<%= @address %>" port="<%= @port %>" protocol="HTTP/1.1"
+    <% else -%>
     <Connector port="<%= @port %>" protocol="HTTP/1.1"
+    <% end -%>
                connectionTimeout="20000"
                URIEncoding="UTF-8"
              <% if @proxy_port -%>
@@ -102,7 +106,11 @@
          This connector uses the JSSE configuration, when using APR, the
          connector should be using the OpenSSL style configuration
          described in the APR documentation -->
+    <% if @address -%>
+    <Connector address="<%= @address %>" port="<%= @ssl_port %>" protocol="HTTP/1.1" SSLEnabled="true"
+    <% else -%>
     <Connector port="<%= @ssl_port %>" protocol="HTTP/1.1" SSLEnabled="true"
+    <% end -%>
              <% if @ssl_proxy_port -%>
                proxyPort="<%= @ssl_proxy_port %>"
              <% end -%>
@@ -116,7 +124,11 @@
 
   <% if @ajp_port -%>
     <!-- Define an AJP 1.3 Connector on port <%= @ajp_port %> -->
+    <% if @address -%>
+    <Connector address="<%= @address %>" port="<%= @ajp_port %>"
+    <% else -%>
     <Connector port="<%= @ajp_port %>"
+    <% end -%>
                protocol="AJP/1.3"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ssl_port %>" />

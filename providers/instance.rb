@@ -12,7 +12,7 @@ action :configure do
     if not new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
-  end 
+  end
 
   if new_resource.name == 'base'
     instance = base_instance
@@ -157,6 +157,7 @@ action :configure do
   template "#{new_resource.config_dir}/server.xml" do
     source 'server.xml.erb'
       variables ({
+        :address => new_resource.address,
         :port => new_resource.port,
         :proxy_port => new_resource.proxy_port,
         :ssl_port => new_resource.ssl_port,
