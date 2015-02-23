@@ -2,6 +2,10 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.17.3 (2015-02-22)
+--------------------
+- Fix package names and directories for Tomcat 7 on RHEL
+
 v0.17.2 (2015-02-18)
 --------------------
 - reverting OpenSSL module namespace change
