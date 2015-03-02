@@ -45,6 +45,7 @@ Attributes
 * `node["tomcat"]["webapp_dir"]` -
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
+* `node["tomcat"]["global_naming_resources"]` - Add Resource tags to GlobalNamingResources
 
 ### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
