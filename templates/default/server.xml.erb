@@ -51,6 +51,12 @@
               description="User database that can be updated and saved"
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
               pathname="conf/tomcat-users.xml" />
+
+<% node['tomcat']['global_naming_resources'].each do |r| %>
+    <Resource <% r.each do |k, v| %><%=k%>="<%=v%>"              
+              <% end %>/>
+<% end %>
+
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
