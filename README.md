@@ -58,9 +58,18 @@ Attributes
 * `node["tomcat"]["keytool"]` - path to keytool, used for generating the certificate, location varies by platform
 
 
+Prerequisites
+-------------
+Due to the multitude of Java implementations you might want to use,
+this cookbook does not attempt to address the installation of a
+JRE/JDK. Please make sure that Java has been configured on the machine
+prior to the application any resources or recipes shipped in this
+cookbook.
+
 Usage
 -----
 Simply include the recipe where you want Tomcat installed.
+
 
 Due to the ways that some system init scripts call the configuration, you may wish to set the java options to include `JAVA_OPTS`. As an example for a java app server role:
 
@@ -111,7 +120,7 @@ Managing Tomcat Users
 ---------------------
 The recipe `tomcat::users` included in this cookbook is used for managing Tomcat users. The recipe adds users and roles to the `tomcat-users.xml` conf file.
 
-Users are defined by creating a `tomcat_users` data bag and placing [Encrypted Data Bag Items](http://docs.opscode.com/chef/essentials_data_bags.html) in that data bag. Each encrypted data bag item requires an 'id', 'password', and a 'roles' field. The data bag key is retrieved from the default location `/etc/chef/encrypted_data_bag_secret`.
+Users are defined by creating a `tomcat_users` data bag and placing [Encrypted Data Bag Items](http://docs.chef.io/chef/essentials_data_bags.html) in that data bag. Each encrypted data bag item requires an 'id', 'password', and a 'roles' field. The data bag key is retrieved from the default location `/etc/chef/encrypted_data_bag_secret`.
 
 ```javascript
 {
@@ -129,14 +138,14 @@ If you are a Chef Solo user the data bag items are not required to be encrypted 
 
 License & Authors
 -----------------
-- Author: Seth Chisamore (<schisamo@opscode.com>)
+- Author: Seth Chisamore (<schisamo@chef.io>)
 - Author: Jamie Winsor (<jamie@vialstudios.com>)
 - Author: Phillip Goldenburg (<phillip.goldenburg@sailpoint.com>)
 - Auther: Mariano Cortesi (<mariano@zauberlabs.com>)
 - Author: Brendan O'Donnell (<brendan.james.odonnell@gmail.com>)
 
 ```text
-Copyright:: 2010-2013, Opscode, Inc
+Copyright:: 2010-2013, Chef Software, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

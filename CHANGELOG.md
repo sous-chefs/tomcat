@@ -2,6 +2,22 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.17.3 (2015-02-22)
+--------------------
+- Fix package names and directories for Tomcat 7 on RHEL
+
+v0.17.2 (2015-02-18)
+--------------------
+- reverting OpenSSL module namespace change
+
+v0.17.1 (2015-02-17)
+--------------------
+- updating to use the latest openssl
+
+v0.17.0 (2014-12-11)
+--------------------
+- Removed installation of Java
+
 v0.16.2 (2014-08-06)
 --------------------
 - #80 - Fix broken server.xml when not using ssl
@@ -38,12 +54,12 @@ v0.15.6 (2014-03-12)
 v0.15.4 (2014-02-18)
 --------------------
 ### Improvement
-- **[COOK-4258](https://tickets.opscode.com/browse/COOK-4258)** - tomcat: support for Apache mod_jk load balancing with jvmRoute
-- **[COOK-3370](https://tickets.opscode.com/browse/COOK-3370)** - Don't install the tomcat manager apps package if we're not going to use it
+- **[COOK-4258](https://tickets.chef.io/browse/COOK-4258)** - tomcat: support for Apache mod_jk load balancing with jvmRoute
+- **[COOK-3370](https://tickets.chef.io/browse/COOK-3370)** - Don't install the tomcat manager apps package if we're not going to use it
 
 ### Bug
-- **[COOK-4257](https://tickets.opscode.com/browse/COOK-4257)** - tomcat: broken on SmartOS SmartMachine images 13.3.0+
-- **[COOK-4097](https://tickets.opscode.com/browse/COOK-4097)** - default["tomcat"]["keytool"] is set to non-existent file on Debian/Ubuntu
+- **[COOK-4257](https://tickets.chef.io/browse/COOK-4257)** - tomcat: broken on SmartOS SmartMachine images 13.3.0+
+- **[COOK-4097](https://tickets.chef.io/browse/COOK-4097)** - default["tomcat"]["keytool"] is set to non-existent file on Debian/Ubuntu
 
 
 v0.15.2
@@ -59,22 +75,22 @@ v0.15.2
 v0.15.0
 -------
 ### Improvement
-- **[COOK-3565](https://tickets.opscode.com/browse/COOK-3565)** - Make server.xml connectors maxThreads params configurable via attributes
+- **[COOK-3565](https://tickets.chef.io/browse/COOK-3565)** - Make server.xml connectors maxThreads params configurable via attributes
 
 ### New Feature
-- **[COOK-3333](https://tickets.opscode.com/browse/COOK-3333)** - Add SmartOS support
+- **[COOK-3333](https://tickets.chef.io/browse/COOK-3333)** - Add SmartOS support
 
 
 v0.14.4
 -------
 ### Bug
-- **[COOK-3378](https://tickets.opscode.com/browse/COOK-3378)** - Use keystore in the port 8443 connector
-- **[COOK-3204](https://tickets.opscode.com/browse/COOK-3204)** - Fix hard-coded path to `tomcat-users.xml`
-- **[COOK-3203](https://tickets.opscode.com/browse/COOK-3203)** - Support "reload" on Ubuntu 12.04
+- **[COOK-3378](https://tickets.chef.io/browse/COOK-3378)** - Use keystore in the port 8443 connector
+- **[COOK-3204](https://tickets.chef.io/browse/COOK-3204)** - Fix hard-coded path to `tomcat-users.xml`
+- **[COOK-3203](https://tickets.chef.io/browse/COOK-3203)** - Support "reload" on Ubuntu 12.04
 
 ### Improvement
-- **[COOK-3195](https://tickets.opscode.com/browse/COOK-3195)** - Fix error for creating endorsed dir
-- **[COOK-3083](https://tickets.opscode.com/browse/COOK-3083)** - Add an attribute to lib directory
+- **[COOK-3195](https://tickets.chef.io/browse/COOK-3195)** - Fix error for creating endorsed dir
+- **[COOK-3083](https://tickets.chef.io/browse/COOK-3083)** - Add an attribute to lib directory
 
 v0.14.2
 -------
