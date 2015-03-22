@@ -52,8 +52,8 @@
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
               pathname="conf/tomcat-users.xml" />
 
-<% node['tomcat']['global_naming_resources'].each do |r| %>
-    <Resource <% r.each do |k, v| %><%=k%>="<%=v%>"              
+<% node['tomcat']['global_naming_resources'].each do |_,r| %>
+    <Resource <% r.each do |k, v| %><%=k%>="<%=v%>"
               <% end %>/>
 <% end %>
 
