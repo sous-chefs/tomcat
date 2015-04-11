@@ -45,7 +45,7 @@ action :configure do
         recursive true
       end
     end
-    [:log_dir, :work_dir, :webapp_dir].each do |attr|
+    [:log_dir, :work_dir, :webapp_dir, :tmp_dir].each do |attr|
       directory new_resource.instance_variable_get("@#{attr}") do
         mode '0755'
         recursive true
@@ -108,13 +108,30 @@ action :configure do
       end
     end
     
-    # Copy origin tomcat startup script to instance one, since its name is hardcoded in the init one
     if platform_family?('rhel')
+      # Copy origin tomcat startup script to instance one, since its name is hardcoded in the init one
       file "/usr/sbin/#{instance}" do
         content ::File.open("/usr/sbin/#{base_instance}").read
         mode 0755
         backup false
         action :create_if_missing
+      end
+      # Create config which is required by tomcat start-up script
+      directory "/etc/#{instance}" do
+        action :create
+      end
+      template "/etc/#{instance}/#{instance}.conf" do
+        source "tomcat_conf.erb"
+        variables ({
+          :instance => instance,
+          :user => new_resource.user,
+          :catalina_base => new_resource.base,
+          :catalina_home => new_resource.home,
+          :catalina_temp => new_resource.tmp_dir
+        })
+        owner 'root'
+        group 'root'
+        mode 0644
       end
     end
   end
