@@ -60,12 +60,16 @@ action :configure do
         to "#{new_resource.base}"
       end
     end
-
-    # config_dir needs symlinks to the files we're not going to create
+    
+    # Copy config files from original config dir to our new config folder with new ownership
     ['catalina.policy', 'catalina.properties', 'context.xml',
      'tomcat-users.xml', 'web.xml'].each do |file|
-      link "#{new_resource.config_dir}/#{file}" do
-        to "#{node['tomcat']['config_dir']}/#{file}"
+      file "#{new_resource.config_dir}/#{file}" do
+        owner new_resource.user
+        group new_resource.group
+        mode 0660
+        content ::File.open("#{node['tomcat']['config_dir']}/#{file}").read
+        action :create
       end
     end
 
