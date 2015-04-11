@@ -107,6 +107,16 @@ action :configure do
         EOH
       end
     end
+    
+    # Copy origin tomcat startup script to instance one, since its name is hardcoded in the init one
+    if platform_family?('rhel')
+      file "/usr/sbin/#{instance}" do
+        content ::File.open("/usr/sbin/#{base_instance}").read
+        mode 0755
+        backup false
+        action :create_if_missing
+      end
+    end
   end
 
   # Even for the base instance, the OS package may not make this directory
