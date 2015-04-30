@@ -1,7 +1,10 @@
 AllCops:
   Excludes:
     - vendor/**
+    - metadata.rb
 
+AbcSize:
+  Enabled: false
 ClassLength:
   Enabled: false
 Documentation:

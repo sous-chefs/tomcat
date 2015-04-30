@@ -72,8 +72,8 @@ class Chef
         users = if Chef::Config[:solo]
                   data_bag = Chef::DataBag.load(USERS_DATA_BAG)
                   data_bag.keys.map do |name|
-            Chef::DataBagItem.load(USERS_DATA_BAG, name)
-          end
+                    Chef::DataBagItem.load(USERS_DATA_BAG, name)
+                  end
                 else
                   begin
                     items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
@@ -83,18 +83,15 @@ class Chef
                   end
                   decrypt_items(items)
                 end
-
         users.each { |user| validate_user_item(user) }
         users
       end
 
       def validate_user_item(user)
-        if user['id'].empty? || user['id'].nil? &&
-            user['password'].empty? || user['password'].nil? &&
-            user['roles'].nil? || !user['roles'].is_a?(Array)
-
-          fail InvalidUserDataBagItem.new(user), 'Invalid User Databag Item'
-        end
+        id = user['id'].empty? || user['id'].nil?
+        password = user['password'].empty? || user['password'].nil?
+        roles = user['roles'].nil? || !user['roles'].is_a?(Array)
+        fail InvalidUserDataBagItem.new(user), 'Invalid User Databag Item' if id && password && roles
       end
 
       def decrypt_items(items)
