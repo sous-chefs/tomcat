@@ -1,10 +1,8 @@
 AllCops:
-  Excludes:
+  Exclude:
     - vendor/**
     - metadata.rb
 
-AbcSize:
-  Enabled: false
 ClassLength:
   Enabled: false
 Documentation:
@@ -14,6 +12,8 @@ Encoding:
 LineLength:
   Enabled: false
 MethodLength:
+  Enabled: false
+Next:
   Enabled: false
 TrailingComma:
   EnforcedStyleForMultiline: comma
