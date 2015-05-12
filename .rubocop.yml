@@ -1,6 +1,6 @@
 AllCops:
   Exclude:
-    - vendor/**
+    - vendor/**/*
     - metadata.rb
 
 ClassLength:
