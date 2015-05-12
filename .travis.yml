@@ -14,8 +14,8 @@ before_install:
 - echo `md5sum ~/.ssh/id_joyent.pem`
 - ls -la ~/.ssh
 script:
-- bundle exec rake travis --trace
-#- bundle exec kitchen test $KITCHEN_INSTANCE
+#- bundle exec rake travis --trace
+- bundle exec kitchen test $KITCHEN_INSTANCE
 after_script:
 - bundle exec kitchen destroy
 env:
