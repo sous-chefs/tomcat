@@ -3,6 +3,8 @@ AllCops:
     - vendor/**/*
     - metadata.rb
 
+Metrics/AbcSize:
+  Enabled: false
 ClassLength:
   Enabled: false
 Documentation:
