@@ -20,6 +20,7 @@ after_script:
 - bundle exec kitchen destroy
 env:
   global:
+  - KITCHEN_LOCAL_YAML=.kitchen.cloud.yml
   - secure: Mq1FvVacCAmf6kKa+k4IMVbcWnA8l+s6eG7OF7BorrA1rpBZsKqDwQ+n+b+sdszYv83WL33wFTtBXkfvCBxrWa/lJEW/ZrFyZ5zMOfW/yUmlQqGkmhH6hlYod9E6l+QjE+0b5m5r7P0zMe0ojCitVAhUrrSdhCjMFpp3LjC5wpw=
   - secure: 0bNb5s685ESP7ghMZbX2e4PUTgNwn2tcgqhEiNZSBg8HpTHb2xpCaEN3OMUccBf+OS90NtRnIzSZ1b8z5xTJrRMAAEkJYAWt+rsOq/hAmyXQp1T6b5XJwE4W+ueHhC8n36eZ5KxWAF6Eapyd50eDgJ/aBKnD6kw2d/d+F3l/MY4=
   - secure: pHCA4AQaz67RCPcdJ7O7V36pP8FfmCRoA0eV/8TxKJXmdhfc/0DdQ4X8CDQKyMvtokGM13vfAWqQXzrp6BsZ0Nr2KLCMmJpSm3q0MhOC+COW+8tKYC2VjO64pdWpziOgCBZnRCpK4CsGYucPIjUg91lcUEJRgopDOKfkITpNt7o=
