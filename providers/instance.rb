@@ -72,7 +72,7 @@ action :configure do
     # The base also needs a bunch of to symlinks inside it
     ['bin', 'lib'].each do |dir|
       link "#{new_resource.base}/#{dir}" do
-        to "#{node['tomcat']['base']}/#{dir}"
+        to "#{node['tomcat']['home']}/#{dir}"
       end
     end
     {'conf' => 'config_dir', 'logs' => 'log_dir', 'temp' => 'tmp_dir',
