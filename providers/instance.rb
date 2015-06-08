@@ -12,7 +12,7 @@ action :configure do
     if not new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
-  end 
+  end
 
   if new_resource.name == 'base'
     instance = base_instance
@@ -183,6 +183,11 @@ action :configure do
         :keystore_type => new_resource.keystore_type,
         :tomcat_auth => new_resource.tomcat_auth,
         :config_dir => new_resource.config_dir,
+        :directory => new_resource.directory
+        :pattern => new_resource.pattern
+        :fileDateFormat => new_resource.fileDateFormat
+        :prefix => new_resource.prefix
+        :suffix => new_resource.suffix
       })
     owner 'root'
     group 'root'

@@ -106,5 +106,10 @@ node['tomcat']['instances'].each do |name, attrs|
     tmp_dir attrs['tmp_dir']
     lib_dir attrs['lib_dir']
     endorsed_dir attrs['endorsed_dir']
+    directory attrs['logs']['directory']
+    pattern attrs['logs']['pattern']
+    fileDateFormat attrs['logs']['fileDateFormat']
+    prefix attrs['logs']['prefix']
+    suffix attrs['logs']['suffix']
   end
 end
