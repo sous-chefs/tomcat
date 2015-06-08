@@ -179,11 +179,11 @@
         -->
 
         <Valve className="org.apache.catalina.valves.AccessLogValve"
-        directory='<%= node['tomcat']['logs']['directory'] %>'
-        pattern='<%= node['tomcat']['logs']['pattern'] %>'
-        fileDateFormat='<%= node['tomcat']['logs']['fileDateFormat'] %>'
-        prefix='<%= node['tomcat']['logs']['prefix'] %>'
-        suffix='<%= node['tomcat']['logs']['suffix'] %>'
+        directory='<%= @directory %>'
+        pattern='<%= @pattern %>'
+        fileDateFormat='<%= @fileDateFormat %>'
+        prefix='<%= @prefix %>'
+        suffix='<%= @suffix %>'
         />
 
       </Host>
