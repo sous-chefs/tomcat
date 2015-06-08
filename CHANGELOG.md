@@ -2,6 +2,10 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.17.4 (2015-02-22)
+--------------------
+- Add more vars to server.xml template
+
 v0.17.3 (2015-02-22)
 --------------------
 - Fix package names and directories for Tomcat 7 on RHEL
