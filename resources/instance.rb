@@ -84,3 +84,24 @@ attribute :lib_dir,
   :kind_of => String
 attribute :endorsed_dir,
   :kind_of => String
+
+attribute :directory,
+  :kind_of => String
+  :required => true
+  :default => 'logs'
+attribute :pattern,
+  :kind_of => String
+  :required => true
+  :default => 'common'
+attribute :fileDateFormat,
+  :kind_of => String
+  :required => true
+  :default => 'yyyy-MM-dd'
+attribute :prefix,
+  :kind_of => String
+  :required => true
+  :default => 'localhost_access_log.'
+attribute :suffix,
+  :kind_of => String
+  :required => true
+  :default => '.txt'
