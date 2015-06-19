@@ -106,5 +106,6 @@ node['tomcat']['instances'].each do |name, attrs|
     tmp_dir attrs['tmp_dir']
     lib_dir attrs['lib_dir']
     endorsed_dir attrs['endorsed_dir']
+    uriencoding attrs['uriencoding']
   end
 end
