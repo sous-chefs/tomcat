@@ -120,6 +120,7 @@
                protocol="AJP/1.3"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ssl_port %>" />
+               packetSize="<%= @ajp_packetsize %>"
   <% end -%>
 
     <!-- An Engine represents the entry point (within Catalina) that processes

@@ -50,7 +50,7 @@ default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
 default['tomcat']['packages'] = ["tomcat#{node['tomcat']['base_version']}"]
 default['tomcat']['deploy_manager_packages'] = ["tomcat#{node['tomcat']['base_version']}-admin"]
-
+default['tomcat']['ajp_packetsize'] = '8192'
 case node['platform_family']
 
 when 'rhel', 'fedora'
