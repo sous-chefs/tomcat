@@ -99,7 +99,7 @@ action :configure do
       execute "/etc/init.d/#{instance}" do
         command <<-EOH
           cp -av /etc/init.d/#{base_instance} /etc/init.d/#{instance}
-          sed -i -e 's/\(^# Provides: \)#{base_instance}/\1#{instance}/g; s/^# #{base_instance}/# #{instance}' /etc/init.d/#{instance}
+          sed -i -e 's/\\(^# Provides: \\)#{base_instance}/\\1#{instance}/g; s/^# #{base_instance}/# #{instance}/g;' /etc/init.d/#{instance}
         EOH
       end
     end
