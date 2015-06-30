@@ -71,7 +71,6 @@ if node['tomcat']['run_base_instance']
 end
 
 node['tomcat']['instances'].each do |name, attrs|
-  puts "#{name} ::::::::: #{attrs}"
   tomcat_instance "#{name}" do
     port attrs['port']
     proxy_port attrs['proxy_port']
