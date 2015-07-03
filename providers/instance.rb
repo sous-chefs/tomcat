@@ -19,7 +19,7 @@ action :configure do
 
     # If they weren't set explicitly, set these paths to the default
     [:base, :home, :config_dir, :log_dir, :work_dir, :context_dir,
-     :webapp_dir].each do |attr|
+     :webapp_dir, :tmp_dir].each do |attr|
       if not new_resource.instance_variable_get("@#{attr}")
         new_resource.instance_variable_set("@#{attr}", node["tomcat"][attr])
       end
@@ -31,7 +31,7 @@ action :configure do
     # If they weren't set explicitly, set these paths to the default with
     # the base instance name replaced with our own
     [:base, :home, :config_dir, :log_dir, :work_dir, :context_dir,
-     :webapp_dir].each do |attr|
+     :webapp_dir, :tmp_dir].each do |attr|
       if not new_resource.instance_variable_get("@#{attr}") and node["tomcat"][attr]
         new = node["tomcat"][attr].sub(base_instance, instance)
         new_resource.instance_variable_set("@#{attr}", new)
@@ -45,7 +45,7 @@ action :configure do
         recursive true
       end
     end
-    [:log_dir, :work_dir, :webapp_dir].each do |attr|
+    [:log_dir, :work_dir, :webapp_dir, :tmp_dir].each do |attr|
       directory new_resource.instance_variable_get("@#{attr}") do
         mode '0755'
         recursive true
