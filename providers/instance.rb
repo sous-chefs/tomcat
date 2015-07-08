@@ -106,7 +106,7 @@ action :configure do
             tomcat=tomcat
           fi
           cp -av /etc/init.d/${tomcat} /etc/init.d/#{instance}
-          sed -i -e 's/\\(^# Provides: \\)${tomcat}/\\1#{instance}/g; s/^# ${tomcat}/# #{instance}/g;' /etc/init.d/#{instance}
+          sed -i -e "s/\\(^# Provides: \\)${tomcat}/\\1#{instance}/g; s/^# ${tomcat}/# #{instance}/g;" /etc/init.d/#{instance}
         EOH
       end
     end
