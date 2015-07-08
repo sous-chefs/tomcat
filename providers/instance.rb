@@ -96,10 +96,17 @@ action :configure do
         mode '0644'
       end
     else
-      execute "/etc/init.d/#{instance}" do
-        command <<-EOH
-          cp -av /etc/init.d/#{base_instance} /etc/init.d/#{instance}
-          sed -i -e 's/\\(^# Provides: \\)#{base_instance}/\\1#{instance}/g; s/^# #{base_instance}/# #{instance}/g;' /etc/init.d/#{instance}
+      bash "/etc/init.d/#{instance}" do
+        user 'root'
+        group 'root'
+        code <<-EOH
+          if [[ -e /etc/init.d/tomcat6 && #{node["tomcat"]["base_version"].to_i} -eq 6]]; then
+            tomcat=tomcat6
+          else
+            tomcat=tomcat
+          fi
+          cp -av /etc/init.d/${tomcat} /etc/init.d/#{instance}
+          sed -i -e 's/\\(^# Provides: \\)${tomcat}/\\1#{instance}/g; s/^# ${tomcat}/# #{instance}/g;' /etc/init.d/#{instance}
         EOH
       end
     end
