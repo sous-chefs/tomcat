@@ -100,7 +100,7 @@ action :configure do
         user 'root'
         group 'root'
         code <<-EOH
-          if [[ -e /etc/init.d/tomcat6 && #{node["tomcat"]["base_version"].to_i} -eq 6]]; then
+          if [[ -e /etc/init.d/tomcat6 && #{node["tomcat"]["base_version"].to_i} -eq 6 ]]; then
             tomcat=tomcat6
           else
             tomcat=tomcat
