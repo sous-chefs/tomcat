@@ -56,7 +56,7 @@ Attributes
 * `node["tomcat"]["truststore_file"]` - location of the file where the SSL truststore is located
 * `node["tomcat"]["certificate_dn"]` - DN for the certificate
 * `node["tomcat"]["keytool"]` - path to keytool, used for generating the certificate, location varies by platform
-
+* `node["tomcat"]["keytool_algorithm"]` - Algorithm to use to generate the certificate.  Defaults to RSA.  
 
 Prerequisites
 -------------

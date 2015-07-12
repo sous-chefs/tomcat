@@ -12,7 +12,7 @@ action :configure do
     if not new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
-  end 
+  end
 
   if new_resource.name == 'base'
     instance = base_instance
@@ -207,7 +207,8 @@ action :configure do
          -keystore "#{new_resource.config_dir}/#{new_resource.keystore_file}" \
          -storepass "#{node['tomcat']['keystore_password']}" \
          -keypass "#{node['tomcat']['keystore_password']}" \
-         -dname "#{node['tomcat']['certificate_dn']}"
+         -dname "#{node['tomcat']['certificate_dn']}" \
+         -keyalg "#{['tomcat']['keytool_algorithm']}"
       EOH
       umask 0007
       creates "#{new_resource.config_dir}/#{new_resource.keystore_file}"
