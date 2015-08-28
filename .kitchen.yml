@@ -1,5 +1,7 @@
 driver:
   name: vagrant
+  network:
+    - ["forwarded_port", {guest: 8080, host: 8181}]
 
 driver_config:
   require_chef_omnibus: true
@@ -31,6 +33,12 @@ suites:
   attributes: {}
 
 - name: tomcat7
-  run_list: ["recipe[tomcat]"]
+  run_list:
+   - recipe[java]
+   - recipe[tomcat]
   excludes: ["ubuntu-10.04"]
-  attributes: {tomcat: {base_version: 7}}
+  attributes:
+    java:
+      accept_license_agreement: true
+    tomcat:
+      base_version: 7
