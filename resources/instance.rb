@@ -9,8 +9,17 @@ attribute :name,
   :name_attribute => true
 attribute :port,
   :kind_of => Fixnum
+
 attribute :proxy_port,
   :kind_of => Fixnum
+attribute :scheme,
+  :kind_of => String
+attribute :secure,
+  :kind_of => String,
+  :equal_to => ['true', 'false']
+attribute :proxy_name,
+  :kind_of => String
+
 attribute :ssl_port,
   :kind_of => Fixnum
 attribute :ssl_proxy_port,

@@ -80,6 +80,15 @@
              <% if @proxy_port -%>
                proxyPort="<%= @proxy_port %>"
              <% end -%>
+             <% if @scheme -%>
+               scheme="<%= @scheme %>"
+             <% end -%>
+             <% if @secure -%>
+               secure="<%= @secure %>"
+             <% end -%>
+             <% if @proxy_name -%>
+               proxyName="<%= @proxy_name %>"
+             <% end -%>
              <% if @max_threads -%>
                maxThreads="<%= @max_threads %>"
              <% end -%>
