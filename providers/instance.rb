@@ -45,7 +45,7 @@ action :configure do
         recursive true
       end
     end
-    [:log_dir, :work_dir, :webapp_dir].each do |attr|
+    [:log_dir, :work_dir, :webapp_dir, :tmp_dir].each do |attr|
       directory new_resource.instance_variable_get("@#{attr}") do
         mode '0755'
         recursive true
@@ -60,12 +60,16 @@ action :configure do
         to "#{new_resource.base}"
       end
     end
-
-    # config_dir needs symlinks to the files we're not going to create
+    
+    # Copy config files from original config dir to our new config folder with new ownership
     ['catalina.policy', 'catalina.properties', 'context.xml',
      'tomcat-users.xml', 'web.xml'].each do |file|
-      link "#{new_resource.config_dir}/#{file}" do
-        to "#{node['tomcat']['config_dir']}/#{file}"
+      file "#{new_resource.config_dir}/#{file}" do
+        owner new_resource.user
+        group new_resource.group
+        mode 0660
+        content ::File.open("#{node['tomcat']['config_dir']}/#{file}").read
+        action :create
       end
     end
 
@@ -101,6 +105,33 @@ action :configure do
           cp /etc/init.d/#{base_instance} /etc/init.d/#{instance}
           perl -i -pe 's/#{base_instance}/#{instance}/g' /etc/init.d/#{instance}
         EOH
+      end
+    end
+    
+    if platform_family?('rhel')
+      # Copy origin tomcat startup script to instance one, since its name is hardcoded in the init one
+      file "/usr/sbin/#{instance}" do
+        content ::File.open("/usr/sbin/#{base_instance}").read
+        mode 0755
+        backup false
+        action :create_if_missing
+      end
+      # Create config which is required by tomcat start-up script
+      directory "/etc/#{instance}" do
+        action :create
+      end
+      template "/etc/#{instance}/#{instance}.conf" do
+        source "tomcat_conf.erb"
+        variables ({
+          :instance => instance,
+          :user => new_resource.user,
+          :catalina_base => new_resource.base,
+          :catalina_home => new_resource.home,
+          :catalina_temp => new_resource.tmp_dir
+        })
+        owner 'root'
+        group 'root'
+        mode 0644
       end
     end
   end
