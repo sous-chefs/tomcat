@@ -19,6 +19,32 @@
 # limitations under the License.
 #
 
+service "tomcat" do
+  case node['platform_family']
+  when 'rhel', 'fedora'
+    service_name "tomcat"
+    supports :restart => true, :status => true
+  when 'debian'
+    service_name "tomcat"
+    supports :restart => true, :reload => false, :status => true
+  when 'smartos'
+    # SmartOS doesn't support multiple instances
+    service_name 'tomcat'
+    supports :restart => false, :reload => false, :status => true
+  else
+    service_name "tomcat"
+  end
+  action [:start, :enable]
+  notifies :run, "execute[wait for tomcat]", :immediately
+  retries 4
+  retry_delay 30
+end
+
+execute "wait for tomcat" do
+  command 'sleep 5'
+  action :nothing
+end
+
 template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
   source 'tomcat-users.xml.erb'
   owner 'root'
