@@ -2,6 +2,10 @@ tomcat Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the tomcat cookbook.
 
+v0.17.3.1 (2015-09-07)
+--------------------
+- added support for custom environment variables in tomcat startup
+
 v0.17.3 (2015-02-22)
 --------------------
 - Fix package names and directories for Tomcat 7 on RHEL

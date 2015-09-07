@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
+template "#{node['tomcat']['config_dir']}/tomcat-users.xml" do
   source 'tomcat-users.xml.erb'
   owner 'root'
   group 'root'
@@ -28,5 +28,6 @@ template "#{node["tomcat"]["config_dir"]}/tomcat-users.xml" do
     :users => TomcatCookbook.users,
     :roles => TomcatCookbook.roles,
   )
-  notifies :restart, 'service[tomcat]'
+  # giorgos: this kills the cook. see https://github.com/opscode-cookbooks/tomcat/pull/79
+  # notifies :restart, 'service[tomcat]'
 end

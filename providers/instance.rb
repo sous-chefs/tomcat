@@ -4,15 +4,15 @@ action :configure do
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
   # that runs
-  [:catalina_options, :java_options, :use_security_manager, :authbind,
+  [:catalina_options, :java_options, :custom_env_vars, :use_security_manager, :authbind,
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
    :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
-    if not new_resource.instance_variable_get("@#{attr}")
+    unless new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
-  end 
+  end
 
   if new_resource.name == 'base'
     instance = base_instance
@@ -20,8 +20,8 @@ action :configure do
     # If they weren't set explicitly, set these paths to the default
     [:base, :home, :config_dir, :log_dir, :work_dir, :context_dir,
      :webapp_dir].each do |attr|
-      if not new_resource.instance_variable_get("@#{attr}")
-        new_resource.instance_variable_set("@#{attr}", node["tomcat"][attr])
+      unless new_resource.instance_variable_get("@#{attr}")
+        new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
       end
     end
   else
@@ -32,8 +32,8 @@ action :configure do
     # the base instance name replaced with our own
     [:base, :home, :config_dir, :log_dir, :work_dir, :context_dir,
      :webapp_dir].each do |attr|
-      if not new_resource.instance_variable_get("@#{attr}") and node["tomcat"][attr]
-        new = node["tomcat"][attr].sub(base_instance, instance)
+      if !new_resource.instance_variable_get("@#{attr}") && node['tomcat'][attr]
+        new = node['tomcat'][attr].sub(base_instance, instance)
         new_resource.instance_variable_set("@#{attr}", new)
       end
     end
@@ -56,41 +56,41 @@ action :configure do
 
     # Don't make a separate home, just link to base
     if new_resource.home != new_resource.base
-      link "#{new_resource.home}" do
-        to "#{new_resource.base}"
+      link new_resource.home do
+        to new_resource.base
       end
     end
 
     # config_dir needs symlinks to the files we're not going to create
-    ['catalina.policy', 'catalina.properties', 'context.xml',
-     'tomcat-users.xml', 'web.xml'].each do |file|
+    %w(catalina.policy catalina.properties context.xml
+       tomcat-users.xml web.xml).each do |file|
       link "#{new_resource.config_dir}/#{file}" do
         to "#{node['tomcat']['config_dir']}/#{file}"
       end
     end
 
     # The base also needs a bunch of to symlinks inside it
-    ['bin', 'lib'].each do |dir|
+    %w(bin lib).each do |dir|
       link "#{new_resource.base}/#{dir}" do
         to "#{node['tomcat']['base']}/#{dir}"
       end
     end
-    {'conf' => 'config_dir', 'logs' => 'log_dir', 'temp' => 'tmp_dir',
-     'work' => 'work_dir', 'webapps' => 'webapp_dir'}.each do |name, attr|
+    { 'conf' => 'config_dir', 'logs' => 'log_dir', 'temp' => 'tmp_dir',
+      'work' => 'work_dir', 'webapps' => 'webapp_dir' }.each do |name, attr|
       link "#{new_resource.base}/#{name}" do
         to new_resource.instance_variable_get("@#{attr}")
       end
     end
 
     # Make a copy of the init script for this instance
-    if node['init_package'] == 'systemd' and not platform_family?('debian')
+    if node['init_package'] == 'systemd' && !platform_family?('debian')
       template "/usr/lib/systemd/system/#{instance}.service" do
         source 'tomcat.service.erb'
-        variables ({
+        variables(
           :instance => instance,
           :user => new_resource.user,
-          :group => new_resource.group
-        })
+          :group => new_resource.group,
+        )
         owner 'root'
         group 'root'
         mode '0644'
@@ -122,7 +122,7 @@ action :configure do
   when 'rhel', 'fedora'
     template "/etc/sysconfig/#{instance}" do
       source 'sysconfig_tomcat6.erb'
-      variables ({
+      variables(
         :user => new_resource.user,
         :home => new_resource.home,
         :base => new_resource.base,
@@ -130,12 +130,33 @@ action :configure do
         :use_security_manager => new_resource.use_security_manager,
         :tmp_dir => new_resource.tmp_dir,
         :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir
-      })
+        :endorsed_dir => new_resource.endorsed_dir,
+        :custom_env_vars => new_resource.custom_env_vars,
+      )
       owner 'root'
       group 'root'
       mode '0644'
       notifies :restart, "service[#{instance}]"
+    end
+  when 'suse'
+    template '/etc/tomcat/tomcat.conf' do
+      source 'sysconfig_tomcat7.erb'
+      variables(
+        :user => new_resource.user,
+        :home => new_resource.home,
+        :base => new_resource.base,
+        :java_options => new_resource.java_options,
+        :use_security_manager => new_resource.use_security_manager,
+        :tmp_dir => new_resource.tmp_dir,
+        :catalina_options => new_resource.catalina_options,
+        :endorsed_dir => new_resource.endorsed_dir,
+        :custom_env_vars => new_resource.custom_env_vars,
+      )
+      owner 'root'
+      group 'root'
+      mode '0644'
+      # don't want automatic restarts.
+      # notifies :restart, "service[tomcat]"
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
@@ -149,7 +170,7 @@ action :configure do
   else
     template "/etc/default/#{instance}" do
       source 'default_tomcat6.erb'
-      variables ({
+      variables(
         :user => new_resource.user,
         :group => new_resource.group,
         :home => new_resource.home,
@@ -159,8 +180,9 @@ action :configure do
         :tmp_dir => new_resource.tmp_dir,
         :authbind => new_resource.authbind,
         :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir
-      })
+        :endorsed_dir => new_resource.endorsed_dir,
+        :custom_env_vars => new_resource.custom_env_vars,
+      )
       owner 'root'
       group 'root'
       mode '0644'
@@ -170,20 +192,20 @@ action :configure do
 
   template "#{new_resource.config_dir}/server.xml" do
     source 'server.xml.erb'
-      variables ({
-        :port => new_resource.port,
-        :proxy_port => new_resource.proxy_port,
-        :ssl_port => new_resource.ssl_port,
-        :ssl_proxy_port => new_resource.ssl_proxy_port,
-        :ajp_port => new_resource.ajp_port,
-        :shutdown_port => new_resource.shutdown_port,
-        :max_threads => new_resource.max_threads,
-        :ssl_max_threads => new_resource.ssl_max_threads,
-        :keystore_file => new_resource.keystore_file,
-        :keystore_type => new_resource.keystore_type,
-        :tomcat_auth => new_resource.tomcat_auth,
-        :config_dir => new_resource.config_dir,
-      })
+    variables(
+      :port => new_resource.port,
+      :proxy_port => new_resource.proxy_port,
+      :ssl_port => new_resource.ssl_port,
+      :ssl_proxy_port => new_resource.ssl_proxy_port,
+      :ajp_port => new_resource.ajp_port,
+      :shutdown_port => new_resource.shutdown_port,
+      :max_threads => new_resource.max_threads,
+      :ssl_max_threads => new_resource.ssl_max_threads,
+      :keystore_file => new_resource.keystore_file,
+      :keystore_type => new_resource.keystore_type,
+      :tomcat_auth => new_resource.tomcat_auth,
+      :config_dir => new_resource.config_dir,
+    )
     owner 'root'
     group 'root'
     mode '0644'
@@ -229,7 +251,7 @@ action :configure do
          -password pass:#{node['tomcat']['keystore_password']} \
          -out #{new_resource.keystore_file}
       EOH
-      notifies :restart, "service[tomcat]"
+      notifies :restart, 'service[tomcat]'
     end
 
     cookbook_file "#{new_resource.config_dir}/#{new_resource.ssl_cert_file}" do
@@ -256,20 +278,24 @@ action :configure do
     end
   end
 
-  service "#{instance}" do
+  service instance do
     case node['platform_family']
     when 'rhel', 'fedora'
-      service_name "#{instance}"
+      service_name instance
       supports :restart => true, :status => true
     when 'debian'
-      service_name "#{instance}"
+      service_name instance
       supports :restart => true, :reload => false, :status => true
+    when 'suse'
+      service_name 'tomcat'
+      supports :restart => true, :status => true
+      init_command '/usr/sbin/rctomcat'
     when 'smartos'
       # SmartOS doesn't support multiple instances
       service_name 'tomcat'
       supports :restart => false, :reload => false, :status => true
     else
-      service_name "#{instance}"
+      service_name instance
     end
     action [:start, :enable]
     notifies :run, "execute[wait for #{instance}]", :immediately
@@ -281,4 +307,6 @@ action :configure do
     command 'sleep 5'
     action :nothing
   end
+
+  new_resource.updated_by_last_action(true)
 end
