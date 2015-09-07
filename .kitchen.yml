@@ -23,10 +23,12 @@ platforms:
 - name: centos-6.6
   run_list:
   - recipe[yum-epel]
+  - recipe[java]
 
 - name: centos-7.1
   run_list:
   - recipe[yum-epel]
+  - recipe[java]
 
 suites:
 - name: tomcat6
