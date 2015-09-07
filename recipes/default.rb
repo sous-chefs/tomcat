@@ -20,9 +20,8 @@
 # required for the secure_password method from the openssl cookbook
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
-
 if node['tomcat']['base_version'].to_i == 7
-  if platform_family?('rhel') and node[:platform_version].to_i < 7
+  if platform_family?('rhel') && node['platform_version'].to_i < 7
     include_recipe 'yum-epel'
   end
 end
@@ -60,7 +59,7 @@ node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
 if node['tomcat']['run_base_instance']
-  tomcat_instance "base" do
+  tomcat_instance 'base' do
     port node['tomcat']['port']
     proxy_port node['tomcat']['proxy_port']
     ssl_port node['tomcat']['ssl_port']
@@ -71,7 +70,7 @@ if node['tomcat']['run_base_instance']
 end
 
 node['tomcat']['instances'].each do |name, attrs|
-  tomcat_instance "#{name}" do
+  tomcat_instance name do
     port attrs['port']
     proxy_port attrs['proxy_port']
     ssl_port attrs['ssl_port']

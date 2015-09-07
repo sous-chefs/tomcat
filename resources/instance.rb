@@ -38,10 +38,10 @@ attribute :catalina_options,
 attribute :java_options,
   :kind_of => String
 attribute :use_security_manager,
-  :kind_of => [ TrueClass, FalseClass ]
+  :kind_of => [TrueClass, FalseClass]
 attribute :authbind,
   :kind_of => String,
-  :equal_to => ['yes', 'no']
+  :equal_to => %w(yes no)
 attribute :max_threads,
   :kind_of => Fixnum
 attribute :ssl_max_threads,
@@ -56,19 +56,19 @@ attribute :keystore_file,
   :kind_of => String
 attribute :keystore_type,
   :kind_of => String,
-  :equal_to => ['jks', 'pkcs11', 'pkcs12']
+  :equal_to => %w(jks pkcs11 pkcs12)
 attribute :truststore_file,
   :kind_of => String
 attribute :truststore_type,
   :kind_of => String,
-  :equal_to => ['jks', 'pkcs11', 'pkcs12']
+  :equal_to => %w(jks pkcs11 pkcs12)
 attribute :certificate_dn,
   :kind_of => String
 attribute :loglevel,
   :kind_of => String
 attribute :tomcat_auth,
   :kind_of => String,
-  :equal_to => ['true', 'false']
+  :equal_to => %w(true false)
 
 attribute :user,
   :kind_of => String
