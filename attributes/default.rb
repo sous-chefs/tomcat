@@ -26,6 +26,7 @@ default['tomcat']['ajp_port'] = 8009
 default['tomcat']['shutdown_port'] = 8005
 default['tomcat']['catalina_options'] = ''
 default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
+default['tomcat']['custom_env_vars'] = ''
 default['tomcat']['use_security_manager'] = false
 default['tomcat']['authbind'] = 'no'
 default['tomcat']['deploy_manager_apps'] = true
@@ -102,6 +103,23 @@ when 'smartos'
   default['tomcat']['endorsed_dir'] = "#{node['tomcat']['home']}/lib/endorsed"
   default['tomcat']['packages'] = ['apache-tomcat']
   default['tomcat']['deploy_manager_packages'] = []
+when 'suse'
+  default['tomcat']['base_instance'] = 'tomcat'
+  default['tomcat']['user'] = 'tomcat'
+  default['tomcat']['group'] = 'tomcat'
+  default['tomcat']['home'] = '/usr/share/tomcat'
+  default['tomcat']['base'] = '/usr/share/tomcat'
+  default['tomcat']['config_dir'] = '/etc/tomcat'
+  default['tomcat']['log_dir'] = '/var/log/tomcat'
+  default['tomcat']['tmp_dir'] = '/var/cache/tomcat/temp'
+  default['tomcat']['work_dir'] = '/var/cache/tomcat/work'
+  default['tomcat']['context_dir'] = "#{node['tomcat']['config_dir']}/Catalina/localhost"
+  default['tomcat']['webapp_dir'] = '/srv/tomcat/webapps'
+  default['tomcat']['keytool'] = 'keytool'
+  default['tomcat']['lib_dir'] = "#{node['tomcat']['home']}/lib"
+  default['tomcat']['endorsed_dir'] = "#{node['tomcat']['lib_dir']}/endorsed"
+  default['tomcat']['packages'] = ['tomcat']
+  default['tomcat']['deploy_manager_packages'] = ['tomcat-admin-webapps']
 else
   default['tomcat']['user'] = "tomcat#{node['tomcat']['base_version']}"
   default['tomcat']['group'] = "tomcat#{node['tomcat']['base_version']}"

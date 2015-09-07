@@ -4,7 +4,7 @@ action :configure do
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
   # that runs
-  [:catalina_options, :java_options, :use_security_manager, :authbind,
+  [:catalina_options, :java_options, :custom_env_vars, :use_security_manager, :authbind,
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
@@ -131,11 +131,32 @@ action :configure do
         :tmp_dir => new_resource.tmp_dir,
         :catalina_options => new_resource.catalina_options,
         :endorsed_dir => new_resource.endorsed_dir,
+        :custom_env_vars => new_resource.custom_env_vars,
       )
       owner 'root'
       group 'root'
       mode '0644'
       notifies :restart, "service[#{instance}]"
+    end
+  when 'suse'
+    template '/etc/tomcat/tomcat.conf' do
+      source 'sysconfig_tomcat7.erb'
+      variables(
+        :user => new_resource.user,
+        :home => new_resource.home,
+        :base => new_resource.base,
+        :java_options => new_resource.java_options,
+        :use_security_manager => new_resource.use_security_manager,
+        :tmp_dir => new_resource.tmp_dir,
+        :catalina_options => new_resource.catalina_options,
+        :endorsed_dir => new_resource.endorsed_dir,
+        :custom_env_vars => new_resource.custom_env_vars,
+      )
+      owner 'root'
+      group 'root'
+      mode '0644'
+      # don't want automatic restarts.
+      # notifies :restart, "service[tomcat]"
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
@@ -160,6 +181,7 @@ action :configure do
         :authbind => new_resource.authbind,
         :catalina_options => new_resource.catalina_options,
         :endorsed_dir => new_resource.endorsed_dir,
+        :custom_env_vars => new_resource.custom_env_vars,
       )
       owner 'root'
       group 'root'
@@ -264,6 +286,10 @@ action :configure do
     when 'debian'
       service_name instance
       supports :restart => true, :reload => false, :status => true
+    when 'suse'
+      service_name 'tomcat'
+      supports :restart => true, :status => true
+      init_command '/usr/sbin/rctomcat'
     when 'smartos'
       # SmartOS doesn't support multiple instances
       service_name 'tomcat'
