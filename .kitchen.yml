@@ -31,7 +31,7 @@ platforms:
 suites:
 - name: tomcat6
   run_list: ["recipe[tomcat]"]
-  excludes: ["centos-7.0"]
+  excludes: ["centos-7.1"]
   attributes: {}
 
 - name: tomcat7
