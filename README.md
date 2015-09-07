@@ -9,10 +9,14 @@ Installs and configures Tomcat, Java servlet engine and webserver.
 Requirements
 ------------
 ### Platforms
-- Debian, Ubuntu (OpenJDK, Oracle)
-- CentOS 6+, Red Hat 6+, Fedora, Amaxon (OpenJDK, Oracle), Scientific Linux 6
+- Debian / Ubuntu derivatives
+- RHEL derivatives
+- Fedora
 
-### Dependencies
+### Chef
+- Chef 11+
+
+### Cookbooks
 - java
 - openssl
 
