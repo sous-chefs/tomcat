@@ -21,11 +21,12 @@ platforms:
   - recipe[java]
 
 - name: centos-6.6
-    run_list:
-      - recipe[yum-epel]
-  - name: centos-7.1
-    run_list:
-      - recipe[yum-epel]
+  run_list:
+  - recipe[yum-epel]
+
+- name: centos-7.1
+  run_list:
+  - recipe[yum-epel]
 
 suites:
 - name: tomcat6
