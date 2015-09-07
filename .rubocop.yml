@@ -19,15 +19,9 @@ MethodLength:
   Enabled: false
 TrailingComma:
   EnforcedStyleForMultiline: comma
-
-HashSyntax:
-  EnforcedStyle: hash_rockets
-
 AlignParameters:
   Enabled: false
-
 CyclomaticComplexity:
   Enabled: false
-
 BlockAlignment:
   Enabled: false

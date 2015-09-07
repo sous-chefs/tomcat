@@ -87,9 +87,9 @@ action :configure do
       template "/usr/lib/systemd/system/#{instance}.service" do
         source 'tomcat.service.erb'
         variables(
-          :instance => instance,
-          :user => new_resource.user,
-          :group => new_resource.group,
+          instance: instance,
+          user: new_resource.user,
+          group: new_resource.group,
         )
         owner 'root'
         group 'root'
@@ -123,14 +123,14 @@ action :configure do
     template "/etc/sysconfig/#{instance}" do
       source 'sysconfig_tomcat6.erb'
       variables(
-        :user => new_resource.user,
-        :home => new_resource.home,
-        :base => new_resource.base,
-        :java_options => new_resource.java_options,
-        :use_security_manager => new_resource.use_security_manager,
-        :tmp_dir => new_resource.tmp_dir,
-        :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir,
+        user: new_resource.user,
+        home: new_resource.home,
+        base: new_resource.base,
+        java_options: new_resource.java_options,
+        use_security_manager: new_resource.use_security_manager,
+        tmp_dir: new_resource.tmp_dir,
+        catalina_options: new_resource.catalina_options,
+        endorsed_dir: new_resource.endorsed_dir,
       )
       owner 'root'
       group 'root'
@@ -150,16 +150,16 @@ action :configure do
     template "/etc/default/#{instance}" do
       source 'default_tomcat6.erb'
       variables(
-        :user => new_resource.user,
-        :group => new_resource.group,
-        :home => new_resource.home,
-        :base => new_resource.base,
-        :java_options => new_resource.java_options,
-        :use_security_manager => new_resource.use_security_manager,
-        :tmp_dir => new_resource.tmp_dir,
-        :authbind => new_resource.authbind,
-        :catalina_options => new_resource.catalina_options,
-        :endorsed_dir => new_resource.endorsed_dir,
+        user: new_resource.user,
+        group: new_resource.group,
+        home: new_resource.home,
+        base: new_resource.base,
+        java_options: new_resource.java_options,
+        use_security_manager: new_resource.use_security_manager,
+        tmp_dir: new_resource.tmp_dir,
+        authbind: new_resource.authbind,
+        catalina_options: new_resource.catalina_options,
+        endorsed_dir: new_resource.endorsed_dir,
       )
       owner 'root'
       group 'root'
@@ -171,18 +171,18 @@ action :configure do
   template "#{new_resource.config_dir}/server.xml" do
     source 'server.xml.erb'
     variables(
-      :port => new_resource.port,
-      :proxy_port => new_resource.proxy_port,
-      :ssl_port => new_resource.ssl_port,
-      :ssl_proxy_port => new_resource.ssl_proxy_port,
-      :ajp_port => new_resource.ajp_port,
-      :shutdown_port => new_resource.shutdown_port,
-      :max_threads => new_resource.max_threads,
-      :ssl_max_threads => new_resource.ssl_max_threads,
-      :keystore_file => new_resource.keystore_file,
-      :keystore_type => new_resource.keystore_type,
-      :tomcat_auth => new_resource.tomcat_auth,
-      :config_dir => new_resource.config_dir,
+      port: new_resource.port,
+      proxy_port: new_resource.proxy_port,
+      ssl_port: new_resource.ssl_port,
+      ssl_proxy_port: new_resource.ssl_proxy_port,
+      ajp_port: new_resource.ajp_port,
+      shutdown_port: new_resource.shutdown_port,
+      max_threads: new_resource.max_threads,
+      ssl_max_threads: new_resource.ssl_max_threads,
+      keystore_file: new_resource.keystore_file,
+      keystore_type: new_resource.keystore_type,
+      tomcat_auth: new_resource.tomcat_auth,
+      config_dir: new_resource.config_dir,
     )
     owner 'root'
     group 'root'
@@ -260,14 +260,14 @@ action :configure do
     case node['platform_family']
     when 'rhel', 'fedora'
       service_name instance
-      supports :restart => true, :status => true
+      supports restart: true, status: true
     when 'debian'
       service_name instance
-      supports :restart => true, :reload => false, :status => true
+      supports restart: true, reload: false, status: true
     when 'smartos'
       # SmartOS doesn't support multiple instances
       service_name 'tomcat'
-      supports :restart => false, :reload => false, :status => true
+      supports restart: false, reload: false, status: true
     else
       service_name instance
     end
