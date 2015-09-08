@@ -1,0 +1,15 @@
+{
+  "id": "testuser",
+  "password": {
+    "encrypted_data": "6UWbc84SfwzMtKaRRd+c5474Mg66ilOX1KOCP8wCmBw=\n",
+    "iv": "dId2Vdh3tm1KQ1vHhnm9EQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "roles": {
+    "encrypted_data": "roSAocJf6Dm2sn4nUG17O/pVXEN86kbnlev+F37eaVXtg7x8VT3JOE3D7ePI\n1fMf\n",
+    "iv": "oXvSVWnWpft0HHOcu0szgg==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}

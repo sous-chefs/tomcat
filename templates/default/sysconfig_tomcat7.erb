@@ -4,20 +4,8 @@
 # Local modifications will be overwritten by Chef.
 #
 
-# Service-specific configuration file for tomcat6. This will be sourced by
-# the SysV init script after the global configuration file
-# /etc/tomcat6/tomcat6.conf, thus allowing values to be overridden in
-# a per-service manner.
+# NEVER change the init script itself. 
 #
-# NEVER change the init script itself. To change values for all services make
-# your changes in /etc/tomcat6/tomcat6.conf
-#
-# To change values for a specific service make your edits here.
-# To create a new service create a link from /etc/init.d/<your new service> to
-# /etc/init.d/tomcat6 (do not copy the init script) and make a copy of the
-# /etc/sysconfig/tomcat6 file to /etc/sysconfig/<your new service> and change
-# the property values so the two services won't conflict. Register the new
-# service in the system as usual (see chkconfig and similars).
 #
 
 # Where your java installation lives
@@ -51,13 +39,13 @@ SECURITY_MANAGER="<%= @use_security_manager %>"
 #SHUTDOWN_VERBOSE="false"
 
 # Set the TOMCAT_PID location
-#CATALINA_PID="/var/run/tomcat6.pid"
+#CATALINA_PID="/var/run/tomcat7.pid"
 
 # JVM parameters passed only for start and run commands
 CATALINA_OPTS="<%= @catalina_options %>"
 
 # Endorse .jar files in this directory
-JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
+#JAVA_ENDORSED_DIRS="<%= @endorsed_dir %>"
 
 # If you wish to further customize your tomcat environment,
 # put your own definitions here

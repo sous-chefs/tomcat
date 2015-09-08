@@ -11,6 +11,12 @@ attribute :port,
   kind_of: Fixnum
 attribute :proxy_port,
   kind_of: Fixnum
+attribute :proxy_name,
+  kind_of: String
+attribute :secure,
+  kind_of: [TrueClass, FalseClass]
+attribute :scheme,
+  kind_of: String
 attribute :ssl_port,
   kind_of: Fixnum
 attribute :ssl_proxy_port,
@@ -20,6 +26,8 @@ attribute :ajp_port,
 attribute :shutdown_port,
   kind_of: Fixnum,
   required: true
+attribute :ajp_redirect_port,
+  kind_of: Fixnum
 
 # The rest will inherit from node attributes
 attribute :config_dir,
@@ -43,6 +51,8 @@ attribute :authbind,
   kind_of: String,
   equal_to: %w(yes no)
 attribute :max_threads,
+  kind_of: Fixnum
+attribute :ajp_max_threads,
   kind_of: Fixnum
 attribute :ssl_max_threads,
   kind_of: Fixnum

@@ -5,10 +5,10 @@ action :configure do
   # this in the resource declaration because node isn't populated yet when
   # that runs
   [:catalina_options, :java_options, :use_security_manager, :authbind,
-   :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
+   :max_threads, :ajp_max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
-   :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
-   :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
+   :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :client_auth,
+   :user, :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
     unless new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
@@ -89,7 +89,7 @@ action :configure do
         variables(
           instance: instance,
           user: new_resource.user,
-          group: new_resource.group,
+          group: new_resource.group
         )
         owner 'root'
         group 'root'
@@ -130,7 +130,25 @@ action :configure do
         use_security_manager: new_resource.use_security_manager,
         tmp_dir: new_resource.tmp_dir,
         catalina_options: new_resource.catalina_options,
-        endorsed_dir: new_resource.endorsed_dir,
+        endorsed_dir: new_resource.endorsed_dir
+      )
+      owner 'root'
+      group 'root'
+      mode '0644'
+      notifies :restart, "service[#{instance}]"
+    end
+  when 'suse'
+    template '/etc/tomcat/tomcat.conf' do
+      source 'sysconfig_tomcat7.erb'
+      variables(
+        user: new_resource.user,
+        home: new_resource.home,
+        base: new_resource.base,
+        java_options: new_resource.java_options,
+        use_security_manager: new_resource.use_security_manager,
+        tmp_dir: new_resource.tmp_dir,
+        catalina_options: new_resource.catalina_options,
+        endorsed_dir: new_resource.endorsed_dir
       )
       owner 'root'
       group 'root'
@@ -159,7 +177,7 @@ action :configure do
         tmp_dir: new_resource.tmp_dir,
         authbind: new_resource.authbind,
         catalina_options: new_resource.catalina_options,
-        endorsed_dir: new_resource.endorsed_dir,
+        endorsed_dir: new_resource.endorsed_dir
       )
       owner 'root'
       group 'root'
@@ -173,16 +191,22 @@ action :configure do
     variables(
       port: new_resource.port,
       proxy_port: new_resource.proxy_port,
+      proxy_name: new_resource.proxy_name,
+      secure: new_resource.secure,
+      scheme: new_resource.scheme,
       ssl_port: new_resource.ssl_port,
       ssl_proxy_port: new_resource.ssl_proxy_port,
       ajp_port: new_resource.ajp_port,
+      ajp_redirect_port: new_resource.ajp_redirect_port,
       shutdown_port: new_resource.shutdown_port,
       max_threads: new_resource.max_threads,
+      ajp_max_threads: new_resource.ajp_max_threads,
       ssl_max_threads: new_resource.ssl_max_threads,
       keystore_file: new_resource.keystore_file,
       keystore_type: new_resource.keystore_type,
       tomcat_auth: new_resource.tomcat_auth,
-      config_dir: new_resource.config_dir,
+      client_auth: new_resource.client_auth,
+      config_dir: new_resource.config_dir
     )
     owner 'root'
     group 'root'
@@ -207,7 +231,8 @@ action :configure do
          -keystore "#{new_resource.config_dir}/#{new_resource.keystore_file}" \
          -storepass "#{node['tomcat']['keystore_password']}" \
          -keypass "#{node['tomcat']['keystore_password']}" \
-         -dname "#{node['tomcat']['certificate_dn']}"
+         -dname "#{node['tomcat']['certificate_dn']}" \
+         -keyalg "RSA"
       EOH
       umask 0007
       creates "#{new_resource.config_dir}/#{new_resource.keystore_file}"
@@ -254,32 +279,6 @@ action :configure do
     cookbook_file "#{new_resource.config_dir}/#{new_resource.truststore_file}" do
       mode '0644'
     end
-  end
-
-  service instance do
-    case node['platform_family']
-    when 'rhel', 'fedora'
-      service_name instance
-      supports restart: true, status: true
-    when 'debian'
-      service_name instance
-      supports restart: true, reload: false, status: true
-    when 'smartos'
-      # SmartOS doesn't support multiple instances
-      service_name 'tomcat'
-      supports restart: false, reload: false, status: true
-    else
-      service_name instance
-    end
-    action [:start, :enable]
-    notifies :run, "execute[wait for #{instance}]", :immediately
-    retries 4
-    retry_delay 30
-  end
-
-  execute "wait for #{instance}" do
-    command 'sleep 5'
-    action :nothing
   end
 
   new_resource.updated_by_last_action(true)

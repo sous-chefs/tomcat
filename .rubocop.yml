@@ -1,27 +1,31 @@
 AllCops:
   Exclude:
     - vendor/**/*
-    - metadata.rb
+    - Guardfile
 
-Metrics/AbcSize:
-  Enabled: false
-Next:
+AlignParameters:
   Enabled: false
 ClassLength:
+  Enabled: false
+CyclomaticComplexity:
   Enabled: false
 Documentation:
   Enabled: false
 Encoding:
   Enabled: false
+Style/FileName:
+  Enabled: false
 LineLength:
   Enabled: false
 MethodLength:
   Enabled: false
-TrailingComma:
-  EnforcedStyleForMultiline: comma
-AlignParameters:
+Metrics/AbcSize:
   Enabled: false
-CyclomaticComplexity:
+PerceivedComplexity:
   Enabled: false
-BlockAlignment:
+SingleSpaceBeforeFirstArg:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/FileName:
   Enabled: false
