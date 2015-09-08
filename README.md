@@ -1,15 +1,22 @@
 tomcat Cookbook
 ===============
+[![Build Status](https://travis-ci.org/opscode-cookbooks/tomcat.svg?branch=master)](https://travis-ci.org/opscode-cookbooks/tomcat)
+[![Cookbook Version](https://img.shields.io/cookbook/v/tomcat.svg)](https://supermarket.chef.io/cookbooks/tomcat)
+
 Installs and configures Tomcat, Java servlet engine and webserver.
 
 
 Requirements
 ------------
 ### Platforms
-- Debian, Ubuntu (OpenJDK, Oracle)
-- CentOS 6+, Red Hat 6+, Fedora, Amaxon (OpenJDK, Oracle), Scientific Linux 6
+- Debian / Ubuntu derivatives
+- RHEL derivatives
+- Fedora
 
-### Dependencies
+### Chef
+- Chef 11+
+
+### Cookbooks
 - java
 - openssl
 
@@ -145,7 +152,7 @@ License & Authors
 - Author: Brendan O'Donnell (<brendan.james.odonnell@gmail.com>)
 
 ```text
-Copyright:: 2010-2013, Chef Software, Inc
+Copyright:: 2010-2015, Chef Software, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

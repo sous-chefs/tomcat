@@ -15,7 +15,11 @@ supports 'ubuntu'
 supports 'centos'
 supports 'redhat'
 supports 'amazon'
+supports 'oracle'
 supports 'scientific'
 
 recipe 'tomcat::default', 'Installs and configures Tomcat'
 recipe 'tomcat::users', 'Setup users and roles for Tomcat'
+
+source_url 'https://github.com/opscode-cookbooks/tomcat' if respond_to?(:source_url)
+issues_url 'https://github.com/opscode-cookbooks/tomcat/issues' if respond_to?(:issues_url)

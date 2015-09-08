@@ -2,7 +2,7 @@
 # Cookbook Name:: tomcat
 # Recipe:: default
 #
-# Copyright 2010, Chef Software, Inc.
+# Copyright 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 # required for the secure_password method from the openssl cookbook
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
-
+# RHEL systems prior to 7 need the EPEL repository setup
 if node['tomcat']['base_version'].to_i == 7
-  if platform_family?('rhel') and node[:platform_version].to_i < 7
+  if platform_family?('rhel') && node['platform_version'].to_i < 7
     include_recipe 'yum-epel'
   end
 end
@@ -60,7 +60,7 @@ node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
 if node['tomcat']['run_base_instance']
-  tomcat_instance "base" do
+  tomcat_instance 'base' do
     port node['tomcat']['port']
     proxy_port node['tomcat']['proxy_port']
     ssl_port node['tomcat']['ssl_port']
@@ -71,7 +71,7 @@ if node['tomcat']['run_base_instance']
 end
 
 node['tomcat']['instances'].each do |name, attrs|
-  tomcat_instance "#{name}" do
+  tomcat_instance name do
     port attrs['port']
     proxy_port attrs['proxy_port']
     ssl_port attrs['ssl_port']
@@ -106,5 +106,7 @@ node['tomcat']['instances'].each do |name, attrs|
     tmp_dir attrs['tmp_dir']
     lib_dir attrs['lib_dir']
     endorsed_dir attrs['endorsed_dir']
+    ajp_packetsize attrs['ajp_packetsize']
+    uriencoding attrs['uriencoding']
   end
 end
