@@ -44,6 +44,8 @@ attribute :authbind,
   equal_to: %w(yes no)
 attribute :max_threads,
   kind_of: Fixnum
+attribute :ajp_max_threads,
+  kind_of: Fixnum
 attribute :ssl_max_threads,
   kind_of: Fixnum
 attribute :ssl_cert_file,
