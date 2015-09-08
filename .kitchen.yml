@@ -24,6 +24,7 @@ platforms:
   run_list:
   - recipe[yum-epel]
   - recipe[java]
+  attributes: {java: {set_etc_environment: true}}
 
 - name: centos-7.1
   run_list:
