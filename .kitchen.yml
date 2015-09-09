@@ -31,10 +31,19 @@ platforms:
   - recipe[yum-epel]
   - recipe[java]
 
+- name: opscode-opensuse-13.1
+  driver:
+    box: opensuse-13.1
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_opensuse-13.1-x86_64_chef-provisionerless.box
+  attributes: {java: {install_flavour: openjdk, jdk_version: 7, openjdk_packages: [ "java-1_7_0-openjdk", "java-1.7.0-openjdk-devel" ], set_etc_environment: true }}
+  run_list:
+  - recipe[tomcat::zypper_refresh]
+  - recipe[java]
+
 suites:
 - name: tomcat6
   run_list: ["recipe[tomcat]"]
-  excludes: ["centos-7.1"]
+  excludes: ["centos-7.1", "opscode-opensuse-13.1"]
   attributes: {}
 
 - name: tomcat7
