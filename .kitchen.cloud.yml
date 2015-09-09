@@ -47,6 +47,7 @@ platforms:
     ssh_key: <%= ENV['GCE_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[java]
 
 - name: ubuntu-10.04
   driver_plugin: digitalocean
@@ -58,6 +59,7 @@ platforms:
     ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[java]
 
 - name: ubuntu-12.04
   driver_plugin: digitalocean
@@ -69,6 +71,7 @@ platforms:
     ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[java]
 
 - name: ubuntu-14.04
   driver_plugin: digitalocean
@@ -80,6 +83,7 @@ platforms:
     ssh_key: <%= ENV['DIGITAL_OCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[java]
 
 - name: smartos-1330
   driver_plugin: joyent
