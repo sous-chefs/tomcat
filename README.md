@@ -1,6 +1,6 @@
 tomcat Cookbook
 ===============
-[![Build Status](https://travis-ci.org/opscode-cookbooks/tomcat.svg?branch=master)](https://travis-ci.org/opscode-cookbooks/tomcat)
+[![Build Status](https://travis-ci.org/chef-cookbooks/tomcat.svg?branch=master)](https://travis-ci.org/chef-cookbooks/tomcat)
 [![Cookbook Version](https://img.shields.io/cookbook/v/tomcat.svg)](https://supermarket.chef.io/cookbooks/tomcat)
 
 Installs and configures Tomcat, Java servlet engine and webserver.

@@ -9,28 +9,19 @@ platforms:
   run_list:
   - recipe[apt]
   - recipe[java]
-
 - name: ubuntu-12.04
   run_list:
   - recipe[apt]
   - recipe[java]
-
-- name: ubuntu-10.04
-  run_list:
-  - recipe[apt]
-  - recipe[java]
-
-- name: centos-6.6
+- name: centos-6.7
   run_list:
   - recipe[yum-epel]
   - recipe[java]
   attributes: {java: {set_etc_environment: true}}
-
 - name: centos-7.1
   run_list:
   - recipe[yum-epel]
   - recipe[java]
-
 suites:
 - name: tomcat6
   run_list: ["recipe[tomcat]"]
