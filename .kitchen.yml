@@ -30,6 +30,7 @@ platforms:
   run_list:
   - recipe[yum-epel]
   - recipe[java]
+  attributes: {java: {install_flavour: openjdk, jdk_version: 7, set_etc_environment: true }}
 
 - name: opscode-opensuse-13.1
   driver:
