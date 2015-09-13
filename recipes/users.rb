@@ -26,7 +26,7 @@ template "#{node['tomcat']['config_dir']}/tomcat-users.xml" do
   mode '0644'
   variables(
     users: TomcatCookbook.users,
-    roles: TomcatCookbook.roles,
+    roles: TomcatCookbook.roles
   )
   notifies :restart, 'service[tomcat]'
 end

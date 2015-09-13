@@ -17,8 +17,6 @@ LineLength:
   Enabled: false
 MethodLength:
   Enabled: false
-TrailingComma:
-  EnforcedStyleForMultiline: comma
 AlignParameters:
   Enabled: false
 CyclomaticComplexity:

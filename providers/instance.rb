@@ -89,7 +89,7 @@ action :configure do
         variables(
           instance: instance,
           user: new_resource.user,
-          group: new_resource.group,
+          group: new_resource.group
         )
         owner 'root'
         group 'root'
@@ -130,7 +130,7 @@ action :configure do
         use_security_manager: new_resource.use_security_manager,
         tmp_dir: new_resource.tmp_dir,
         catalina_options: new_resource.catalina_options,
-        endorsed_dir: new_resource.endorsed_dir,
+        endorsed_dir: new_resource.endorsed_dir
       )
       owner 'root'
       group 'root'
@@ -148,7 +148,7 @@ action :configure do
         use_security_manager: new_resource.use_security_manager,
         tmp_dir: new_resource.tmp_dir,
         catalina_options: new_resource.catalina_options,
-        endorsed_dir: new_resource.endorsed_dir,
+        endorsed_dir: new_resource.endorsed_dir
       )
       owner 'root'
       group 'root'
@@ -178,7 +178,7 @@ action :configure do
         tmp_dir: new_resource.tmp_dir,
         authbind: new_resource.authbind,
         catalina_options: new_resource.catalina_options,
-        endorsed_dir: new_resource.endorsed_dir,
+        endorsed_dir: new_resource.endorsed_dir
       )
       owner 'root'
       group 'root'
@@ -201,7 +201,7 @@ action :configure do
       keystore_file: new_resource.keystore_file,
       keystore_type: new_resource.keystore_type,
       tomcat_auth: new_resource.tomcat_auth,
-      config_dir: new_resource.config_dir,
+      config_dir: new_resource.config_dir
     )
     owner 'root'
     group 'root'
