@@ -22,7 +22,7 @@
 
 
 if node['tomcat']['base_version'].to_i == 7
-  if platform_family?('rhel') and node[:platform_version].to_i < 7
+  if platform_family?('rhel') and node['platform_version'].to_i < 7
     include_recipe 'yum-epel'
   end
 end
@@ -74,7 +74,7 @@ if node['tomcat']['run_base_instance']
 end
 
 node['tomcat']['instances'].each do |name, attrs|
-  tomcat_instance "#{name}" do
+  tomcat_instance '#{name}' do
     port attrs['port']
     proxy_port attrs['proxy_port']
     scheme attrs['scheme']
