@@ -153,8 +153,7 @@ action :configure do
       owner 'root'
       group 'root'
       mode '0644'
-      # FIXME: don't want automatic restarts.
-      # notifies :restart, "service[tomcat]"
+      notifies :restart, "service[#{instance}]"
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
