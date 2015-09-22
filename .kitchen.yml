@@ -38,11 +38,15 @@ platforms:
 
 suites:
 - name: tomcat6
-  run_list: ["recipe[tomcat]"]
+  data_bags_path: 'test/integration/tomcat6/data_bags'
+  run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
   excludes: ["centos-7.1", "opscode-opensuse-13.1"]
   attributes: {}
 
 - name: tomcat7
-  run_list: ["recipe[tomcat]"]
+  data_bags_path: 'test/integration/tomcat7/data_bags'
+  provisioner:
+    encrypted_data_bag_secret_key_path: 'test/integration/encrypted_data_bag_secret_key'
+  run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
   excludes: ["centos-6.6"]
   attributes: {tomcat: {base_version: 7}}

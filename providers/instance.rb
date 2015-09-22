@@ -153,8 +153,7 @@ action :configure do
       owner 'root'
       group 'root'
       mode '0644'
-      # FIXME: don't want automatic restarts.
-      # notifies :restart, "service[tomcat]"
+      notifies :restart, "service[#{instance}]"
     end
   when 'smartos'
     # SmartOS doesn't support multiple instances
@@ -273,36 +272,6 @@ action :configure do
     cookbook_file "#{new_resource.config_dir}/#{new_resource.truststore_file}" do
       mode '0644'
     end
-  end
-
-  service instance do
-    case node['platform_family']
-    when 'rhel', 'fedora'
-      service_name instance
-      supports restart: true, status: true
-    when 'debian'
-      service_name instance
-      supports restart: true, reload: false, status: true
-    when 'suse'
-      service_name 'tomcat'
-      supports restart: true, status: true
-      init_command '/usr/sbin/rctomcat'
-    when 'smartos'
-      # SmartOS doesn't support multiple instances
-      service_name 'tomcat'
-      supports restart: false, reload: false, status: true
-    else
-      service_name instance
-    end
-    action [:start, :enable]
-    notifies :run, "execute[wait for #{instance}]", :immediately
-    retries 4
-    retry_delay 30
-  end
-
-  execute "wait for #{instance}" do
-    command 'sleep 5'
-    action :nothing
   end
 
   new_resource.updated_by_last_action(true)
