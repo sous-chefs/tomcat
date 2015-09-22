@@ -59,6 +59,33 @@ end
 node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
+def create_service(instance)
+  service instance do
+    case node['platform_family']
+    when 'rhel', 'fedora'
+      service_name instance
+      supports restart: true, status: true
+    when 'debian'
+      service_name instance
+      supports restart: true, reload: false, status: true
+    when 'suse'
+      service_name 'tomcat'
+      supports restart: true, status: true
+      init_command '/usr/sbin/rctomcat'
+    when 'smartos'
+      # SmartOS doesn't support multiple instances
+      service_name 'tomcat'
+      supports restart: false, reload: false, status: true
+    else
+      service_name instance
+    end
+    action [:start, :enable]
+    notifies :run, "execute[wait for #{instance}]", :immediately
+    retries 4
+    retry_delay 30
+  end
+end
+
 if node['tomcat']['run_base_instance']
   tomcat_instance 'base' do
     port node['tomcat']['port']
@@ -68,6 +95,8 @@ if node['tomcat']['run_base_instance']
     ajp_port node['tomcat']['ajp_port']
     shutdown_port node['tomcat']['shutdown_port']
   end
+  instance = node['tomcat']['base_instance']
+  create_service(instance)
 end
 
 node['tomcat']['instances'].each do |name, attrs|
@@ -109,4 +138,12 @@ node['tomcat']['instances'].each do |name, attrs|
     ajp_packetsize attrs['ajp_packetsize']
     uriencoding attrs['uriencoding']
   end
+
+  instance = "#{node['tomcat']['base_instance']}-#{name}"
+  create_service(instance)
+end
+
+execute "wait for #{instance}" do
+  command 'sleep 5'
+  action :nothing
 end
