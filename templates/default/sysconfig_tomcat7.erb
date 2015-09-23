@@ -51,3 +51,7 @@ CATALINA_OPTS="<%= @catalina_options %>"
 # put your own definitions here
 # (i.e. LD_LIBRARY_PATH for some jdbc drivers)
 
+# User-defined Environment variables
+<% @node["tomcat"]["environment"].each do |envvar| -%>
+<%= envvar['VariableName']-%>="<%= envvar['VariableValue']-%>"
+<% end -%>
