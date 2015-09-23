@@ -27,16 +27,12 @@ if node['tomcat']['base_version'].to_i == 7
   end
 end
 
-node['tomcat']['packages'].each do |pkg|
-  package pkg do
-    action :install
-  end
+package node['tomcat']['packages'] do
+  action :install
 end
 
-node['tomcat']['deploy_manager_packages'].each do |pkg|
-  package pkg do
-    action :install
-  end
+package node['tomcat']['deploy_manager_packages'] do
+  action :install
 end
 
 unless node['tomcat']['deploy_manager_apps']
