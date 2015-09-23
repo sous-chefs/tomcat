@@ -1,13 +1,13 @@
 AllCops:
   Exclude:
     - vendor/**/*
-    - metadata.rb
+    - Guardfile
 
-Metrics/AbcSize:
-  Enabled: false
-Next:
+AlignParameters:
   Enabled: false
 ClassLength:
+  Enabled: false
+CyclomaticComplexity:
   Enabled: false
 Documentation:
   Enabled: false
@@ -17,9 +17,11 @@ LineLength:
   Enabled: false
 MethodLength:
   Enabled: false
-AlignParameters:
+Metrics/AbcSize:
   Enabled: false
-CyclomaticComplexity:
+PerceivedComplexity:
   Enabled: false
-BlockAlignment:
+SingleSpaceBeforeFirstArg:
+  Enabled: false
+Style/FileName:
   Enabled: false
