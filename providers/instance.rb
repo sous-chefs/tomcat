@@ -225,7 +225,8 @@ action :configure do
          -keystore "#{new_resource.config_dir}/#{new_resource.keystore_file}" \
          -storepass "#{node['tomcat']['keystore_password']}" \
          -keypass "#{node['tomcat']['keystore_password']}" \
-         -dname "#{node['tomcat']['certificate_dn']}"
+         -dname "#{node['tomcat']['certificate_dn']}" \
+         -keyalg "RSA"
       EOH
       umask 0007
       creates "#{new_resource.config_dir}/#{new_resource.keystore_file}"
