@@ -4,7 +4,7 @@
 #
 # Author:: Jamie Winsor (<jamie@vialstudios.com>)
 #
-# Copyright 2010-2012, Chef Software, Inc.
+# Copyright 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class Chef
       end
     end
 
-    USERS_DATA_BAG = 'tomcat_users'
+    USERS_DATA_BAG ||= 'tomcat_users'
 
     class << self
       # Returns a array of data bag items for the users in the Tomcat Users
@@ -72,8 +72,8 @@ class Chef
         users = if Chef::Config[:solo]
                   data_bag = Chef::DataBag.load(USERS_DATA_BAG)
                   data_bag.keys.map do |name|
-            Chef::DataBagItem.load(USERS_DATA_BAG, name)
-          end
+                    Chef::DataBagItem.load(USERS_DATA_BAG, name)
+                  end
                 else
                   begin
                     items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
@@ -83,18 +83,15 @@ class Chef
                   end
                   decrypt_items(items)
                 end
-
         users.each { |user| validate_user_item(user) }
         users
       end
 
       def validate_user_item(user)
-        if user['id'].empty? || user['id'].nil? &&
-            user['password'].empty? || user['password'].nil? &&
-            user['roles'].nil? || !user['roles'].is_a?(Array)
-
-          fail InvalidUserDataBagItem.new(user), 'Invalid User Databag Item'
-        end
+        id = user['id'].empty? || user['id'].nil?
+        password = user['password'].empty? || user['password'].nil?
+        roles = user['roles'].nil? || !user['roles'].is_a?(Array)
+        fail InvalidUserDataBagItem.new(user), 'Invalid User Databag Item' if id && password && roles
       end
 
       def decrypt_items(items)
