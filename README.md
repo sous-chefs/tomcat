@@ -19,6 +19,7 @@ Requirements
 ### Cookbooks
 - java
 - openssl
+- yum-epel
 
 
 Attributes
