@@ -14,7 +14,7 @@ Requirements
 - Fedora
 
 ### Chef
-- Chef 11+
+- Chef 12.1+
 
 ### Cookbooks
 - java
