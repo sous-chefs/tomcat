@@ -143,6 +143,31 @@ Users are defined by creating a `tomcat_users` data bag and placing [Encrypted D
 
 If you are a Chef Solo user the data bag items are not required to be encrypted and should not be.
 
+Defining Environment Variables
+------------------------------
+
+If your Tomcat application requires the usage of environment variables, you can define those into the `environment` attribute.
+
+This is a sample on how to set-up some environment variables:
+
+```javascript
+...
+"override_attributes": {
+  "tomcat": {
+    "environment": [
+      {
+        "VariableName": "LOCAL_HOME",
+        "VariableValue": "/usr/root"
+      },
+      {
+        "VariableName": "CONFIG_URL",
+        "VariableValue": "http://127.0.0.1/config"
+      }
+    ]
+  }
+  ...
+}
+```
 
 License & Authors
 -----------------
