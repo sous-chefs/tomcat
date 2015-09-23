@@ -3,7 +3,7 @@ tomcat Cookbook
 [![Build Status](https://travis-ci.org/chef-cookbooks/tomcat.svg?branch=master)](https://travis-ci.org/chef-cookbooks/tomcat)
 [![Cookbook Version](https://img.shields.io/cookbook/v/tomcat.svg)](https://supermarket.chef.io/cookbooks/tomcat)
 
-Installs and configures Tomcat, Java servlet engine and webserver.
+Installs and configures Tomcat, Java servlet engine and webserver version 6 and 7 (8 not yet supported).
 
 
 Requirements
