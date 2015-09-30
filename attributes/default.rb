@@ -141,15 +141,15 @@ when 'windows'
 
   # Windows defaults for Tomcat
   default['tomcat']['home'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation"
-  default['tomcat']['base'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}"
-  default['tomcat']['config_dir'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}\\conf"
-  default['tomcat']['log_dir'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}\\logs"
-  default['tomcat']['tmp_dir'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}\\temp"
-  default['tomcat']['work_dir'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}\\work"
+  default['tomcat']['base'] = "#{node['tomcat']['home']}\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}"
+  default['tomcat']['config_dir'] = "#{node['tomcat']['base']}\\conf"
+  default['tomcat']['log_dir'] = "#{node['tomcat']['base']}\\logs"
+  default['tomcat']['tmp_dir'] = "#{node['tomcat']['base']}\\temp"
+  default['tomcat']['work_dir'] = "#{node['tomcat']['base']}\\work"
   default['tomcat']['context_dir'] = "#{node["tomcat"]["config_dir"]}\\Catalina\\localhost"
-  default['tomcat']['webapp_dir'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}\\tomcat\\webapps"
+  default['tomcat']['webapp_dir'] = "#{node['tomcat']['base']}\\webapps"
   default['tomcat']['keytool'] = 'keytool'
-  default['tomcat']['lib_dir'] = "#{node["tomcat"]["home"]}\\lib"
+  default['tomcat']['lib_dir'] = "#{node["tomcat"]["base"]}\\lib"
   default['tomcat']['endorsed_dir'] = "#{node["tomcat"]["base"]}\\endorsed"
   default['tomcat']['packages'] = ["apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}-windows-#{node['tomcat']['processor_architecture']}.zip"]
   default['tomcat']['deploy_manager_packages'] = []

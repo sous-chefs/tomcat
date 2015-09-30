@@ -180,7 +180,7 @@ action :configure do
       #
       # In windows, when installed as a service, the java options are registry based.
       # JvmMs, JvmMx, and JvmSs have separate keys for there values and are not part
-      # of jva_options.
+      # of java_options.
       # PermSize and MaxPermSize are both optional here, but added for completeness.
       # They can be safely added to the java_options, and undefined on the node.
       ###############################################################################
