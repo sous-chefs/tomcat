@@ -107,7 +107,9 @@ action :configure do
 
   # Even for the base instance, the OS package may not make this directory
   directory new_resource.endorsed_dir do
-    mode '0755'
+    if node['platform_family'] != 'windows'
+      mode '0755'
+    end
     recursive true
   end
 
@@ -164,6 +166,44 @@ action :configure do
       mode '0644'
       notifies :restart, "service[#{instance}]"
     end
+  when 'windows'
+      # execute the bundled service installer from the apache tomcat artifact
+      execute "register tomcat windows service" do
+        command "service install #{node['tomcat']['base_instance']} > #{Chef::Config[:file_cache_path]}/tomcat_win_service_register.log 2>&1"
+        cwd "#{node['tomcat']['base']}\\bin"
+        action :run
+        only_if { ::Win32::Service.exists?(node['tomcat']['base_instance']) == false }
+      end
+
+      ###############################################################################
+      # Configure our JVM memory settings - when running as a windows service
+      #
+      # In windows, when installed as a service, the java options are registry based.
+      # JvmMs, JvmMx, and JvmSs have separate keys for there values and are not part
+      # of jva_options.
+      # PermSize and MaxPermSize are both optional here, but added for completeness.
+      # They can be safely added to the java_options, and undefined on the node.
+      ###############################################################################
+      tomcat_windows_jvm_helper 'configure windows tomcat jvm memory settings' do
+        if node['tomcat']['JvmMs']
+          JvmMs node['tomcat']['JvmMs']
+        end
+        if node['tomcat']['JvmMx']
+          JvmMx node['tomcat']['JvmMx']
+        end
+        if node['tomcat']['JvmSs']
+          JvmSs node['tomcat']['JvmSs']
+        end
+        if node['tomcat']['PermSize']
+          PermSize node['tomcat']['PermSize']
+        end
+        if node['tomcat']['MaxPermSize']
+          MaxPermSize node['tomcat']['MaxPermSize']
+        end
+        jvm_registry_key node['tomcat']['tomcat_jvm_registry_key']
+        java_options new_resource.java_options
+        action :set
+      end
   else
     template "/etc/default/#{instance}" do
       source 'default_tomcat6.erb'
@@ -202,17 +242,21 @@ action :configure do
       tomcat_auth: new_resource.tomcat_auth,
       config_dir: new_resource.config_dir
     )
-    owner 'root'
-    group 'root'
-    mode '0644'
+    if node['platform_family'] != 'windows'
+      owner 'root'
+      group 'root'
+      mode '0644'
+    end
     notifies :restart, "service[#{instance}]"
   end
 
   template "#{new_resource.config_dir}/logging.properties" do
     source 'logging.properties.erb'
-    owner 'root'
-    group 'root'
-    mode '0644'
+    if node['platform_family'] != 'windows'
+      owner 'root'
+      group 'root'
+      mode '0644'
+    end
     notifies :restart, "service[#{instance}]"
   end
 

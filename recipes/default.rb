@@ -27,12 +27,43 @@ if node['tomcat']['base_version'].to_i == 7
   end
 end
 
-package node['tomcat']['packages'] do
-  action :install
-end
+# For all *nix platforms, use the standard package resource block
+if node['platform_family'] != 'windows'
+  node['tomcat']['packages'].each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
 
-package node['tomcat']['deploy_manager_packages'] do
-  action :install
+  node['tomcat']['deploy_manager_packages'].each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
+else
+  ###############################################################################
+  # Windows code path, so 'package' isn't super useful in this scenario.
+  # We need to:
+  #   1) manually remote_file the source
+  #   2) call windows_zip on the result
+  ###############################################################################
+
+  tomcat_artifact_filename = "apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}-windows-#{node['tomcat']['processor_architecture']}.zip"
+  tomcat_artifact_url = "#{node['tomcat']['preferred_download_mirror']}/dist/tomcat/tomcat-#{node['tomcat']['base_version']}/v#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}/bin/#{tomcat_artifact_filename}"
+
+  # down the apache tomcat artifact from the preferred mirror (validting with offical file hash)
+  remote_file ::File.join(Chef::Config['file_cache_path'], tomcat_artifact_filename) do
+    source tomcat_artifact_url
+    action :create_if_missing   # we will also be supporting distribution in an offline mode ..
+  end
+
+  windows_zipfile node['tomcat']['home'] do
+    source ::File.join(Chef::Config['file_cache_path'], tomcat_artifact_filename)
+    overwrite true
+    action :unzip
+    not_if { ::File.exist?(node['tomcat']['home']) == true }
+  end
+
 end
 
 unless node['tomcat']['deploy_manager_apps']
@@ -76,7 +107,7 @@ def create_service(instance)
       service_name instance
     end
     action [:start, :enable]
-    notifies :run, "execute[wait for #{instance}]", :immediately
+    notifies :run, "ruby_block[wait for #{instance}]", :immediately
     retries 4
     retry_delay 30
   end
@@ -139,7 +170,16 @@ node['tomcat']['instances'].each do |name, attrs|
   create_service(instance)
 end
 
-execute "wait for #{instance}" do
-  command 'sleep 5'
-  action :nothing
-end
+  ###############################################################################
+  # Windows does not have a native 'sleep'. There is a Powershell cmdlet called
+  # Start-Sleep that *can* be used if Powershell is available/usable.  Since we
+  # know that Ruby's 'sleep' will always be available and runnable across multiple
+  # OS'es and configurations it's more agnostic then a platform specific call
+  # and conditional logic to allow for it.
+  ###############################################################################
+  ruby_block "wait for #{instance}" do
+    block do
+      sleep 5
+    end
+    action :nothing
+  end
