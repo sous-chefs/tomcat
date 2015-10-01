@@ -54,7 +54,7 @@ else
   # down the apache tomcat artifact from the preferred mirror (validting with offical file hash)
   remote_file ::File.join(Chef::Config['file_cache_path'], tomcat_artifact_filename) do
     source tomcat_artifact_url
-    action :create_if_missing   # we will also be supporting distribution in an offline mode ..
+    action :create_if_missing # we will also be supporting distribution in an offline mode ..
   end
 
   windows_zipfile node['tomcat']['home'] do
@@ -170,16 +170,16 @@ node['tomcat']['instances'].each do |name, attrs|
   create_service(instance)
 end
 
-  ###############################################################################
-  # Windows does not have a native 'sleep'. There is a Powershell cmdlet called
-  # Start-Sleep that *can* be used if Powershell is available/usable.  Since we
-  # know that Ruby's 'sleep' will always be available and runnable across multiple
-  # OS'es and configurations it's more agnostic then a platform specific call
-  # and conditional logic to allow for it.
-  ###############################################################################
-  ruby_block "wait for #{instance}" do
-    block do
-      sleep 5
-    end
-    action :nothing
+###############################################################################
+# Windows does not have a native 'sleep'. There is a Powershell cmdlet called
+# Start-Sleep that *can* be used if Powershell is available/usable.  Since we
+# know that Ruby's 'sleep' will always be available and runnable across multiple
+# OS'es and configurations it's more agnostic then a platform specific call
+# and conditional logic to allow for it.
+###############################################################################
+ruby_block "wait for #{instance}" do
+  block do
+    sleep 5
   end
+  action :nothing
+end
