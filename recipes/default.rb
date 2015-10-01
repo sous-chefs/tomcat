@@ -48,7 +48,7 @@ else
   #   2) call windows_zip on the result
   ###############################################################################
 
-  tomcat_artifact_filename = "apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}-windows-#{node['tomcat']['processor_architecture']}.zip"
+  tomcat_artifact_filename = node['tomcat']['packages'].join(' ')
   tomcat_artifact_url = "#{node['tomcat']['preferred_download_mirror']}/dist/tomcat/tomcat-#{node['tomcat']['base_version']}/v#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}/bin/#{tomcat_artifact_filename}"
 
   # down the apache tomcat artifact from the preferred mirror (validting with offical file hash)
