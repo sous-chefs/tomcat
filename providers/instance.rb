@@ -4,7 +4,8 @@ action :configure do
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
   # that runs
-  [:catalina_options, :java_options, :use_security_manager, :authbind,
+  [:catalina_options, :java_options, :JvmMs, :JvmMx, :JvmSs,
+   :PermSize, :MaxPermSize, :use_security_manager, :authbind,
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
@@ -111,11 +112,22 @@ action :configure do
     recursive true
   end
 
+  # we merge any explicitly declared Java memory space attributes into java_options
+  unless platform_family?('windows')
+    java_options = new_resource.java_options.to_s
+    java_options << " -XX:JvmMs=#{new_resource.JvmMs}" unless new_resource.JvmMs.nil? || new_resource.JvmMs == ''
+    java_options << " -XX:JvmMx=#{new_resource.JvmMx}" unless new_resource.JvmMx.nil? || new_resource.JvmMx == ''
+    java_options << " -XX:JvmSs=#{new_resource.JvmSs}" unless new_resource.JvmSs.nil? || new_resource.JvmSs == ''
+    java_options << " -XX:PermSize=#{new_resource.PermSize}" unless new_resource.PermSize.nil? || new_resource.PermSize == ''
+    java_options << " -XX:MaxPermSize=#{new_resource.MaxPermSize}" unless new_resource.MaxPermSize.nil? || new_resource.MaxPermSize == ''
+    new_resource.instance_variable_set("@#{:java_options}", java_options.strip)
+  end
+
   unless new_resource.truststore_file.nil?
     java_options = new_resource.java_options.to_s
     java_options << " -Djavax.net.ssl.trustStore=#{new_resource.config_dir}/#{new_resource.truststore_file}"
     java_options << " -Djavax.net.ssl.trustStorePassword=#{new_resource.truststore_password}"
-    new_resource.java_options = java_options
+    new_resource.instance_variable_set("@#{:java_options}", java_options.strip)
   end
 
   case node['platform_family']
@@ -183,11 +195,11 @@ action :configure do
     # They can be safely added to the java_options, and undefined on the node.
     ###############################################################################
     tomcat_windows_jvm_helper 'configure windows tomcat jvm memory settings' do
-      JvmMs node['tomcat']['JvmMs']
-      JvmMx node['tomcat']['JvmMx']
-      JvmSs node['tomcat']['JvmSs']
-      PermSize node['tomcat']['PermSize']
-      MaxPermSize node['tomcat']['MaxPermSize']
+      JvmMs new_resource.JvmMs
+      JvmMx new_resource.JvmMx
+      JvmSs new_resource.JvmSs
+      PermSize new_resource.PermSize
+      MaxPermSize new_resource.MaxPermSize
       jvm_registry_key node['tomcat']['tomcat_jvm_registry_key']
       java_options new_resource.java_options
       action :set

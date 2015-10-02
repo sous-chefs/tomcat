@@ -17,6 +17,13 @@
 # limitations under the License.
 
 default['tomcat']['base_version'] = 6
+
+default['tomcat']['JvmMs'] = '128' # in megabytes
+default['tomcat']['JvmMx'] = '256' # in megabytes
+default['tomcat']['JvmSs'] = '2048' # in kilobytes
+default['tomcat']['PermSize'] = '256' # in megabytes
+default['tomcat']['MaxPermSize'] = '64' # in megabytes
+
 default['tomcat']['base_instance'] = "tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['port'] = 8080
 default['tomcat']['proxy_port'] = nil
@@ -135,9 +142,6 @@ when 'windows'
   # Special handling needed for jvm tuning and java options under windows
   default['tomcat']['java_options'] = ''
   default['tomcat']['tomcat_jvm_registry_key'] = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Apache Software Foundation\\Procrun 2.0\\Tomcat#{node['tomcat']['base_version']}\\Parameters\\Java"
-  default['tomcat']['JvmMs'] = '128' # in megabytes
-  default['tomcat']['JvmMx'] = '256' # in megabytes
-  default['tomcat']['JvmSs'] = '2048' # in kilobytes
 
   # Windows defaults for Tomcat
   default['tomcat']['home'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation"

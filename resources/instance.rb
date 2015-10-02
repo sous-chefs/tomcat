@@ -37,6 +37,16 @@ attribute :catalina_options,
   kind_of: String
 attribute :java_options,
   kind_of: String
+attribute :JvmMs,
+  kind_of: String # in megabytes
+attribute :JvmMx,
+  kind_of: String # in megabytes
+attribute :JvmSs,
+  kind_of: String # in kilobytes
+attribute :PermSize,
+  kind_of: String # in megabytes
+attribute :MaxPermSize,
+  kind_of: String # in megabytes
 attribute :use_security_manager,
   kind_of: [TrueClass, FalseClass]
 attribute :authbind,
