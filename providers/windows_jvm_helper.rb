@@ -13,7 +13,7 @@ action :set do
       values [{
         name: 'JvmMs',
         type: :dword,
-        data: new_resource.JvmMs
+        data: new_resource.initial_java_heap_size
       }]
       action :create
     end
@@ -25,7 +25,7 @@ action :set do
       values [{
         name: 'JvmMx',
         type: :dword,
-        data: new_resource.JvmMx
+        data: new_resource.maximum_java_heap_size
       }]
       action :create
     end
@@ -37,7 +37,7 @@ action :set do
       values [{
         name: 'JvmSs',
         type: :dword,
-        data: new_resource.JvmSs
+        data: new_resource.thread_stack_size
       }]
       action :create
     end
