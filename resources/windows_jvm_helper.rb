@@ -1,18 +1,18 @@
 actions :set
 default_action :set
 
-attribute :JvmMs,
+attribute :initial_java_heap_size,
           kind_of: String, # in megabytes
           required: true
-attribute :JvmMx,
+attribute :maximum_java_heap_size,
           kind_of: String, # in megabytes
           required: true
-attribute :JvmSs,
+attribute :thread_stack_size,
           kind_of: String, # in kilobytes
           required: true
-attribute :PermSize,
+attribute :permanent_generation_size,
           kind_of: String # in megabytes
-attribute :MaxPermSize,
+attribute :maximum_permanent_generation_size,
           kind_of: String # in megabytes
 attribute :jvm_registry_key,
           kind_of: String, default: 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Apache Software Foundation\\Procrun 2.0\\Tomcat6\\Parameters\\Java'

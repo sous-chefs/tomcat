@@ -37,15 +37,15 @@ attribute :catalina_options,
   kind_of: String
 attribute :java_options,
   kind_of: String
-attribute :JvmMs,
+attribute :initial_java_heap_size,
   kind_of: String # in megabytes
-attribute :JvmMx,
+attribute :maximum_java_heap_size,
   kind_of: String # in megabytes
-attribute :JvmSs,
+attribute :thread_stack_size,
   kind_of: String # in kilobytes
-attribute :PermSize,
+attribute :permanent_generation_size,
   kind_of: String # in megabytes
-attribute :MaxPermSize,
+attribute :maximum_permanent_generation_size,
   kind_of: String # in megabytes
 attribute :use_security_manager,
   kind_of: [TrueClass, FalseClass]

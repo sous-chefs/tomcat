@@ -18,11 +18,11 @@
 
 default['tomcat']['base_version'] = 6
 
-default['tomcat']['JvmMs'] = '128' # in megabytes
-default['tomcat']['JvmMx'] = '256' # in megabytes
-default['tomcat']['JvmSs'] = '2048' # in kilobytes
-default['tomcat']['PermSize'] = '256' # in megabytes
-default['tomcat']['MaxPermSize'] = '64' # in megabytes
+default['tomcat']['initial_java_heap_size'] = '128M' # in megabytes
+default['tomcat']['maximum_java_heap_size'] = '256M' # in megabytes
+default['tomcat']['thread_stack_size'] = '2048K' # in kilobytes
+default['tomcat']['permanent_generation_size'] = '256M' # in megabytes
+default['tomcat']['maximum_permanent_generation_size'] = '64M' # in megabytes
 
 default['tomcat']['base_instance'] = "tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['port'] = 8080
@@ -32,7 +32,7 @@ default['tomcat']['ssl_proxy_port'] = nil
 default['tomcat']['ajp_port'] = 8009
 default['tomcat']['shutdown_port'] = 8005
 default['tomcat']['catalina_options'] = ''
-default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
+default['tomcat']['java_options'] = '-Djava.awt.headless=true'
 default['tomcat']['use_security_manager'] = false
 default['tomcat']['authbind'] = 'no'
 default['tomcat']['deploy_manager_apps'] = true

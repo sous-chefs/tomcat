@@ -8,7 +8,7 @@ include Chef::DSL::RegistryHelper # needed for the use of registry_get_values
 ###############################################################################
 action :set do
   # initial Java heap size (in megabytes)
-  if new_resource.JvmMs
+  if new_resource.initial_java_heap_size
     registry_key new_resource.jvm_registry_key do
       values [{
         name: 'JvmMs',
@@ -20,7 +20,7 @@ action :set do
   end
 
   # maximum Java heap size (in megabytes)
-  if new_resource.JvmMx
+  if new_resource.maximum_java_heap_size
     registry_key new_resource.jvm_registry_key do
       values [{
         name: 'JvmMx',
@@ -32,7 +32,7 @@ action :set do
   end
 
   # thread stack size (in kilobytes)
-  if new_resource.JvmSs
+  if new_resource.thread_stack_size
     registry_key new_resource.jvm_registry_key do
       values [{
         name: 'JvmSs',
@@ -52,11 +52,11 @@ action :set do
   options_value << '-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager'
   options_value << "-Djava.util.logging.config.file=#{node['tomcat']['config_dir']}\\logging.properties"
 
-  if !new_resource.PermSize.nil? && new_resource.PermSize != ''
-    options_value << "-XX:PermSize=#{new_resource.PermSize}"
+  if !new_resource.permanent_generation_size.nil? && new_resource.permanent_generation_size != ''
+    options_value << "-XX:PermSize=#{new_resource.permanent_generation_size}"
   end
-  if !new_resource.MaxPermSize.nil? && new_resource.MaxPermSize != ''
-    options_value << "-XX:MaxPermSize=#{new_resource.MaxPermSize}"
+  if !new_resource.maximum_permanent_generation_size.nil? && new_resource.maximum_permanent_generation_size != ''
+    options_value << "-XX:MaxPermSize=#{new_resource.maximum_permanent_generation_size}"
   end
 
   # finally add on the passed through java options
