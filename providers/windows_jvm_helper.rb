@@ -5,42 +5,40 @@ include Chef::DSL::RegistryHelper # needed for the use of registry_get_values
 ###############################################################################
 ## action :set
 ## This action updates the windows registry for the tomcat settings.
+#
+# In windows, when installed as a service, the java options are registry based.
+# PermSize and MaxPermSize are both optional here, but added for completeness.
+# They can be safely added to the java_options, and undefined on the node.
 ###############################################################################
 action :set do
   # initial Java heap size
-  if new_resource.initial_java_heap_size
-    registry_key new_resource.jvm_registry_key do
-      values [{
-        name: 'JvmMs',
-        type: :dword,
-        data: new_resource.initial_java_heap_size
-      }]
-      action :create
-    end
+  registry_key new_resource.jvm_registry_key do
+    values [{
+      name: 'JvmMs',
+      type: :dword,
+      data: new_resource.initial_java_heap_size
+    }]
+    action :create
   end
 
   # maximum Java heap size
-  if new_resource.maximum_java_heap_size
-    registry_key new_resource.jvm_registry_key do
-      values [{
-        name: 'JvmMx',
-        type: :dword,
-        data: new_resource.maximum_java_heap_size
-      }]
-      action :create
-    end
+  registry_key new_resource.jvm_registry_key do
+    values [{
+      name: 'JvmMx',
+      type: :dword,
+      data: new_resource.maximum_java_heap_size
+    }]
+    action :create
   end
 
   # thread stack size
-  if new_resource.thread_stack_size
-    registry_key new_resource.jvm_registry_key do
-      values [{
-        name: 'JvmSs',
-        type: :dword,
-        data: new_resource.thread_stack_size
-      }]
-      action :create
-    end
+  registry_key new_resource.jvm_registry_key do
+    values [{
+      name: 'JvmSs',
+      type: :dword,
+      data: new_resource.thread_stack_size
+    }]
+    action :create
   end
 
   # These are the defaults for Apache Tomcat on Windows (as a service)

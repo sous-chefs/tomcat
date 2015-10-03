@@ -186,22 +186,13 @@ action :configure do
       action :run
       only_if { ::Win32::Service.exists?(node['tomcat']['base_instance']) == false }
     end
-
-    ###############################################################################
     # Configure our JVM memory settings - when running as a windows service
-    #
-    # In windows, when installed as a service, the java options are registry based.
-    # JvmMs, JvmMx, and JvmSs have separate keys for there values and are not part
-    # of java_options.
-    # PermSize and MaxPermSize are both optional here, but added for completeness.
-    # They can be safely added to the java_options, and undefined on the node.
-    ###############################################################################
     tomcat_windows_jvm_helper 'configure windows tomcat jvm memory settings' do
-      initial_java_heap_size new_resource.initial_java_heap_size
-      maximum_java_heap_size new_resource.maximum_java_heap_size
-      thread_stack_size new_resource.thread_stack_size
-      permanent_generation_size new_resource.permanent_generation_size
-      maximum_permanent_generation_size new_resource.maximum_permanent_generation_size
+      initial_java_heap_size new_resource.initial_java_heap_size unless new_resource.initial_java_heap_size.nil? || new_resource.initial_java_heap_size == ''
+      maximum_java_heap_size new_resource.maximum_java_heap_size unless new_resource.maximum_java_heap_size.nil? || new_resource.maximum_java_heap_size == ''
+      thread_stack_size new_resource.thread_stack_size unless new_resource.thread_stack_size.nil? || new_resource.thread_stack_size == ''
+      permanent_generation_size new_resource.permanent_generation_size unless new_resource.permanent_generation_size.nil? || new_resource.permanent_generation_size == ''
+      maximum_permanent_generation_size new_resource.maximum_permanent_generation_size unless new_resource.maximum_permanent_generation_size.nil? || new_resource.maximum_permanent_generation_size == ''
       jvm_registry_key node['tomcat']['windows']['tomcat_jvm_registry_key']
       java_options new_resource.java_options
       action :set

@@ -17,13 +17,6 @@
 # limitations under the License.
 
 default['tomcat']['base_version'] = 6
-
-default['tomcat']['initial_java_heap_size'] = '128M'
-default['tomcat']['maximum_java_heap_size'] = '256M'
-default['tomcat']['thread_stack_size'] = '2048K'
-default['tomcat']['permanent_generation_size'] = '256M'
-default['tomcat']['maximum_permanent_generation_size'] = '64M'
-
 default['tomcat']['base_instance'] = "tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['port'] = 8080
 default['tomcat']['proxy_port'] = nil
