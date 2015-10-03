@@ -121,7 +121,13 @@ action :configure do
     java_options << " -Xss#{new_resource.thread_stack_size}" unless new_resource.thread_stack_size.nil? || new_resource.thread_stack_size == ''
     java_options << " -XX:PermSize=#{new_resource.permanent_generation_size}" unless new_resource.permanent_generation_size.nil? || new_resource.permanent_generation_size == ''
     java_options << " -XX:MaxPermSize=#{new_resource.maximum_permanent_generation_size}" unless new_resource.maximum_permanent_generation_size.nil? || new_resource.maximum_permanent_generation_size == ''
-    new_resource.instance_variable_set("@#{:java_options}", java_options.strip)
+    java_options.strip
+
+    # now remove dups
+    java_options_array = new_resource.java_options.split(' ')
+    java_options_array.uniq!
+
+    new_resource.instance_variable_set("@#{:java_options}", java_options_array.join(' ').to_s)
   end
 
   unless new_resource.truststore_file.nil?
