@@ -49,7 +49,7 @@ else
   ###############################################################################
 
   tomcat_artifact_filename = node['tomcat']['packages'].join(' ')
-  tomcat_artifact_url = "#{node['tomcat']['preferred_download_mirror']}/dist/tomcat/tomcat-#{node['tomcat']['base_version']}/v#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}/bin/#{tomcat_artifact_filename}"
+  tomcat_artifact_url = "#{node['tomcat']['windows']['preferred_download_mirror']}/dist/tomcat/tomcat-#{node['tomcat']['base_version']}/v#{node['tomcat']['base_version']}.#{node['tomcat']['windows']['minor_version']}.#{node['tomcat']['windows']['revision_version']}/bin/#{tomcat_artifact_filename}"
 
   # down the apache tomcat artifact from the preferred mirror (validting with offical file hash)
   remote_file ::File.join(Chef::Config['file_cache_path'], tomcat_artifact_filename) do

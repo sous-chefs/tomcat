@@ -201,7 +201,7 @@ action :configure do
       thread_stack_size new_resource.thread_stack_size
       permanent_generation_size new_resource.permanent_generation_size
       maximum_permanent_generation_size new_resource.maximum_permanent_generation_size
-      jvm_registry_key node['tomcat']['tomcat_jvm_registry_key']
+      jvm_registry_key node['tomcat']['windows']['tomcat_jvm_registry_key']
       java_options new_resource.java_options
       action :set
     end

@@ -18,11 +18,11 @@
 
 default['tomcat']['base_version'] = 6
 
-default['tomcat']['initial_java_heap_size'] = '128M' # in megabytes
-default['tomcat']['maximum_java_heap_size'] = '256M' # in megabytes
-default['tomcat']['thread_stack_size'] = '2048K' # in kilobytes
-default['tomcat']['permanent_generation_size'] = '256M' # in megabytes
-default['tomcat']['maximum_permanent_generation_size'] = '64M' # in megabytes
+default['tomcat']['initial_java_heap_size'] = '128M'
+default['tomcat']['maximum_java_heap_size'] = '256M'
+default['tomcat']['thread_stack_size'] = '2048K'
+default['tomcat']['permanent_generation_size'] = '256M'
+default['tomcat']['maximum_permanent_generation_size'] = '64M'
 
 default['tomcat']['base_instance'] = "tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['port'] = 8080
@@ -134,18 +134,18 @@ when 'windows'
   default['tomcat']['group'] = "tomcat#{node['tomcat']['base_version']}"
 
   # latest 6 version as per http://tomcat.apache.org/download-60.cgi
-  default['tomcat']['minor_version'] = 0
-  default['tomcat']['revision_version'] = 44
-  default['tomcat']['processor_architecture'] = 'x64' # possible values: x86 [32 bit], x64 [64 bit], i64 [Itanium]
-  default['tomcat']['preferred_download_mirror'] = 'https://www.apache.org'
+  default['tomcat']['windows']['minor_version'] = 0
+  default['tomcat']['windows']['revision_version'] = 44
+  default['tomcat']['windows']['processor_architecture'] = 'x64' # possible values: x86 [32 bit], x64 [64 bit], i64 [Itanium]
+  default['tomcat']['windows']['preferred_download_mirror'] = 'https://www.apache.org'
 
   # Special handling needed for jvm tuning and java options under windows
   default['tomcat']['java_options'] = ''
-  default['tomcat']['tomcat_jvm_registry_key'] = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Apache Software Foundation\\Procrun 2.0\\Tomcat#{node['tomcat']['base_version']}\\Parameters\\Java"
+  default['tomcat']['windows']['tomcat_jvm_registry_key'] = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Apache Software Foundation\\Procrun 2.0\\Tomcat#{node['tomcat']['base_version']}\\Parameters\\Java"
 
   # Windows defaults for Tomcat
   default['tomcat']['home'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation"
-  default['tomcat']['base'] = "#{node['tomcat']['home']}\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}"
+  default['tomcat']['base'] = "#{node['tomcat']['home']}\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['windows']['minor_version']}.#{node['tomcat']['windows']['revision_version']}"
   default['tomcat']['config_dir'] = "#{node['tomcat']['base']}\\conf"
   default['tomcat']['log_dir'] = "#{node['tomcat']['base']}\\logs"
   default['tomcat']['tmp_dir'] = "#{node['tomcat']['base']}\\temp"
@@ -155,7 +155,7 @@ when 'windows'
   default['tomcat']['keytool'] = 'keytool'
   default['tomcat']['lib_dir'] = "#{node['tomcat']['base']}\\lib"
   default['tomcat']['endorsed_dir'] = "#{node['tomcat']['base']}\\endorsed"
-  default['tomcat']['packages'] = ["apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['minor_version']}.#{node['tomcat']['revision_version']}-windows-#{node['tomcat']['processor_architecture']}.zip"]
+  default['tomcat']['packages'] = ["apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['windows']['minor_version']}.#{node['tomcat']['windows']['revision_version']}-windows-#{node['tomcat']['windows']['processor_architecture']}.zip"]
   default['tomcat']['deploy_manager_packages'] = []
 else
   default['tomcat']['user'] = "tomcat#{node['tomcat']['base_version']}"

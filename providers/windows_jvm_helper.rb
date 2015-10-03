@@ -7,7 +7,7 @@ include Chef::DSL::RegistryHelper # needed for the use of registry_get_values
 ## This action updates the windows registry for the tomcat settings.
 ###############################################################################
 action :set do
-  # initial Java heap size (in megabytes)
+  # initial Java heap size
   if new_resource.initial_java_heap_size
     registry_key new_resource.jvm_registry_key do
       values [{
@@ -19,7 +19,7 @@ action :set do
     end
   end
 
-  # maximum Java heap size (in megabytes)
+  # maximum Java heap size
   if new_resource.maximum_java_heap_size
     registry_key new_resource.jvm_registry_key do
       values [{
@@ -31,7 +31,7 @@ action :set do
     end
   end
 
-  # thread stack size (in kilobytes)
+  # thread stack size
   if new_resource.thread_stack_size
     registry_key new_resource.jvm_registry_key do
       values [{
