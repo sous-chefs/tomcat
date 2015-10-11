@@ -1,4 +1,7 @@
 action :configure do
+  # first of all set derived variables
+  set_derived_vars
+
   base_instance = node['tomcat']['base_instance']
 
   # Set defaults for resource attributes from node attributes. We can't do

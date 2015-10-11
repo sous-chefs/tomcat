@@ -20,6 +20,8 @@
 # required for the secure_password method from the openssl cookbook
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
+set_derived_vars
+
 # RHEL systems prior to 7 need the EPEL repository setup
 if node['tomcat']['base_version'].to_i == 7
   if platform_family?('rhel') && node['platform_version'].to_i < 7
