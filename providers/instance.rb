@@ -205,6 +205,7 @@ action :configure do
     owner 'root'
     group 'root'
     mode '0644'
+    sensitive true
     notifies :restart, "service[#{instance}]"
   end
 
