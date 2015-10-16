@@ -35,7 +35,7 @@
   <% end -%>
   <!-- Prevent memory leaks due to use of particular java/javax APIs-->
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
-  <% if node['tomcat']['base_version'].to_i < 7 -%>
+  <% if node['tomcat']['base_version'].to_i.between?(1, 6) -%>
   <!-- JMX Support for the Tomcat server. Documentation at /docs/non-existent.html -->
   <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
   <% end -%>
@@ -176,7 +176,7 @@
        -->
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true"
-            <% if node['tomcat']['base_version'].to_i < 7 -%>
+            <% if node['tomcat']['base_version'].to_i.between?(1, 6) -%>
             xmlValidation="false" xmlNamespaceAware="false"
             <% end -%>
             >
