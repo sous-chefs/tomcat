@@ -11,6 +11,12 @@ attribute :port,
   kind_of: Fixnum
 attribute :proxy_port,
   kind_of: Fixnum
+attribute :proxy_name,
+  kind_of: String
+attribute :secure,
+  kind_of: [ TrueClass, FalseClass ]
+attribute :scheme,
+  kind_of: String
 attribute :ssl_port,
   kind_of: Fixnum
 attribute :ssl_proxy_port,

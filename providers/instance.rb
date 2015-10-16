@@ -191,6 +191,9 @@ action :configure do
     variables(
       port: new_resource.port,
       proxy_port: new_resource.proxy_port,
+      proxy_name: new_resource.proxy_name,
+      secure: new_resource.secure,
+      scheme: new_resource.scheme,
       ssl_port: new_resource.ssl_port,
       ssl_proxy_port: new_resource.ssl_proxy_port,
       ajp_port: new_resource.ajp_port,
