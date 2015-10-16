@@ -14,7 +14,7 @@ attribute :proxy_port,
 attribute :proxy_name,
   kind_of: String
 attribute :secure,
-  kind_of: [ TrueClass, FalseClass ]
+  kind_of: [TrueClass, FalseClass]
 attribute :scheme,
   kind_of: String
 attribute :ssl_port,
