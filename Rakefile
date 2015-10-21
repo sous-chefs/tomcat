@@ -3,6 +3,8 @@ require 'rubocop/rake_task'
 require 'foodcritic'
 require 'kitchen'
 
+require_relative 'tasks/maintainers'
+
 # Style tests. Rubocop and Foodcritic
 namespace :style do
   desc 'Run Ruby style checks'
@@ -12,10 +14,7 @@ namespace :style do
   FoodCritic::Rake::LintTask.new(:chef) do |t|
     t.options = {
       fail_tags: ['any'],
-      tags: [
-        '~FC005',
-        '~FC023',
-      ],
+      tags: ['~FC005']
     }
   end
 end

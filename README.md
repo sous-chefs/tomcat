@@ -1,9 +1,9 @@
 tomcat Cookbook
 ===============
-[![Build Status](https://travis-ci.org/opscode-cookbooks/tomcat.svg?branch=master)](https://travis-ci.org/opscode-cookbooks/tomcat)
+[![Build Status](https://travis-ci.org/chef-cookbooks/tomcat.svg?branch=master)](https://travis-ci.org/chef-cookbooks/tomcat)
 [![Cookbook Version](https://img.shields.io/cookbook/v/tomcat.svg)](https://supermarket.chef.io/cookbooks/tomcat)
 
-Installs and configures Tomcat, Java servlet engine and webserver.
+Installs and configures Tomcat, Java servlet engine and webserver version 6 and 7 (8 not yet supported).
 
 
 Requirements
@@ -14,11 +14,12 @@ Requirements
 - Fedora
 
 ### Chef
-- Chef 11+
+- Chef 12.1+
 
 ### Cookbooks
 - java
 - openssl
+- yum-epel
 
 
 Attributes
@@ -26,6 +27,7 @@ Attributes
 * `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
 * `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
 * `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
+* `node["tomcat"]["proxy_name"]` - if set, the proxy name used by Tomcat's Proxy HTTP connector, default nil.
 * `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
 * `node["tomcat"]["ssl_proxy_port"]` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
 * `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
@@ -41,6 +43,7 @@ Attributes
 * `node["tomcat"]["tomcat_auth"]` -
 * `node["tomcat"]["instances"]` - A dictionary defining additional tomcat instances to run.
 * `node["tomcat"]["run_base_instance"]` - Whether or not to run the "base" tomcat instance, default `true`.
+* `node["tomcat"]["environment"]` - Environment variables to be setup when starting Tomcat
 * `node["tomcat"]["user"]` -
 * `node["tomcat"]["group"]` -
 * `node["tomcat"]["home"]` -
@@ -53,6 +56,8 @@ Attributes
 * `node["tomcat"]["webapp_dir"]` -
 * `node["tomcat"]["lib_dir"]` -
 * `node["tomcat"]["endorsed_dir"]` -
+* `node["tomcat"]["scheme"]` set scheme for tomcat connector default value nil
+* `node["tomcat"]["secure"]` to enable secure on or off with false/true default value nil
 
 ### Attributes for SSL
 * `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
@@ -143,6 +148,31 @@ Users are defined by creating a `tomcat_users` data bag and placing [Encrypted D
 
 If you are a Chef Solo user the data bag items are not required to be encrypted and should not be.
 
+Defining Environment Variables
+------------------------------
+
+If your Tomcat application requires the usage of environment variables, you can define those into the `environment` attribute.
+
+This is a sample on how to set-up some environment variables:
+
+```javascript
+...
+"override_attributes": {
+  "tomcat": {
+    "environment": [
+      {
+        "VariableName": "LOCAL_HOME",
+        "VariableValue": "/usr/root"
+      },
+      {
+        "VariableName": "CONFIG_URL",
+        "VariableValue": "http://127.0.0.1/config"
+      }
+    ]
+  }
+  ...
+}
+```
 
 License & Authors
 -----------------

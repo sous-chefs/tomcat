@@ -2,7 +2,7 @@
 # Cookbook Name:: tomcat
 # Attributes:: default
 #
-# Copyright 2010, Chef Software, Inc.
+# Copyright 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@ default['tomcat']['base_version'] = 6
 default['tomcat']['base_instance'] = "tomcat#{node['tomcat']['base_version']}"
 default['tomcat']['port'] = 8080
 default['tomcat']['proxy_port'] = nil
+default['tomcat']['proxy_name'] = nil
+default['tomcat']['secure'] = nil
+default['tomcat']['scheme'] = nil
 default['tomcat']['ssl_port'] = 8443
 default['tomcat']['ssl_proxy_port'] = nil
 default['tomcat']['ajp_port'] = 8009
@@ -50,6 +53,7 @@ default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
+default['tomcat']['environment'] = []
 default['tomcat']['packages'] = ["tomcat#{node['tomcat']['base_version']}"]
 default['tomcat']['deploy_manager_packages'] = ["tomcat#{node['tomcat']['base_version']}-admin"]
 default['tomcat']['ajp_packetsize'] = '8192'
@@ -105,6 +109,23 @@ when 'smartos'
   default['tomcat']['endorsed_dir'] = "#{node['tomcat']['home']}/lib/endorsed"
   default['tomcat']['packages'] = ['apache-tomcat']
   default['tomcat']['deploy_manager_packages'] = []
+when 'suse'
+  default['tomcat']['base_instance'] = 'tomcat'
+  default['tomcat']['user'] = 'tomcat'
+  default['tomcat']['group'] = 'tomcat'
+  default['tomcat']['home'] = '/usr/share/tomcat'
+  default['tomcat']['base'] = '/usr/share/tomcat'
+  default['tomcat']['config_dir'] = '/etc/tomcat'
+  default['tomcat']['log_dir'] = '/var/log/tomcat'
+  default['tomcat']['tmp_dir'] = '/var/cache/tomcat/temp'
+  default['tomcat']['work_dir'] = '/var/cache/tomcat/work'
+  default['tomcat']['context_dir'] = "#{node['tomcat']['config_dir']}/Catalina/localhost"
+  default['tomcat']['webapp_dir'] = '/srv/tomcat/webapps'
+  default['tomcat']['keytool'] = 'keytool'
+  default['tomcat']['lib_dir'] = "#{node['tomcat']['home']}/lib"
+  default['tomcat']['endorsed_dir'] = "#{node['tomcat']['lib_dir']}/endorsed"
+  default['tomcat']['packages'] = ['tomcat']
+  default['tomcat']['deploy_manager_packages'] = ['tomcat-admin-webapps']
 else
   default['tomcat']['user'] = "tomcat#{node['tomcat']['base_version']}"
   default['tomcat']['group'] = "tomcat#{node['tomcat']['base_version']}"

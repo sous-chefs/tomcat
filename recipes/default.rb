@@ -27,16 +27,12 @@ if node['tomcat']['base_version'].to_i == 7
   end
 end
 
-node['tomcat']['packages'].each do |pkg|
-  package pkg do
-    action :install
-  end
+package node['tomcat']['packages'] do
+  action :install
 end
 
-node['tomcat']['deploy_manager_packages'].each do |pkg|
-  package pkg do
-    action :install
-  end
+package node['tomcat']['deploy_manager_packages'] do
+  action :install
 end
 
 unless node['tomcat']['deploy_manager_apps']
@@ -59,21 +55,56 @@ end
 node.set_unless['tomcat']['keystore_password'] = secure_password
 node.set_unless['tomcat']['truststore_password'] = secure_password
 
+def create_service(instance)
+  service instance do
+    case node['platform_family']
+    when 'rhel', 'fedora'
+      service_name instance
+      supports restart: true, status: true
+    when 'debian'
+      service_name instance
+      supports restart: true, reload: false, status: true
+    when 'suse'
+      service_name 'tomcat'
+      supports restart: true, status: true
+      init_command '/usr/sbin/rctomcat'
+    when 'smartos'
+      # SmartOS doesn't support multiple instances
+      service_name 'tomcat'
+      supports restart: false, reload: false, status: true
+    else
+      service_name instance
+    end
+    action [:start, :enable]
+    notifies :run, "execute[wait for #{instance}]", :immediately
+    retries 4
+    retry_delay 30
+  end
+end
+
 if node['tomcat']['run_base_instance']
   tomcat_instance 'base' do
     port node['tomcat']['port']
     proxy_port node['tomcat']['proxy_port']
+    proxy_name node['tomcat']['proxy_name']
+    secure node['tomcat']['secure']
+    scheme node['tomcat']['scheme']
     ssl_port node['tomcat']['ssl_port']
     ssl_proxy_port node['tomcat']['ssl_proxy_port']
     ajp_port node['tomcat']['ajp_port']
     shutdown_port node['tomcat']['shutdown_port']
   end
+  instance = node['tomcat']['base_instance']
+  create_service(instance)
 end
 
 node['tomcat']['instances'].each do |name, attrs|
   tomcat_instance name do
     port attrs['port']
     proxy_port attrs['proxy_port']
+    proxy_name attrs['proxy_name']
+    secure attrs['secure']
+    scheme attrs['scheme']
     ssl_port attrs['ssl_port']
     ssl_proxy_port attrs['ssl_proxy_port']
     ajp_port attrs['ajp_port']
@@ -110,4 +141,12 @@ node['tomcat']['instances'].each do |name, attrs|
     ajp_packetsize attrs['ajp_packetsize']
     uriencoding attrs['uriencoding']
   end
+
+  instance = "#{node['tomcat']['base_instance']}-#{name}"
+  create_service(instance)
+end
+
+execute "wait for #{instance}" do
+  command 'sleep 5'
+  action :nothing
 end
