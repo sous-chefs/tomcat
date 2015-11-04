@@ -26,6 +26,7 @@ default['tomcat']['scheme'] = nil
 default['tomcat']['ssl_port'] = 8443
 default['tomcat']['ssl_proxy_port'] = nil
 default['tomcat']['ajp_port'] = 8009
+default['tomcat']['ajp_redirect_port'] = nil
 default['tomcat']['shutdown_port'] = 8005
 default['tomcat']['catalina_options'] = ''
 default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
