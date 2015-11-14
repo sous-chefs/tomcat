@@ -7,8 +7,8 @@ action :configure do
   [:catalina_options, :java_options, :use_security_manager, :authbind,
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
-   :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :user,
-   :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
+   :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :client_auth,
+   :user, :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
     unless new_resource.instance_variable_get("@#{attr}")
       new_resource.instance_variable_set("@#{attr}", node['tomcat'][attr])
     end
@@ -203,6 +203,7 @@ action :configure do
       keystore_file: new_resource.keystore_file,
       keystore_type: new_resource.keystore_type,
       tomcat_auth: new_resource.tomcat_auth,
+      client_auth: new_resource.client_auth,
       config_dir: new_resource.config_dir
     )
     owner 'root'

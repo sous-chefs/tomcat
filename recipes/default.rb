@@ -130,6 +130,7 @@ node['tomcat']['instances'].each do |name, attrs|
     certificate_dn attrs['certificate_dn']
     loglevel attrs['loglevel']
     tomcat_auth attrs['tomcat_auth']
+    client_auth attrs['client_auth']
     user attrs['user']
     group attrs['group']
     home attrs['home']
