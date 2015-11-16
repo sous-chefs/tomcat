@@ -203,7 +203,9 @@ action :configure do
       keystore_file: new_resource.keystore_file,
       keystore_type: new_resource.keystore_type,
       tomcat_auth: new_resource.tomcat_auth,
-      config_dir: new_resource.config_dir
+      config_dir: new_resource.config_dir,
+      ajp_packetsize: new_resource.ajp_packetsize,
+      uriencoding: new_resource.uriencoding
     )
     owner 'root'
     group 'root'

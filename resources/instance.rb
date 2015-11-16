@@ -90,3 +90,7 @@ attribute :lib_dir,
   kind_of: String
 attribute :endorsed_dir,
   kind_of: String
+attribute :ajp_packetsize,
+  kind_of: String
+attribute :uriencoding,
+  kind_of: String
