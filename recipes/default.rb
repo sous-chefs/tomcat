@@ -142,10 +142,13 @@ node['tomcat']['instances'].each do |name, attrs|
   end
 
   instance = "#{node['tomcat']['base_instance']}-#{name}"
+
+  execute "wait for #{instance}" do
+    command 'sleep 5'
+    action :nothing
+  end
+  
   create_service(instance)
 end
 
-execute "wait for #{instance}" do
-  command 'sleep 5'
-  action :nothing
-end
+
