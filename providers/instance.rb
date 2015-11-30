@@ -63,18 +63,18 @@ action :configure do
 
     # config_dir needs symlinks to the files we're not going to create
     %w(catalina.policy catalina.properties context.xml
-       tomcat-users.xml web.xml).each do |file|
+       tomcat-users.xml web.xml policy.d).each do |file|
       link "#{new_resource.config_dir}/#{file}" do
         to "#{node['tomcat']['config_dir']}/#{file}"
       end
     end
 
     # The base also needs a bunch of to symlinks inside it
-    # %w(bin lib).each do |dir|
-    #   link "#{new_resource.base}/#{dir}" do
-    #     to "#{node['tomcat']['base']}/#{dir}"
-    #   end
-    # end
+    %w(bin lib).each do |dir|
+      link "#{new_resource.base}/#{dir}" do
+        to "#{node['tomcat']['home']}/#{dir}"
+      end
+    end
     { 'conf' => 'config_dir', 'logs' => 'log_dir', 'temp' => 'tmp_dir',
       'work' => 'work_dir' }.each do |name, attr|
       link "#{new_resource.base}/#{name}" do
