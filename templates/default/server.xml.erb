@@ -122,9 +122,12 @@
                keystoreType="<%= @keystore_type %>"
                truststorePass="<%= node['tomcat']['keystore_password'] %>"
                maxThreads="<%= @ssl_max_threads %>" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS"
+               clientAuth="<%= @client_auth %>" sslProtocol="TLS"
              <% if node['tomcat']['ssl_enabled_protocols'] -%>
                sslEnabledProtocols="<%= node['tomcat']['ssl_enabled_protocols']  %>"
+             <% end %>
+             <% if node['tomcat']['ciphers'] -%>
+               ciphers="<%= node['tomcat']['ciphers']  %>"
              <% end %>
              />
   <% end -%>
@@ -132,10 +135,10 @@
   <% if @ajp_port -%>
     <!-- Define an AJP 1.3 Connector on port <%= @ajp_port %> -->
     <Connector port="<%= @ajp_port %>"
-               protocol="AJP/1.3" 
-               URIEncoding="<%= @uriencoding %>" 
+               protocol="AJP/1.3"
+               URIEncoding="<%= @uriencoding %>"
                tomcatAuthentication="<%= @tomcat_auth %>"
-               redirectPort="<%= @ssl_port %>"
+               redirectPort="<%= @ajp_redirect_port || @ssl_port %>"
                packetSize="<%= @ajp_packetsize %>" />
   <% end -%>
 

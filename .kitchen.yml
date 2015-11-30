@@ -15,7 +15,7 @@ platforms:
   - recipe[apt]
   - recipe[java]
 
-- name: centos-6.6
+- name: centos-6.7
   run_list:
   - recipe[yum-epel]
   - recipe[java]
