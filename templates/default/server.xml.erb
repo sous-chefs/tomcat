@@ -126,6 +126,9 @@
              <% if node['tomcat']['ssl_enabled_protocols'] -%>
                sslEnabledProtocols="<%= node['tomcat']['ssl_enabled_protocols']  %>"
              <% end %>
+             <% if node['tomcat']['ciphers'] -%>
+               ciphers="<%= node['tomcat']['ciphers']  %>"
+             <% end %>
              />
   <% end -%>
 
