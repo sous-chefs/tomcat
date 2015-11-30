@@ -50,6 +50,7 @@ default['tomcat']['truststore_type'] = 'jks'
 default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
+default['tomcat']['client_auth'] = 'false'
 default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
 default['tomcat']['environment'] = []
