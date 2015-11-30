@@ -2,7 +2,7 @@
 # Cookbook Name:: tomcat
 # Library:: chef_tomcat_cookbook
 #
-# Author:: Jamie Winsor (<jamie@vialstudios.com>)
+# Author:: Jamie Winsor (<jwinsor@chef.io>)
 #
 # Copyright 2010-2015, Chef Software, Inc.
 #
