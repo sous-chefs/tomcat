@@ -61,7 +61,7 @@ action :configure do
       end
     end
 
-    # config_dir needs symlinks to the files we're not going to create
+    # config_dir needs symlinks to the files we're not going to create (policy.d is actually a directory)
     %w(catalina.policy catalina.properties context.xml
        tomcat-users.xml web.xml policy.d).each do |file|
       link "#{new_resource.config_dir}/#{file}" do
