@@ -34,6 +34,7 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - `node["tomcat"]["deploy_manager_apps"]` - whether to deploy manager apps, default `true`.
 - `node["tomcat"]["authbind"]` - whether to bind tomcat on lower port numbers, default `no`.
 - `node["tomcat"]["max_threads"]` - maximum number of threads in the connector pool.
+* `node["tomcat"]["ajp_max_threads"]` - maximum number of threads in the ajp connector pool, default `150`.
 - `node["tomcat"]["tomcat_auth"]` -
 - `node["tomcat"]["client_auth"]` - string Set to true if you want the SSL stack to require a valid certificate chain before accepting a connection, default `false`.
 - `node["tomcat"]["instances"]` - A dictionary defining additional tomcat instances to run.

@@ -34,6 +34,7 @@ default['tomcat']['use_security_manager'] = false
 default['tomcat']['authbind'] = 'no'
 default['tomcat']['deploy_manager_apps'] = true
 default['tomcat']['max_threads'] = nil
+default['tomcat']['ajp_max_threads'] = 150
 default['tomcat']['ssl_max_threads'] = 150
 default['tomcat']['ssl_cert_file'] = nil
 default['tomcat']['ssl_key_file'] = nil

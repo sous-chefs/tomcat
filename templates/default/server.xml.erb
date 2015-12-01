@@ -139,7 +139,11 @@
                URIEncoding="<%= @uriencoding %>"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ajp_redirect_port || @ssl_port %>"
-               packetSize="<%= @ajp_packetsize %>" />
+               packetSize="<%= @ajp_packetsize %>"
+             <% if @ajp_max_threads -%>
+               maxThreads="<%= @ajp_max_threads %>"
+             <% end -%>
+             />
   <% end -%>
 
     <!-- An Engine represents the entry point (within Catalina) that processes
