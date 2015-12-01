@@ -1,7 +1,10 @@
 # tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## v1.0.0(2015-11-30)
+## v1.0.1 (2015-12-01)
+- Resolved a missing method error in the instance provider
+
+## v1.0.0 (2015-11-30)
 - BREAKING: This cookbook now requires Chef 12.1+ due to the use of multipackage installs
 - Added support for OpenSUSE
 - Added a new attribute ['tomcat']['client_auth'] to enable client auth
