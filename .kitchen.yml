@@ -27,7 +27,7 @@ platforms:
   - recipe[java]
   attributes: {java: {install_flavour: openjdk, jdk_version: 7, set_etc_environment: true }}
 
-- name: opscode-opensuse-13.1
+- name: opensuse-13.1
   driver:
     box: opensuse-13.1
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_opensuse-13.1-x86_64_chef-provisionerless.box
@@ -40,7 +40,7 @@ suites:
 - name: tomcat6
   data_bags_path: 'test/integration/tomcat6/data_bags'
   run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
-  excludes: ["centos-7.1", "opscode-opensuse-13.1"]
+  excludes: ["centos-7.1", "opensuse-13.1"]
   attributes: {}
 
 - name: tomcat7
@@ -48,5 +48,5 @@ suites:
   provisioner:
     encrypted_data_bag_secret_key_path: 'test/integration/encrypted_data_bag_secret_key'
   run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
-  excludes: ["centos-6.6"]
+  excludes: ["centos-6.7"]
   attributes: {tomcat: {base_version: 7}}

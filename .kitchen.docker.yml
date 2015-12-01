@@ -1,0 +1,64 @@
+settings:
+  parallel: true
+
+driver:
+  name: docker
+  # privileged is required otherwise the container doesn't boot right
+  privileged: true
+
+platforms:
+- name: centos-6
+  run_list:
+  - recipe[yum-epel]
+  - recipe[java]
+  attributes: {java: {set_etc_environment: true}}
+  driver:
+    image: centos:6
+    platform: rhel
+    run_command: /sbin/init
+    provision_command:
+      - /usr/bin/yum install -y initscripts net-tools wget
+- name: centos-7
+  run_list:
+  - recipe[yum-epel]
+  - recipe[java]
+  attributes: {java: {install_flavour: openjdk, jdk_version: 7, set_etc_environment: true }}
+  driver:
+    image: centos:7
+    platform: rhel
+    run_command: /usr/lib/systemd/systemd
+    provision_command:
+      - /bin/yum install -y initscripts net-tools wget
+- name: ubuntu-12.04
+  driver:
+    image: ubuntu-upstart:12.04
+    platform: ubuntu
+    disable_upstart: false
+    run_command: /sbin/init
+    provision_command:
+      - /usr/bin/apt-get update
+      - /usr/bin/apt-get install apt-transport-https net-tools -y
+- name: ubuntu-14.04
+  driver:
+    image: ubuntu-upstart:14.04
+    platform: ubuntu
+    disable_upstart: false
+    run_command: /sbin/init
+    provision_command:
+      - /usr/bin/apt-get update
+      - /usr/bin/apt-get install apt-transport-https net-tools -y
+
+suites:
+- name: tomcat6
+  data_bags_path: 'test/integration/tomcat6/data_bags'
+  run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
+  excludes: ["centos-7"]
+  attributes: {}
+
+- name: tomcat7
+  data_bags_path: 'test/integration/tomcat7/data_bags'
+  provisioner:
+    encrypted_data_bag_secret_key_path: 'test/integration/encrypted_data_bag_secret_key'
+  run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
+  excludes: ["centos-6"]
+  attributes: {tomcat: {base_version: 7}}
