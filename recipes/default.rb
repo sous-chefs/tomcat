@@ -77,7 +77,7 @@ def create_service(instance)
     end
     action [:start, :enable]
     notifies :run, "execute[wait for #{instance}]", :immediately
-    retries 1 #change this back to 4 for production
+    retries 4
     retry_delay 30
   end
 end
