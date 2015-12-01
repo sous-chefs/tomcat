@@ -16,25 +16,25 @@
     <dependency name='milestone' grouping='require_all' restart_on='none' type='service'>
       <service_fmri value='svc:/milestone/sysconfig'/>
     </dependency>
-    <exec_method name='start' type='method' exec='<%= node["tomcat"]["home"] %>/bin/catalina.sh start' timeout_seconds='60'>
-      <method_context working_directory='<%= node["tomcat"]["home"] %>' project='default'>
+    <exec_method name='start' type='method' exec='<%= node['tomcat']['home'] %>/bin/catalina.sh start' timeout_seconds='60'>
+      <method_context working_directory='<%= node['tomcat']['home'] %>' project='default'>
         <method_credential user='tomcat' group='tomcat' privileges='basic,net_privaddr'/>
         <method_environment>
-          <envvar name='JAVA_HOME' value='<%= node["java"]["java_home"] %>'/>
-          <envvar name='CATALINA_HOME' value='<%= node["tomcat"]["home"] %>'/>
-          <envvar name='CATALINA_BASE' value='<%= node["tomcat"]["base"] %>'/>
-          <envvar name='JAVA_OPTS' value='<%= node["tomcat"]["java_options"] %>'/>
-          <envvar name='CATALINA_OPTS' value='<%= node["tomcat"]["catalina_options"] %>'/>
-          <envvar name='CATALINA_PID' value='<%= node["tomcat"]["log_dir"] %>/catalina.pid'/>
+          <envvar name='JAVA_HOME' value='<%= node['java']['java_home'] %>'/>
+          <envvar name='CATALINA_HOME' value='<%= node['tomcat']['home'] %>'/>
+          <envvar name='CATALINA_BASE' value='<%= node['tomcat']['base'] %>'/>
+          <envvar name='JAVA_OPTS' value='<%= node['tomcat']['java_options'] %>'/>
+          <envvar name='CATALINA_OPTS' value='<%= node['tomcat']['catalina_options'] %>'/>
+          <envvar name='CATALINA_PID' value='<%= node['tomcat']['log_dir'] %>/catalina.pid'/>
         </method_environment>
       </method_context>
     </exec_method>
     <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'>
-      <method_context working_directory='<%= node["tomcat"]["home"] %>' project='default'>
+      <method_context working_directory='<%= node['tomcat']['home'] %>' project='default'>
         <method_credential user='tomcat' group='tomcat' privileges='basic,net_privaddr'/>
         <method_environment>
           <envvar name='PATH' value='/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin'/>
-          <envvar name='HOME' value='<%= node["tomcat"]["base"] %>'/>
+          <envvar name='HOME' value='<%= node['tomcat']['base'] %>'/>
         </method_environment>
       </method_context>
     </exec_method>

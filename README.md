@@ -18,54 +18,54 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - yum-epel
 
 ## Attributes
-- `node["tomcat"]["base_version"]` - The version of tomcat to install, default `6`.
-- `node["tomcat"]["port"]` - The network port used by Tomcat's HTTP connector, default `8080`.
-- `node["tomcat"]["proxy_port"]` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
-- `node["tomcat"]["proxy_name"]` - if set, the proxy name used by Tomcat's Proxy HTTP connector, default nil.
-- `node["tomcat"]["ssl_port"]` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
-- `node["tomcat"]["ssl_proxy_port"]` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
-- `node["tomcat"]["ajp_port"]` - The network port used by Tomcat's AJP connector, default `8009`.
-- `node["tomcat"]["ajp_redirect_port"]` - The network port redirected to by Tomcat's AJP connector, default `ssl_port`.
-- `node["tomcat"]["shutdown_port"]` - The network port used by Tomcat to listen for shutdown requests, default `8005`.
-- `node["tomcat"]["catalina_options"]` - Extra options to pass to the JVM only during start and run commands, default "".
-- `node["tomcat"]["java_options"]` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
-- `node["tomcat"]["use_security_manager"]` - Run Tomcat under the Java Security Manager, default `false`.
-- `node["tomcat"]["loglevel"]` - Level for default Tomcat's logs, default `INFO`.
-- `node["tomcat"]["deploy_manager_apps"]` - whether to deploy manager apps, default `true`.
-- `node["tomcat"]["authbind"]` - whether to bind tomcat on lower port numbers, default `no`.
-- `node["tomcat"]["max_threads"]` - maximum number of threads in the connector pool.
-- `node["tomcat"]["tomcat_auth"]` -
-- `node["tomcat"]["client_auth"]` - string Set to true if you want the SSL stack to require a valid certificate chain before accepting a connection, default `false`.
-- `node["tomcat"]["instances"]` - A dictionary defining additional tomcat instances to run.
-- `node["tomcat"]["run_base_instance"]` - Whether or not to run the "base" tomcat instance, default `true`.
-- `node["tomcat"]["environment"]` - Environment variables to be setup when starting Tomcat
-- `node["tomcat"]["user"]` -
-- `node["tomcat"]["group"]` -
-- `node["tomcat"]["home"]` -
-- `node["tomcat"]["base"]` -
-- `node["tomcat"]["config_dir"]` -
-- `node["tomcat"]["log_dir"]` -
-- `node["tomcat"]["tmp_dir"]` -
-- `node["tomcat"]["work_dir"]` -
-- `node["tomcat"]["context_dir"]` -
-- `node["tomcat"]["webapp_dir"]` -
-- `node["tomcat"]["lib_dir"]` -
-- `node["tomcat"]["endorsed_dir"]` -
-- `node["tomcat"]["scheme"]` set scheme for tomcat connector default value nil
-- `node["tomcat"]["secure"]` to enable secure on or off with false/true default value nil
+- `node['tomcat']['base_version']` - The version of tomcat to install, default `6`.
+- `node['tomcat']['port']` - The network port used by Tomcat's HTTP connector, default `8080`.
+- `node['tomcat']['proxy_port']` - if set, the network port used by Tomcat's Proxy HTTP connector, default nil.
+- `node['tomcat']['proxy_name']` - if set, the proxy name used by Tomcat's Proxy HTTP connector, default nil.
+- `node['tomcat']['ssl_port']` - The network port used by Tomcat's SSL HTTP connector, default `8443`.
+- `node['tomcat']['ssl_proxy_port']` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
+- `node['tomcat']['ajp_port']` - The network port used by Tomcat's AJP connector, default `8009`.
+- `node['tomcat']['ajp_redirect_port']` - The network port redirected to by Tomcat's AJP connector, default `ssl_port`.
+- `node['tomcat']['shutdown_port']` - The network port used by Tomcat to listen for shutdown requests, default `8005`.
+- `node['tomcat']['catalina_options']` - Extra options to pass to the JVM only during start and run commands, default "".
+- `node['tomcat']['java_options']` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
+- `node['tomcat']['use_security_manager']` - Run Tomcat under the Java Security Manager, default `false`.
+- `node['tomcat']['loglevel']` - Level for default Tomcat's logs, default `INFO`.
+- `node['tomcat']['deploy_manager_apps']` - whether to deploy manager apps, default `true`.
+- `node['tomcat']['authbind']` - whether to bind tomcat on lower port numbers, default `no`.
+- `node['tomcat']['max_threads']` - maximum number of threads in the connector pool.
+- `node['tomcat']['tomcat_auth']` -
+- `node['tomcat']['client_auth']` - string Set to true if you want the SSL stack to require a valid certificate chain before accepting a connection, default `false`.
+- `node['tomcat']['instances']` - A dictionary defining additional tomcat instances to run.
+- `node['tomcat']['run_base_instance']` - Whether or not to run the "base" tomcat instance, default `true`.
+- `node['tomcat']['environment']` - Environment variables to be setup when starting Tomcat
+- `node['tomcat']['user']` -
+- `node['tomcat']['group']` -
+- `node['tomcat']['home']` -
+- `node['tomcat']['base']` -
+- `node['tomcat']['config_dir']` -
+- `node['tomcat']['log_dir']` -
+- `node['tomcat']['tmp_dir']` -
+- `node['tomcat']['work_dir']` -
+- `node['tomcat']['context_dir']` -
+- `node['tomcat']['webapp_dir']` -
+- `node['tomcat']['lib_dir']` -
+- `node['tomcat']['endorsed_dir']` -
+- `node['tomcat']['scheme']` set scheme for tomcat connector default value nil
+- `node['tomcat']['secure']` to enable secure on or off with false/true default value nil
 
 ### Attributes for SSL
-- `node["tomcat"]["ssl_cert_file"]` - SSL certificate file
-- `node["tomcat"]["ssl_chain_files"]` - SSL CAcert chain files used for generating the SSL certificates
-- `node["tomcat"]["ssl_max_threads"]` - maximum number of threads in the ssl connector pool, default `150`.
-- `node["tomcat"]["ssl_enabled_protocols"]` - SSL enabled protocols. Please use 'TLSv1.2,TLSv1.1,TLSv1' or a smaller subset to mitigate poodle attack issues via SSL.
-- `node["tomcat"]["ciphers"]` - SSL enabled ciphers
-- `node["tomcat"]["keystore_file"]` - Location of the file where the SSL keystore is located
-- `node["tomcat"]["keystore_password"]` - Generated by the `secure_password` method from the openssl cookbook; if you are using Chef Solo, set this attribute on the node
-- `node["tomcat"]["truststore_password"]` - Generated by the `secure_password` method from the openssl cookbook; if you are using Chef Solo, set this attribute on the node
-- `node["tomcat"]["truststore_file"]` - location of the file where the SSL truststore is located
-- `node["tomcat"]["certificate_dn"]` - DN for the certificate
-- `node["tomcat"]["keytool"]` - path to keytool, used for generating the certificate, location varies by platform
+- `node['tomcat']['ssl_cert_file']` - SSL certificate file
+- `node['tomcat']['ssl_chain_files']` - SSL CAcert chain files used for generating the SSL certificates
+- `node['tomcat']['ssl_max_threads']` - maximum number of threads in the ssl connector pool, default `150`.
+- `node['tomcat']['ssl_enabled_protocols']` - SSL enabled protocols. Please use 'TLSv1.2,TLSv1.1,TLSv1' or a smaller subset to mitigate poodle attack issues via SSL.
+- `node['tomcat']['ciphers']` - SSL enabled ciphers
+- `node['tomcat']['keystore_file']` - Location of the file where the SSL keystore is located
+- `node['tomcat']['keystore_password']` - Generated by the `secure_password` method from the openssl cookbook; if you are using Chef Solo, set this attribute on the node
+- `node['tomcat']['truststore_password']` - Generated by the `secure_password` method from the openssl cookbook; if you are using Chef Solo, set this attribute on the node
+- `node['tomcat']['truststore_file']` - location of the file where the SSL truststore is located
+- `node['tomcat']['certificate_dn']` - DN for the certificate
+- `node['tomcat']['keytool']` - path to keytool, used for generating the certificate, location varies by platform
 
 ## Prerequisites
 Due to the multitude of Java implementations you might want to use, this cookbook does not attempt to address the installation of a JRE/JDK. Please make sure that Java has been configured on the machine prior to the application any resources or recipes shipped in this cookbook.
