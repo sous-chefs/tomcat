@@ -121,7 +121,11 @@
                keystorePass="<%= node['tomcat']['keystore_password'] %>"
                keystoreType="<%= @keystore_type %>"
                truststorePass="<%= node['tomcat']['keystore_password'] %>"
-               maxThreads="<%= @ssl_max_threads %>" scheme="https" secure="true"
+             <% if @ajp_max_threads -%>
+               maxThreads="<%= @ajp_max_threads %>"
+             <% end -%>
+               scheme="https"
+               secure="true"
                clientAuth="<%= @client_auth %>" sslProtocol="TLS"
              <% if node['tomcat']['ssl_enabled_protocols'] -%>
                sslEnabledProtocols="<%= node['tomcat']['ssl_enabled_protocols']  %>"

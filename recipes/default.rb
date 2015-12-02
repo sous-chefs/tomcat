@@ -121,6 +121,7 @@ node['tomcat']['instances'].each do |name, attrs|
     use_security_manager attrs['use_security_manager']
     authbind attrs['authbind']
     max_threads attrs['max_threads']
+    ajp_max_threads attrs['ajp_max_threads']
     ssl_max_threads attrs['ssl_max_threads']
     ssl_cert_file attrs['ssl_cert_file']
     ssl_key_file attrs['ssl_key_file']

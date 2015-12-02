@@ -5,7 +5,7 @@ action :configure do
   # this in the resource declaration because node isn't populated yet when
   # that runs
   [:catalina_options, :java_options, :use_security_manager, :authbind,
-   :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
+   :max_threads, :ajp_max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :client_auth,
    :user, :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
@@ -200,6 +200,7 @@ action :configure do
       ajp_redirect_port: new_resource.ajp_redirect_port,
       shutdown_port: new_resource.shutdown_port,
       max_threads: new_resource.max_threads,
+      ajp_max_threads: new_resource.ajp_max_threads,
       ssl_max_threads: new_resource.ssl_max_threads,
       keystore_file: new_resource.keystore_file,
       keystore_type: new_resource.keystore_type,
