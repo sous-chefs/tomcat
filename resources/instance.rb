@@ -77,6 +77,8 @@ attribute :loglevel,
 attribute :tomcat_auth,
   kind_of: String,
   equal_to: %w(true false)
+attribute :client_auth,
+  kind_of: String
 
 attribute :user,
   kind_of: String
