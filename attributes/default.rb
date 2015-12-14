@@ -29,7 +29,7 @@ default['tomcat']['ajp_port'] = 8009
 default['tomcat']['ajp_redirect_port'] = nil
 default['tomcat']['shutdown_port'] = 8005
 default['tomcat']['catalina_options'] = ''
-default['tomcat']['java_options'] = '-Xmx128M -Djava.awt.headless=true'
+default['tomcat']['java_options'] = '-Djava.awt.headless=true'
 default['tomcat']['use_security_manager'] = false
 default['tomcat']['authbind'] = 'no'
 default['tomcat']['deploy_manager_apps'] = true
@@ -128,6 +128,34 @@ when 'suse'
   default['tomcat']['endorsed_dir'] = "#{node['tomcat']['lib_dir']}/endorsed"
   default['tomcat']['packages'] = ['tomcat']
   default['tomcat']['deploy_manager_packages'] = ['tomcat-admin-webapps']
+when 'windows'
+  default['tomcat']['user'] = "tomcat#{node['tomcat']['base_version']}"
+  default['tomcat']['group'] = "tomcat#{node['tomcat']['base_version']}"
+
+  # latest 6 version as per http://tomcat.apache.org/download-60.cgi
+  default['tomcat']['windows']['minor_version'] = 0
+  default['tomcat']['windows']['revision_version'] = 44
+  default['tomcat']['windows']['processor_architecture'] = 'x64' # possible values: x86 [32 bit], x64 [64 bit], i64 [Itanium]
+  default['tomcat']['windows']['preferred_download_mirror'] = 'https://www.apache.org'
+
+  # Special handling needed for jvm tuning and java options under windows
+  default['tomcat']['java_options'] = ''
+  default['tomcat']['windows']['tomcat_jvm_registry_key'] = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Apache Software Foundation\\Procrun 2.0\\Tomcat#{node['tomcat']['base_version']}\\Parameters\\Java"
+
+  # Windows defaults for Tomcat
+  default['tomcat']['home'] = "#{ENV['SYSTEMDRIVE']}\\Program Files\\Apache Software Foundation"
+  default['tomcat']['base'] = "#{node['tomcat']['home']}\\apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['windows']['minor_version']}.#{node['tomcat']['windows']['revision_version']}"
+  default['tomcat']['config_dir'] = "#{node['tomcat']['base']}\\conf"
+  default['tomcat']['log_dir'] = "#{node['tomcat']['base']}\\logs"
+  default['tomcat']['tmp_dir'] = "#{node['tomcat']['base']}\\temp"
+  default['tomcat']['work_dir'] = "#{node['tomcat']['base']}\\work"
+  default['tomcat']['context_dir'] = "#{node['tomcat']['config_dir']}\\Catalina\\localhost"
+  default['tomcat']['webapp_dir'] = "#{node['tomcat']['base']}\\webapps"
+  default['tomcat']['keytool'] = 'keytool'
+  default['tomcat']['lib_dir'] = "#{node['tomcat']['base']}\\lib"
+  default['tomcat']['endorsed_dir'] = "#{node['tomcat']['base']}\\endorsed"
+  default['tomcat']['packages'] = ["apache-tomcat-#{node['tomcat']['base_version']}.#{node['tomcat']['windows']['minor_version']}.#{node['tomcat']['windows']['revision_version']}-windows-#{node['tomcat']['windows']['processor_architecture']}.zip"]
+  default['tomcat']['deploy_manager_packages'] = []
 else
   default['tomcat']['user'] = "tomcat#{node['tomcat']['base_version']}"
   default['tomcat']['group'] = "tomcat#{node['tomcat']['base_version']}"

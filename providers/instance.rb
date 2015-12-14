@@ -4,7 +4,9 @@ action :configure do
   # Set defaults for resource attributes from node attributes. We can't do
   # this in the resource declaration because node isn't populated yet when
   # that runs
-  [:catalina_options, :java_options, :use_security_manager, :authbind,
+  [:catalina_options, :java_options, :initial_java_heap_size,
+   :maximum_java_heap_size, :thread_stack_size, :permanent_generation_size,
+   :maximum_permanent_generation_size, :use_security_manager, :authbind,
    :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :client_auth,
@@ -107,15 +109,26 @@ action :configure do
 
   # Even for the base instance, the OS package may not make this directory
   directory new_resource.endorsed_dir do
-    mode '0755'
+    mode '0755' unless platform_family?('windows')
     recursive true
+  end
+
+  # we merge any explicitly declared Java memory space attributes into java_options
+  unless platform_family?('windows')
+    java_options = new_resource.java_options.to_s
+    java_options << " -Xms#{new_resource.initial_java_heap_size}" unless new_resource.initial_java_heap_size.nil? || new_resource.initial_java_heap_size == ''
+    java_options << " -Xmx#{new_resource.maximum_java_heap_size}" unless new_resource.maximum_java_heap_size.nil? || new_resource.maximum_java_heap_size == ''
+    java_options << " -Xss#{new_resource.thread_stack_size}" unless new_resource.thread_stack_size.nil? || new_resource.thread_stack_size == ''
+    java_options << " -XX:PermSize=#{new_resource.permanent_generation_size}" unless new_resource.permanent_generation_size.nil? || new_resource.permanent_generation_size == ''
+    java_options << " -XX:MaxPermSize=#{new_resource.maximum_permanent_generation_size}" unless new_resource.maximum_permanent_generation_size.nil? || new_resource.maximum_permanent_generation_size == ''
+    new_resource.instance_variable_set("@#{:java_options}", java_options.strip)
   end
 
   unless new_resource.truststore_file.nil?
     java_options = new_resource.java_options.to_s
     java_options << " -Djavax.net.ssl.trustStore=#{new_resource.config_dir}/#{new_resource.truststore_file}"
     java_options << " -Djavax.net.ssl.trustStorePassword=#{new_resource.truststore_password}"
-    new_resource.java_options = java_options
+    new_resource.instance_variable_set("@#{:java_options}", java_options.strip)
   end
 
   case node['platform_family']
@@ -164,6 +177,25 @@ action :configure do
       mode '0644'
       notifies :restart, "service[#{instance}]"
     end
+  when 'windows'
+    # execute the bundled service installer from the apache tomcat artifact
+    execute 'register tomcat windows service' do
+      command "service install #{node['tomcat']['base_instance']} > #{Chef::Config[:file_cache_path]}/tomcat_win_service_register.log 2>&1"
+      cwd "#{node['tomcat']['base']}\\bin"
+      action :run
+      only_if { ::Win32::Service.exists?(node['tomcat']['base_instance']) == false }
+    end
+    # Configure our JVM memory settings - when running as a windows service
+    tomcat_windows_jvm_helper 'configure windows tomcat jvm memory settings' do
+      initial_java_heap_size new_resource.initial_java_heap_size unless new_resource.initial_java_heap_size.nil? || new_resource.initial_java_heap_size == ''
+      maximum_java_heap_size new_resource.maximum_java_heap_size unless new_resource.maximum_java_heap_size.nil? || new_resource.maximum_java_heap_size == ''
+      thread_stack_size new_resource.thread_stack_size unless new_resource.thread_stack_size.nil? || new_resource.thread_stack_size == ''
+      permanent_generation_size new_resource.permanent_generation_size unless new_resource.permanent_generation_size.nil? || new_resource.permanent_generation_size == ''
+      maximum_permanent_generation_size new_resource.maximum_permanent_generation_size unless new_resource.maximum_permanent_generation_size.nil? || new_resource.maximum_permanent_generation_size == ''
+      jvm_registry_key node['tomcat']['windows']['tomcat_jvm_registry_key']
+      java_options new_resource.java_options
+      action :set
+    end
   else
     template "/etc/default/#{instance}" do
       source 'default_tomcat6.erb'
@@ -207,17 +239,21 @@ action :configure do
       client_auth: new_resource.client_auth,
       config_dir: new_resource.config_dir
     )
-    owner 'root'
-    group 'root'
-    mode '0644'
+    unless platform_family?('windows')
+      owner 'root'
+      group 'root'
+      mode '0644'
+    end
     notifies :restart, "service[#{instance}]"
   end
 
   template "#{new_resource.config_dir}/logging.properties" do
     source 'logging.properties.erb'
-    owner 'root'
-    group 'root'
-    mode '0644'
+    unless platform_family?('windows')
+      owner 'root'
+      group 'root'
+      mode '0644'
+    end
     notifies :restart, "service[#{instance}]"
   end
 

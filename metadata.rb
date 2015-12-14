@@ -9,8 +9,9 @@ version          '1.0.1'
 depends 'java'
 depends 'openssl'
 depends 'yum-epel'
+depends 'windows'
 
-%w(ubuntu debian redhat centos suse opensuse scientific oracle amazon).each do |os|
+%w(ubuntu debian redhat centos suse opensuse scientific oracle amazon windows).each do |os|
   supports os
 end
 
