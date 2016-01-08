@@ -19,6 +19,8 @@ attribute :client_auth,
   kind_of: [TrueClass, FalseClass]
 attribute :scheme,
   kind_of: String
+attribute :uriencoding,
+  kind_of: String
 attribute :ssl_port,
   kind_of: Fixnum
 attribute :ssl_proxy_port,
