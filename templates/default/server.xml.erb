@@ -121,9 +121,7 @@
                keystorePass="<%= node['tomcat']['keystore_password'] %>"
                keystoreType="<%= @keystore_type %>"
                truststorePass="<%= node['tomcat']['keystore_password'] %>"
-             <% if @ajp_max_threads -%>
-               maxThreads="<%= @ajp_max_threads %>"
-             <% end -%>
+               maxThreads="<%= @ssl_max_threads %>" scheme="https" secure="true"
                scheme="https"
                secure="true"
                clientAuth="<%= @client_auth %>" sslProtocol="TLS"
@@ -143,7 +141,11 @@
                URIEncoding="<%= @uriencoding %>"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ajp_redirect_port || @ssl_port %>"
-               packetSize="<%= @ajp_packetsize %>" />
+               packetSize="<%= @ajp_packetsize %>"
+             <% if @ajp_max_threads -%>
+               maxThreads="<%= @ajp_max_threads %>"
+             <% end -%>
+             />
   <% end -%>
 
     <!-- An Engine represents the entry point (within Catalina) that processes
