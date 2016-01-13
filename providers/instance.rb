@@ -5,7 +5,7 @@ action :configure do
   # this in the resource declaration because node isn't populated yet when
   # that runs
   [:catalina_options, :java_options, :use_security_manager, :authbind,
-   :max_threads, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
+   :max_threads, :uriencoding, :ssl_max_threads, :ssl_cert_file, :ssl_key_file,
    :ssl_chain_files, :keystore_file, :keystore_type, :truststore_file,
    :truststore_type, :certificate_dn, :loglevel, :tomcat_auth, :client_auth,
    :user, :group, :tmp_dir, :lib_dir, :endorsed_dir].each do |attr|
@@ -194,6 +194,7 @@ action :configure do
       proxy_name: new_resource.proxy_name,
       secure: new_resource.secure,
       scheme: new_resource.scheme,
+      uriencoding: new_resource.uriencoding,
       ssl_port: new_resource.ssl_port,
       ssl_proxy_port: new_resource.ssl_proxy_port,
       ajp_port: new_resource.ajp_port,

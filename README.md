@@ -54,6 +54,7 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - `node['tomcat']['endorsed_dir']` -
 - `node['tomcat']['scheme']` set scheme for tomcat connector default value nil
 - `node['tomcat']['secure']` to enable secure on or off with false/true default value nil
+- `node['tomcat']['uriencoding']` configure uriencoding in server.xml default value 'UTF-8'
 
 ### Attributes for SSL
 - `node['tomcat']['ssl_cert_file']` - SSL certificate file
