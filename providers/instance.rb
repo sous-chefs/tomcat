@@ -198,6 +198,7 @@ action :configure do
       ssl_proxy_port: new_resource.ssl_proxy_port,
       ajp_port: new_resource.ajp_port,
       ajp_redirect_port: new_resource.ajp_redirect_port,
+      ajp_listen_ip: new_resource.ajp_listen_ip,
       shutdown_port: new_resource.shutdown_port,
       max_threads: new_resource.max_threads,
       ssl_max_threads: new_resource.ssl_max_threads,

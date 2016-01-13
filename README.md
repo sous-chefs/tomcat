@@ -26,6 +26,7 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - `node['tomcat']['ssl_proxy_port']` - if set, the network port used by Tomcat's Proxy SSL HTTP connector, default nil.
 - `node['tomcat']['ajp_port']` - The network port used by Tomcat's AJP connector, default `8009`.
 - `node['tomcat']['ajp_redirect_port']` - The network port redirected to by Tomcat's AJP connector, default `ssl_port`.
+- `node['tomcat']['ajp_listen_ip']` - If set, the network address used by Tomcat's AJP connector, default nil.
 - `node['tomcat']['shutdown_port']` - The network port used by Tomcat to listen for shutdown requests, default `8005`.
 - `node['tomcat']['catalina_options']` - Extra options to pass to the JVM only during start and run commands, default "".
 - `node['tomcat']['java_options']` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
@@ -88,7 +89,7 @@ override_attributes(
 ## Running Multiple Instances
 To run multiple instances of Tomcat, populate the `instances` attribute, which is a dictionary of instance name => array of attributes.  Most of the same attributes that can be used globally for the tomcat cookbook can also be set per-instance - see resources/instance.rb for details.
 
-If they are not set for a particular instance, the `base`, `home`, `config_dir`, `log_dir`, `work_dir`, `context_dir`, and `webapp_dir` attributes are created by modifying the global values to use the instance name.  For example, under Tomcat 7, with `home` /usr/share/tomcat7, `home` for instance "instance1" would be set to /usr/share/tomcat7-instance1.  The port attributes - `port`, `proxy_port`, `ssl_port`, `ssl_proxy_port`, `ajp_port`, and `shutdown_port` - are not inherited and must be set per-instance, `ajp_redirect_port` is also not inherited but defaults to `ssl_port`.  Other attributes that are not set are inherited unmodified from the global attributes.  Each instance must define `shutdown_port`, and at least one of `port`, `ssl_port` or `ajp_port`.
+If they are not set for a particular instance, the `base`, `home`, `config_dir`, `log_dir`, `work_dir`, `context_dir`, and `webapp_dir` attributes are created by modifying the global values to use the instance name.  For example, under Tomcat 7, with `home` /usr/share/tomcat7, `home` for instance "instance1" would be set to /usr/share/tomcat7-instance1.  The port attributes - `port`, `proxy_port`, `ssl_port`, `ssl_proxy_port`, `ajp_port`, and `shutdown_port` - are not inherited and must be set per-instance, `ajp_redirect_port` is also not inherited but defaults to `ssl_port`. The `ajp_listen_ip` is also not inherited and must be set per instance, when not set it defaults to listening on all adresses.  Other attributes that are not set are inherited unmodified from the global attributes.  Each instance must define `shutdown_port`, and at least one of `port`, `ssl_port` or `ajp_port`.
 
 If you only want to run specific instances and not the "base" tomcat instances, you can set `run_base_instance` to `false`.
 

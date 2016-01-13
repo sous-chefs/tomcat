@@ -139,6 +139,9 @@
                URIEncoding="<%= @uriencoding %>"
                tomcatAuthentication="<%= @tomcat_auth %>"
                redirectPort="<%= @ajp_redirect_port || @ssl_port %>"
+             <% if @ajp_listen_ip -%>
+               address="<%= @ajp_listen_ip %>"
+             <% end -%>
                packetSize="<%= @ajp_packetsize %>" />
   <% end -%>
 
