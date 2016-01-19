@@ -1,4 +1,7 @@
 action :configure do
+  # first of all set derived variables
+  set_derived_vars
+
   base_instance = node['tomcat']['base_instance']
 
   # Set defaults for resource attributes from node attributes. We can't do
@@ -55,7 +58,7 @@ action :configure do
     end
 
     # Don't make a separate home, just link to base
-    if new_resource.home != new_resource.base
+    if new_resource.home != new_resource.base # ~FC023
       link new_resource.home do
         to new_resource.base
       end
@@ -276,10 +279,9 @@ action :configure do
     end
   end
 
-  unless new_resource.truststore_file.nil?
-    cookbook_file "#{new_resource.config_dir}/#{new_resource.truststore_file}" do
-      mode '0644'
-    end
+  cookbook_file "#{new_resource.config_dir}/#{new_resource.truststore_file}" do
+    mode '0644'
+    not_if { new_resource.truststore_file.nil? }
   end
 
   new_resource.updated_by_last_action(true)

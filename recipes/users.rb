@@ -19,6 +19,8 @@
 # limitations under the License.
 #
 
+set_derived_vars
+
 template "#{node['tomcat']['config_dir']}/tomcat-users.xml" do
   source 'tomcat-users.xml.erb'
   owner 'root'
