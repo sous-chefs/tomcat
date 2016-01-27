@@ -27,26 +27,26 @@ if node['tomcat']['base_version'].to_i == 7
   end
 end
 
-package node['tomcat']['packages'] do
-  action :install
-end
+package node['tomcat']['packages']
 
-package node['tomcat']['deploy_manager_packages'] do
-  action :install
-end
+package node['tomcat']['deploy_manager_packages']
 
+# remove the manager apps unless the attribute is set
 unless node['tomcat']['deploy_manager_apps']
   directory "#{node['tomcat']['webapp_dir']}/manager" do
     action :delete
     recursive true
   end
+
   file "#{node['tomcat']['config_dir']}/Catalina/localhost/manager.xml" do
     action :delete
   end
+
   directory "#{node['tomcat']['webapp_dir']}/host-manager" do
     action :delete
     recursive true
   end
+
   file "#{node['tomcat']['config_dir']}/Catalina/localhost/host-manager.xml" do
     action :delete
   end
