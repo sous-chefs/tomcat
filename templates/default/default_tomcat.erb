@@ -31,27 +31,8 @@ CATALINA_BASE=<%= @base %>
 # options (-Djava.awt.headless=true -Xmx128m) will be used.
 JAVA_OPTS="<%= @java_options %>"
 
-# Use a CMS garbage collector for improved response time
-JAVA_OPTS="${JAVA_OPTS} -XX:+UseConcMarkSweepGC"
-
-# When using the CMS garbage collector, you should enable the following option
-# if you run Tomcat on a machine with exactly one CPU chip that contains one
-# or two cores.
-#JAVA_OPTS="$JAVA_OPTS -XX:+CMSIncrementalMode"
-
-# To enable remote debugging uncomment the following line.
-# You will then be able to use a java debugger on port 8000.
-#JAVA_OPTS="${JAVA_OPTS} -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
-
-# Java compiler to use for translating JavaServer Pages (JSPs). You can use all
-# compilers that are accepted by Ant's build.compiler property.
-#JSP_COMPILER=javac
-
 # Use the Java security manager? (yes/no, default: no)
 TOMCAT<%= node['tomcat']['base_version'] %>_SECURITY=<%= @use_security_manager ? "yes" : "no" %>
-
-# Number of days to keep logfiles in /var/log/tomcat6. Default is 14 days.
-#LOGFILE_DAYS=14
 
 # Location of the JVM temporary directory
 # WARNING: This directory will be destroyed and recreated at every startup !

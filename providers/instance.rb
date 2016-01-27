@@ -166,7 +166,7 @@ action :configure do
     end
   else
     template "/etc/default/#{instance}" do
-      source 'default_tomcat6.erb'
+      source 'default_tomcat.erb'
       variables(
         user: new_resource.user,
         group: new_resource.group,

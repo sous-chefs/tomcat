@@ -29,7 +29,7 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - `node['tomcat']['ajp_listen_ip']` - If set, the network address used by Tomcat's AJP connector, default nil.
 - `node['tomcat']['shutdown_port']` - The network port used by Tomcat to listen for shutdown requests, default `8005`.
 - `node['tomcat']['catalina_options']` - Extra options to pass to the JVM only during start and run commands, default "".
-- `node['tomcat']['java_options']` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true`.
+- `node['tomcat']['java_options']` - Extra options to pass to the JVM, default `-Xmx128M -Djava.awt.headless=true -XX:+UseConcMarkSweepGC`.
 - `node['tomcat']['use_security_manager']` - Run Tomcat under the Java Security Manager, default `false`.
 - `node['tomcat']['loglevel']` - Level for default Tomcat's logs, default `INFO`.
 - `node['tomcat']['deploy_manager_apps']` - whether to deploy manager apps, default `true`.
