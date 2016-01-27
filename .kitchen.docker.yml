@@ -22,7 +22,7 @@ platforms:
   run_list:
   - recipe[yum-epel]
   - recipe[java]
-  attributes: {java: {install_flavour: openjdk, jdk_version: 7, set_etc_environment: true }}
+  attributes: {java: {install_flavor: openjdk, jdk_version: 7, set_etc_environment: true }}
   driver:
     image: centos:7
     platform: rhel
