@@ -21,7 +21,7 @@ platforms:
   - recipe[java]
   attributes: {java: {set_etc_environment: true}}
 
-- name: centos-7.1
+- name: centos-7.2
   run_list:
   - recipe[yum-epel]
   - recipe[java]
@@ -50,3 +50,13 @@ suites:
   run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
   excludes: ["centos-6.7"]
   attributes: {tomcat: {base_version: 7}}
+
+- name: install_resource
+  run_list: ["recipe[test::install]"]
+  attributes:
+    java:
+      install_flavor: oracle
+      jdk_version: 8
+      set_etc_environment: true
+      oracle:
+        accept_oracle_download_terms: true
