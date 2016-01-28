@@ -85,6 +85,21 @@ action :install do
   execute 'extract tomcat tarball' do
     command "tar -xzf #{Chef::Config['file_cache_path']}/apache-tomcat-#{version}.tar.gz -C #{install_path} --strip-components=1"
     action :run
-    creates ::File.join(install_path, "LICENSE")
+    creates ::File.join(install_path, 'LICENSE')
+  end
+
+  group "tomcat_#{instance_name}" do
+    action :create
+  end
+
+  user "tomcat_#{instance_name}" do
+    gid "tomcat_#{instance_name}"
+    action :create
+  end
+
+  execute "chown install dir as tomcat_#{instance_name}" do
+    command "chown -R tomcat_#{instance_name}:root #{install_path}"
+    action :run
+    not_if { Etc.getpwuid(::File.stat("#{install_path}/LICENSE").uid).name == "tomcat_#{instance_name}" }
   end
 end
