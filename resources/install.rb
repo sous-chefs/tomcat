@@ -14,7 +14,7 @@ def install_path
   if path
     path
   else
-    @@install_path ||= "/opt/tomcat_#{instance_name}_#{version.gsub('.', '_')}/"
+    @@install_path ||= "/opt/tomcat_#{instance_name}_#{version.tr('.', '_')}/"
   end
 end
 
@@ -36,9 +36,9 @@ def fetch_checksum
     fail
   end
   response.body.split(' ')[0]
-  rescue => e
-    Chef::Log.fatal("Could not fetch the checksum due to an error: #{e}")
-    raise
+rescue => e
+  Chef::Log.fatal("Could not fetch the checksum due to an error: #{e}")
+  raise
 end
 
 # validate the mirror checksum against the on disk checksum
