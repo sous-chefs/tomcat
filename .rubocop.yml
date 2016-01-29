@@ -25,5 +25,11 @@ PerceivedComplexity:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Style/ConditionalAssignment:
+  Enabled: false
 Style/FileName:
+  Enabled: false
+Style/SingleSpaceBeforeFirstArg:
+  Enabled: false
+Style/SpaceBeforeFirstArg:
   Enabled: false
