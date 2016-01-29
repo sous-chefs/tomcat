@@ -102,4 +102,12 @@ action :install do
     action :run
     not_if { Etc.getpwuid(::File.stat("#{install_path}/LICENSE").uid).name == "tomcat_#{instance_name}" }
   end
+
+  directory '/var/log/tomcat_helloworld' do
+    owner "tomcat_#{instance_name}"
+    mode '0750'
+    recursive true
+    action :create
+  end
+
 end
