@@ -78,6 +78,7 @@ action :install do
   end
 
   directory 'tomcat install dir' do
+    mode '0750'
     path install_path
     recursive true
   end
@@ -97,17 +98,23 @@ action :install do
     action :create
   end
 
+  # make sure the instance's user owns the instance install dir
   execute "chown install dir as tomcat_#{instance_name}" do
     command "chown -R tomcat_#{instance_name}:root #{install_path}"
     action :run
     not_if { Etc.getpwuid(::File.stat("#{install_path}/LICENSE").uid).name == "tomcat_#{instance_name}" }
   end
 
+  # create a link that points to the latest version of the instance
+  link "/opt/tomcat_#{instance_name}" do
+    to install_path
+  end
+
+  # create the log dir for the instance
   directory '/var/log/tomcat_helloworld' do
     owner "tomcat_#{instance_name}"
-    mode '0750'
+    mode '0770'
     recursive true
     action :create
   end
-
 end
