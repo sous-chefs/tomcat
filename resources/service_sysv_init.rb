@@ -1,3 +1,13 @@
+provides :tomcat_service, platform: 'amazon'
+
+provides :tomcat_service, platform: %w(redhat centos scientific oracle) do |node| # ~FC005
+  node['platform_version'].to_f <= 7.0
+end
+
+provides :tomcat_service, platform: 'suse'
+provides :tomcat_service, platform: 'debian'
+provides :tomcat_service, platform: 'ubuntu'
+
 property :instance_name, String, name_property: true
 
 action :start do
@@ -24,6 +34,9 @@ action_class.class_eval do
       'debian' => '/var/lock',
       'default' => '/var/lock'
     )
+
+    # the init script will not run without lsb-core
+    package 'redhat-lsb-core' if platform_family?('rhel')
 
     template "/etc/init.d/tomcat_#{instance_name}" do
       mode '0755'
