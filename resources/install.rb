@@ -20,7 +20,7 @@ end
 
 # ensure the version is X.Y.Z format
 def validate_version
-  unless version =~ /\d+.\d+.\d+/
+  unless version =~ /\d+.\d+.\d+/ # rubocop:disable Style/GuardClause
     Chef::Log.fatal("The version must be in X.Y.Z format. Passed value: #{version}")
     fail
   end
