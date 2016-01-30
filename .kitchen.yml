@@ -18,6 +18,17 @@ platforms:
   - recipe[apt]
   - recipe[java]
 
+- name: ubuntu-15.10
+  run_list:
+  - recipe[apt]
+  - recipe[java]
+
+- name: centos-5.11
+  run_list:
+  - recipe[yum-epel]
+  - recipe[java]
+  attributes: {java: {set_etc_environment: true}}
+
 - name: centos-6.7
   run_list:
   - recipe[yum-epel]
