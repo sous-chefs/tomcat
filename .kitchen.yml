@@ -40,8 +40,8 @@ platforms:
   - recipe[java]
 
 suites:
-- name: install_resource
-  run_list: ["recipe[test::install]"]
+- name: helloworld_example
+  run_list: ["recipe[test::helloworld_example]"]
   attributes:
     java:
       install_flavor: oracle

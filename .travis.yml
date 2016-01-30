@@ -12,10 +12,10 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=install-resource-ubuntu-1204
-  - INSTANCE=install-resource-ubuntu-1404
-  - INSTANCE=install-resource-centos-6
-  - INSTANCE=install-resource-centos-7
+  - INSTANCE=helloworld-example-ubuntu-1204
+  - INSTANCE=helloworld-example-ubuntu-1404
+  - INSTANCE=helloworld-example-centos-6
+  - INSTANCE=helloworld-example-centos-7
 
 # Don't `bundle install`
 install: echo "skip bundle install"

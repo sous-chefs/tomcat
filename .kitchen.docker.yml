@@ -5,7 +5,7 @@ driver:
   name: docker
   # privileged is required otherwise the container doesn't boot right
   privileged: true
-  
+
 
 verifier:
   name: inspec
@@ -53,8 +53,8 @@ platforms:
       - /usr/bin/apt-get install apt-transport-https net-tools -y
 
 suites:
-- name: install_resource
-  run_list: ["recipe[test::install]"]
+- name: helloworld_example
+  run_list: ["recipe[test::helloworld_example]"]
   attributes:
     java:
       install_flavor: oracle
