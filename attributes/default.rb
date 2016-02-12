@@ -54,6 +54,7 @@ default['tomcat']['certificate_dn'] = 'cn=localhost'
 default['tomcat']['loglevel'] = 'INFO'
 default['tomcat']['tomcat_auth'] = 'true'
 default['tomcat']['client_auth'] = 'false'
+default['tomcat']['unpackWARs'] = 'true'
 default['tomcat']['instances'] = {}
 default['tomcat']['run_base_instance'] = true
 default['tomcat']['environment'] = []

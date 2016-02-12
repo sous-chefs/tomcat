@@ -181,7 +181,7 @@
            Note: XML Schema validation will not work with Xerces 2.2.
        -->
       <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true"
+            unpackWARs="<%= node['tomcat']['unpackWARs'] %>" autoDeploy="true"
             <% if node['tomcat']['base_version'].to_i.between?(1, 6) -%>
             xmlValidation="false" xmlNamespaceAware="false"
             <% end -%>
