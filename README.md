@@ -160,6 +160,44 @@ This is a sample on how to set-up some environment variables:
 }
 ```
 
+## Experimental Functionality
+This cookbook is currently undergoing a ground up rewrite that will convert it to a pure library cookbook, more appropriate for the multitude of ways that Tomcat can be installed.  The existing attribute driven installs and tomcat_instance provider will eventually be deprecated in favor of a provider for installation, service management, and 1 or more providers for configuration.
+
+### tomcat_install
+tomcat_install installs an instance of the tomcat binary direct from Apache's mirror site. As distro packages are not used we can easily deploy per-instance installations and any version available on the Apache archive site can be installed.
+
+#### properties
+- `version`: The version to install. Default: 8.0.32
+- `path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
+- `tarball_base_path`: The base path to the apache mirror containing the tarballs. Default: '[http://archive.apache.org/dist/tomcat/](http://archive.apache.org/dist/tomcat/)'
+- `sha1_base_path`: The base path to the apache mirror containing the sha1 file. Default: '[http://archive.apache.org/dist/tomcat/](http://archive.apache.org/dist/tomcat/)'
+
+#### example
+Install an Tomcat 8.0.32 instance named 'helloworld' to /opt/tomcat_helloworld_8_0_32/ with a symlink at /opt/tomcat_helloworld/
+
+```ruby
+tomcat_install 'helloworld' do
+  version '8.0.32'
+end
+```
+
+### tomcat_service
+tomcat_service sets up the installed tomcat instance to run using the appropriate init system. Currently only sys-v init is supported, but this will eventually support Upstart and Systemd where appropriate.
+
+#### actions
+- `start`
+- `stop`
+- `disable`
+- `restart`
+
+#### example
+
+```ruby
+tomcat_service 'helloworld' do
+  action :start
+end
+```
+
 ## License & Authors
 - Author: Seth Chisamore ([schisamo@chef.io](mailto:schisamo@chef.io))
 - Author: Jamie Winsor ([jamie@vialstudios.com](mailto:jamie@vialstudios.com))
