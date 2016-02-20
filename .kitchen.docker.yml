@@ -6,6 +6,10 @@ driver:
   # privileged is required otherwise the container doesn't boot right
   privileged: true
 
+
+verifier:
+  name: inspec
+
 platforms:
 - name: centos-6
   run_list:
@@ -49,16 +53,12 @@ platforms:
       - /usr/bin/apt-get install apt-transport-https net-tools -y
 
 suites:
-- name: tomcat6
-  data_bags_path: 'test/integration/tomcat6/data_bags'
-  run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
-  excludes: ["centos-7"]
-  attributes: {}
-
-- name: tomcat7
-  data_bags_path: 'test/integration/tomcat7/data_bags'
-  provisioner:
-    encrypted_data_bag_secret_key_path: 'test/integration/encrypted_data_bag_secret_key'
-  run_list: ["recipe[tomcat]", "recipe[tomcat::users]"]
-  excludes: ["centos-6"]
-  attributes: {tomcat: {base_version: 7}}
+- name: helloworld_example
+  run_list: ["recipe[test::helloworld_example]"]
+  attributes:
+    java:
+      install_flavor: oracle
+      jdk_version: 8
+      set_etc_environment: true
+      oracle:
+        accept_oracle_download_terms: true
