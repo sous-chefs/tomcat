@@ -1,8 +1,8 @@
 property :instance_name, String, name_property: true
-property :version, String, required: true
+property :version, String, required: true, default: '8.0.32'
 property :path, String, default: nil
-property :tarball_base_path, String, default: 'ftp://ftp.osuosl.org/pub/apache/tomcat/'
-property :sha1_base_path, String, default: 'https://www.apache.org/dist/tomcat/'
+property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :sha1_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 
 # break apart the version string to find the major version
 def major_version

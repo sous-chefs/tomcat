@@ -40,7 +40,7 @@ action_class.class_eval do
 
     template "/etc/init.d/tomcat_#{instance_name}" do
       mode '0755'
-      source 'init_script.erb'
+      source 'init_sysv.erb'
       cookbook 'tomcat'
       variables(
         lock_dir: platform_lock_dir
