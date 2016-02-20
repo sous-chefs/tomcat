@@ -41,7 +41,7 @@ class Chef
       end
     end
 
-    USERS_DATA_BAG ||= 'tomcat_users'
+    USERS_DATA_BAG ||= 'tomcat_users'.freeze
 
     class << self
       # Returns a array of data bag items for the users in the Tomcat Users
@@ -78,7 +78,7 @@ class Chef
                   begin
                     items = Chef::Search::Query.new.search(USERS_DATA_BAG)[0]
                   rescue Net::HTTPServerException => e
-                    raise TomcatUserDataBagNotFound if e.message.match(/404/)
+                    raise TomcatUserDataBagNotFound if e.message =~ /404/
                     raise e
                   end
                   decrypt_items(items)
@@ -91,7 +91,7 @@ class Chef
         id = user['id'].empty? || user['id'].nil?
         password = user['password'].empty? || user['password'].nil?
         roles = user['roles'].nil? || !user['roles'].is_a?(Array)
-        fail InvalidUserDataBagItem.new(user), 'Invalid User Databag Item' if id && password && roles
+        raise InvalidUserDataBagItem.new(user), 'Invalid User Databag Item' if id && password && roles
       end
 
       def decrypt_items(items)

@@ -20,9 +20,9 @@ end
 
 # ensure the version is X.Y.Z format
 def validate_version
-  unless version =~ /\d+.\d+.\d+/ # rubocop:disable Style/GuardClause
+  unless version =~ /\d+.\d+.\d+/
     Chef::Log.fatal("The version must be in X.Y.Z format. Passed value: #{version}")
-    fail
+    raise
   end
 end
 
@@ -33,7 +33,7 @@ def fetch_checksum
   response = Net::HTTP.get_response(uri)
   if response.code != '200'
     Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
-    fail
+    raise
   end
   response.body.split(' ')[0]
 rescue => e
@@ -52,7 +52,7 @@ def validate_checksum(file)
   else
     Chef::Log.fatal("The checksum of the tomcat tarball on disk (#{actual}) does not match the checksum provided from the mirror (#{desired}). Renaming to #{::File.basename(file)}.bad")
     ::File.rename(file, "#{file}.bad")
-    fail
+    raise
   end
 end
 
