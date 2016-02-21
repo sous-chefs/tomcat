@@ -9,6 +9,12 @@ provides :tomcat_service, platform: 'debian'
 provides :tomcat_service, platform: 'ubuntu'
 
 property :instance_name, String, name_property: true
+property :path, String, default: nil
+
+# the install path of this instance of tomcat
+def install_path
+  path ? path : "/opt/tomcat_#{instance_name}/"
+end
 
 action :start do
   create_init
@@ -43,7 +49,8 @@ action_class.class_eval do
       source 'init_sysv.erb'
       cookbook 'tomcat'
       variables(
-        lock_dir: platform_lock_dir
+        lock_dir: platform_lock_dir,
+        install_path: install_path
       )
     end
   end

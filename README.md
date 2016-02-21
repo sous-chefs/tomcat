@@ -188,6 +188,9 @@ end
 ### tomcat_service
 tomcat_service sets up the installed tomcat instance to run using the appropriate init system. Currently only sys-v init is supported, but this will eventually support Upstart and Systemd where appropriate.
 
+#### properties
+- `path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME
+
 #### actions
 - `start`
 - `stop`

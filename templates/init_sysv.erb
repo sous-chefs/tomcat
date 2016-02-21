@@ -27,12 +27,16 @@
 if [ -r /lib/lsb/init-functions ]; then
     . /lib/lsb/init-functions
 else
+    echo 'Could not find necessary /lib/lsb/init-functions'
     exit 1
 fi
 
 DISTRIB_ID=`lsb_release -i -s 2>/dev/null`
 
 NAME="$(basename $0)"
+INSTALL_PATH="<%= @install_path -%>"
+LOCK_DIR="<%= @lock_dir %>"
+
 unset ISBOOT
 if [ "${NAME:0:1}" = "S" -o "${NAME:0:1}" = "K" ]; then
     NAME="${NAME:3}"
@@ -50,7 +54,7 @@ fi
 CONNECTOR_PORT="${CONNECTOR_PORT:-8080}"
 
 # Path to the tomcat launch script
-TOMCAT_SCRIPT="/opt/${NAME}/bin/catalina.sh"
+TOMCAT_SCRIPT="${INSTALL_PATH}/bin/catalina.sh"
 
 # Tomcat program name
 TOMCAT_PROG="${NAME}"
@@ -66,12 +70,12 @@ RETVAL="0"
 # See how we were called.
 function start() {
 
-   echo -n "Starting ${TOMCAT_PROG}: "
+   echo -n "Starting ${NAME}: "
    if [ "$RETVAL" != "0" ]; then
      log_failure_msg
      return
    fi
-   if [ -f "<%= @lock_dir %>/${NAME}" ]; then
+   if [ -f "${LOCK_DIR}/${NAME}" ]; then
         if [ -f "/var/run/${NAME}.pid" ]; then
             read kpid < /var/run/${NAME}.pid
 #           if checkpid $kpid 2>&1; then
@@ -96,18 +100,18 @@ function start() {
     [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start ${TOMCAT_LOG}" >> /var/log/${NAME}/initd.log 2>&1 || RETVAL="4"
     if [ "$RETVAL" -eq "0" ]; then
         log_success_msg
-        touch <%= @lock_dir %>/${NAME}
+        touch ${LOCK_DIR}/${NAME}
     else
         log_failure_msg "Error code ${RETVAL}"
     fi
 }
 
 function stop() {
-    echo -n "Stopping ${TOMCAT_PROG}: "
-    if [ -f "<%= @lock_dir %>/${NAME}" ]; then
+    echo -n "Stopping ${NAME}: "
+    if [ -f "${LOCK_DIR}/${NAME}" ]; then
       parseOptions
       if [ "$RETVAL" -eq "0" ]; then
-         touch <%= @lock_dir %>/${NAME} 2>&1 || RETVAL="4"
+         touch ${LOCK_DIR}/${NAME} 2>&1 || RETVAL="4"
          [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop ${TOMCAT_LOG}" >> /var/log/${NAME}/initd.out 2>&1 || RETVAL="4"
       fi
       if [ "$RETVAL" -eq "0" ]; then
@@ -130,7 +134,7 @@ function stop() {
                 fi
                 log_success_msg
             fi
-            rm -f <%= @lock_dir %>/${NAME} /var/run/${NAME}.pid
+            rm -f ${LOCK_DIR}/${NAME} /var/run/${NAME}.pid
         else
             log_failure_msg
             RETVAL="4"
@@ -170,7 +174,7 @@ function status()
 
 function checklockfile()
 {
-   if [ -f <%= @lock_dir %>/${NAME} ]; then
+   if [ -f ${LOCK_DIR}/${NAME} ]; then
       pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_USER} java)"
 # The lockfile exists but the process is not running
       if [ -z "$pid" ]; then
