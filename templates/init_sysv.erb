@@ -63,8 +63,9 @@ TOMCAT_PROG="${NAME}"
 TOMCAT_USER="${NAME}"
 
 # Define the tomcat log file
-TOMCAT_LOG="${TOMCAT_LOG:-/var/log/${NAME}/catalina.out}"
+TOMCAT_LOG="/var/log/${NAME}/catalina.out"
 
+# start with a return value of 0 and change if something goes wrong
 RETVAL="0"
 
 # See how we were called.
@@ -78,8 +79,7 @@ function start() {
    if [ -f "${LOCK_DIR}/${NAME}" ]; then
         if [ -f "/var/run/${NAME}.pid" ]; then
             read kpid < /var/run/${NAME}.pid
-#           if checkpid $kpid 2>&1; then
-            if [ -d "/proc/${kpid}" ]; then
+            if [ ! -z "$kpid" ] && [ -d "/proc/${kpid}" ]; then
                 log_success_msg
                 RETVAL="0"
                 return
