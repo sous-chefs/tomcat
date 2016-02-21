@@ -3,6 +3,10 @@ property :version, String, required: true, default: '8.0.32'
 property :path, String, default: nil
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :sha1_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :exclude_docs, kind_of: [TrueClass, FalseClass], default: true
+property :exclude_examples, kind_of: [TrueClass, FalseClass], default: true
+property :exclude_manager, kind_of: [TrueClass, FalseClass], default: false
+property :exclude_hostmanager, kind_of: [TrueClass, FalseClass], default: false
 
 # break apart the version string to find the major version
 def major_version
@@ -16,6 +20,17 @@ def install_path
   else
     @@install_path ||= "/opt/tomcat_#{instance_name}_#{version.tr('.', '_')}/"
   end
+end
+
+# build the extraction command based on the passed properties
+def extraction_command
+  cmd = "tar -xzf #{Chef::Config['file_cache_path']}/apache-tomcat-#{version}.tar.gz -C #{install_path} --strip-components=1"
+  cmd << " --exclude='*webapps/examples*'" if exclude_examples
+  cmd << " --exclude='*webapps/ROOT/*'" if exclude_examples
+  cmd << " --exclude='*webapps/docs*'" if exclude_docs
+  cmd << " --exclude='*webapps/manager*'" if exclude_manager
+  cmd << " --exclude='*webapps/host-manager*'" if exclude_hostmanager
+  cmd
 end
 
 # ensure the version is X.Y.Z format
@@ -84,7 +99,7 @@ action :install do
   end
 
   execute 'extract tomcat tarball' do
-    command "tar -xzf #{Chef::Config['file_cache_path']}/apache-tomcat-#{version}.tar.gz -C #{install_path} --strip-components=1"
+    command extraction_command
     action :run
     creates ::File.join(install_path, 'LICENSE')
   end
