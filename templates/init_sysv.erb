@@ -14,11 +14,9 @@
 # Short-Description: start and stop tomcat
 ### END INIT INFO
 #
-# - This is a shell script that is an unholy, but hopefully palatable,
-# - synthesis of Red Hat's init script for Tomcat6 and the
-# - stock catalina.sh. It aims to keep to look as much as possible
-# - like catalina.sh while still working with the system v
-# - init system  Bryan W. Berry (<bryan.berry@gmail.com>)
+# - This init script is based off the work of Bryan W. Berry who based his
+# - work off Redhat's init script for Tomcat6. Bryan's work can be found
+# - at: https://github.com/bryanwb/tomcat-init/blob/master/tomcat
 #
 
 ## Source function library.
@@ -68,6 +66,9 @@ TOMCAT_LOG="/var/log/${NAME}/catalina.out"
 # start with a return value of 0 and change if something goes wrong
 RETVAL="0"
 
+# source the env file
+. ${INSTALL_PATH}/bin/setenv.sh
+
 # See how we were called.
 function start() {
 
@@ -76,9 +77,10 @@ function start() {
      log_failure_msg
      return
    fi
+   # check to see if tomcat is already started
    if [ -f "${LOCK_DIR}/${NAME}" ]; then
-        if [ -f "/var/run/${NAME}.pid" ]; then
-            read kpid < /var/run/${NAME}.pid
+        if [ -f "${CATALINA_PID}" ]; then
+            read kpid < ${CATALINA_PID}
             if [ ! -z "$kpid" ] && [ -d "/proc/${kpid}" ]; then
                 log_success_msg
                 RETVAL="0"
@@ -87,7 +89,6 @@ function start() {
         fi
     fi
     # fix permissions on the log and pid files
-    export CATALINA_PID="/var/run/${NAME}.pid"
     touch $CATALINA_PID 2>&1 || RETVAL="4"
     if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
       chown ${TOMCAT_USER}:${TOMCAT_USER} $CATALINA_PID
@@ -99,7 +100,7 @@ function start() {
     fi
     [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start ${TOMCAT_LOG}" >> /var/log/${NAME}/initd.log 2>&1 || RETVAL="4"
     if [ "$RETVAL" -eq "0" ]; then
-        log_success_msg
+        log_success_msg "`cat ${CATALINA_PID}` running"
         touch ${LOCK_DIR}/${NAME}
     else
         log_failure_msg "Error code ${RETVAL}"
@@ -109,15 +110,14 @@ function start() {
 function stop() {
     echo -n "Stopping ${NAME}: "
     if [ -f "${LOCK_DIR}/${NAME}" ]; then
-      parseOptions
       if [ "$RETVAL" -eq "0" ]; then
          touch ${LOCK_DIR}/${NAME} 2>&1 || RETVAL="4"
          [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop ${TOMCAT_LOG}" >> /var/log/${NAME}/initd.out 2>&1 || RETVAL="4"
       fi
       if [ "$RETVAL" -eq "0" ]; then
          count="0"
-         if [ -f "/var/run/${NAME}.pid" ]; then
-            read kpid < /var/run/${NAME}.pid
+         if [ -f "${CATALINA_PID}" ]; then
+            read kpid < ${CATALINA_PID}
             until [ "$(ps --pid $kpid | grep -c $kpid)" -eq "0" ] || \
                       [ "$count" -gt "$SHUTDOWN_WAIT" ]; do
                     if [ "$SHUTDOWN_VERBOSE" = "true" ]; then
@@ -134,7 +134,7 @@ function stop() {
                 fi
                 log_success_msg
             fi
-            rm -f ${LOCK_DIR}/${NAME} /var/run/${NAME}.pid
+            rm -f ${LOCK_DIR}/${NAME} ${CATALINA_PID}
         else
             log_failure_msg
             RETVAL="4"
@@ -185,9 +185,9 @@ function checklockfile()
 
 function checkpidfile()
 {
-   if [ -f "/var/run/${NAME}.pid" ]; then
-      read kpid < /var/run/${NAME}.pid
-      if [ -d "/proc/${kpid}" ]; then
+   if [ -f "${CATALINA_PID}" ]; then
+      read kpid < ${CATALINA_PID}
+      if [ ! -z ${kpid} ] && [ -d "/proc/${kpid}" ]; then
 # The pid file exists and the process is running
           RETVAL="0"
       else
@@ -220,7 +220,7 @@ case "$1" in
         start
         ;;
     condrestart|try-restart)
-        if [ -f "/var/run/${NAME}.pid" ]; then
+        if [ -f "${CATALINA_PID}" ]; then
             stop
             start
         fi
@@ -229,7 +229,7 @@ case "$1" in
         RETVAL="3"
         ;;
     force-reload)
-        if [ -f "/var/run/${NAME}.pid" ]; then
+        if [ -f "${CATALINA_PID}" ]; then
             stop
             start
         fi
