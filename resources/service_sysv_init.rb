@@ -10,10 +10,13 @@ provides :tomcat_service, platform: 'ubuntu'
 
 property :instance_name, String, name_property: true
 property :path, String, default: nil
+property :env_vars, Array, default: [
+  { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
+]
 
 # the install path of this instance of tomcat
 def install_path
-  path ? path : "/opt/tomcat_#{instance_name}/"
+  path ? path : "/opt/tomcat_#{instance_name}"
 end
 
 action :start do
@@ -33,8 +36,19 @@ action :disable do
   s.action :disable
 end
 
+# make sure catalina base is in the env_var has no matter what
+def ensure_catalina_base
+  unless env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
+    env_vars.unshift('CATALINA_BASE' => install_path)
+  end
+end
+
 action_class.class_eval do
   def create_init
+    # set the CATALINA_BASE value unless the user has passed it
+    ensure_catalina_base
+
+    # define the lock dir for RHEL vs. debian
     platform_lock_dir = value_for_platform_family(
       %w(rhel fedora suse) => '/var/lock/subsys',
       'debian' => '/var/lock',
@@ -43,6 +57,15 @@ action_class.class_eval do
 
     # the init script will not run without lsb-core
     package 'redhat-lsb-core' if platform_family?('rhel')
+
+    template "#{install_path}/bin/setenv.sh" do
+      source 'setenv.erb'
+      mode '0755'
+      cookbook 'tomcat'
+      variables(
+        env_vars: env_vars
+      )
+    end
 
     template "/etc/init.d/tomcat_#{instance_name}" do
       mode '0755'
