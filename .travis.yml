@@ -41,7 +41,7 @@ script:
   - /opt/chefdk/embedded/bin/foodcritic . --exclude spec
   - /opt/chefdk/embedded/bin/rspec
   - echo KITCHEN_YAML=.kitchen.yml kitchen verify ${INSTANCE}
-  - KITCHEN_YAML=.kitchen.yml kitchen verify ${INSTANCE}
+  - KITCHEN_YAML=.kitchen.docker.yml kitchen verify ${INSTANCE}
 
 after_script:
   - docker images
