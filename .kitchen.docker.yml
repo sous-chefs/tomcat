@@ -18,6 +18,8 @@ platforms:
   driver:
     image: debian:8
     pid_one_command: /bin/systemd
+  run_list:
+  - recipe[apt]
 
 - name: centos-5
   driver:
