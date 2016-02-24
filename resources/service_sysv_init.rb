@@ -4,20 +4,21 @@ provides :tomcat_service, platform: %w(redhat centos scientific oracle) do |node
   node['platform_version'].to_f < 7.0
 end
 
+provides :tomcat_service, platform: 'debian' do |node|
+  node['platform_version'].to_i < 8
+end
+
+provides :tomcat_service, platform: 'ubuntu' do |node|
+  node['platform_version'].to_f < 15.04
+end
+
 provides :tomcat_service, platform: 'suse'
-provides :tomcat_service, platform: 'debian'
-provides :tomcat_service, platform: 'ubuntu'
 
 property :instance_name, String, name_property: true
-property :path, String, default: nil
+property :install_path, String, default: nil
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
-
-# the install path of this instance of tomcat
-def install_path
-  path ? path : "/opt/tomcat_#{instance_name}"
-end
 
 action :start do
   create_init
@@ -34,13 +35,6 @@ action :disable do
   create_init
   s = create_service
   s.action :disable
-end
-
-# make sure catalina base is in the env_var has no matter what
-def ensure_catalina_base
-  unless env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
-    env_vars.unshift('CATALINA_BASE' => install_path)
-  end
 end
 
 action_class.class_eval do
@@ -64,7 +58,7 @@ action_class.class_eval do
       end
     end
 
-    template "#{install_path}/bin/setenv.sh" do
+    template "#{derived_install_path}/bin/setenv.sh" do
       source 'setenv.erb'
       mode '0755'
       cookbook 'tomcat'
@@ -79,7 +73,7 @@ action_class.class_eval do
       cookbook 'tomcat'
       variables(
         lock_dir: platform_lock_dir,
-        install_path: install_path
+        install_path: derived_install_path
       )
     end
   end
