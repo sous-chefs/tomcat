@@ -55,8 +55,14 @@ action_class.class_eval do
       'default' => '/var/lock'
     )
 
-    # the init script will not run without lsb-core
-    package 'redhat-lsb-core' if platform_family?('rhel')
+    # the init script will not run without redhat-lsb packages
+    if platform_family?('rhel')
+      if node['platform_version'].to_i < 6.0
+        package 'redhat-lsb'
+      else
+        package 'redhat-lsb-core'
+      end
+    end
 
     template "#{install_path}/bin/setenv.sh" do
       source 'setenv.erb'
