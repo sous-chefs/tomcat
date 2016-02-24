@@ -16,6 +16,7 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - java
 - openssl
 - yum-epel
+- compat_resource
 
 ## Attributes
 - `node['tomcat']['base_version']` - The version of tomcat to install, default `6`.
