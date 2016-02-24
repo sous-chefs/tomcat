@@ -1,6 +1,16 @@
 # tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v1.1.0 (2016-02-23)
+- Included new experimental tomcat_install and tomcat_service custom resource for pulling down any specified tomcat release from the Apache Org site and managing the service.  This allows for running any Tomcat release on any distro (no more packages) and will eventually replace the existing attribute and provider config methods
+- Added compat_resource as a cookbook dependency for the new custom resources
+- Depend on java cookbook >= 1.36 to allow for OpenJDK 1.8 installs along with many bugfixes
+- Test Kitchen now tests the new providers in Travis CI using kitchen-dokken (docker)
+- Existing test suites have been removed as that functionality will be deprecated in the near future
+- UseConcMarkSweepGC is no longer hard coded in the Tomcat 6 config.  Instead this is part of the JAVAOPTS attribute so it can be overwritten
+- Added uriencoding to the instance provider.  See the readme for details
+- Added new attribute for the ajp listen IP.  See the readme for details
+
 ## v1.0.1 (2015-12-01)
 - Resolved a missing method error in the instance provider
 

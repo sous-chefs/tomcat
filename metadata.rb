@@ -4,11 +4,12 @@ maintainer_email 'cookbooks@chef.io'
 license          'Apache 2.0'
 description      'Installs and configures Apache Tomcat'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.0.1'
+version          '1.1.0'
 
-depends 'java'
+depends 'java', '>= 1.36'
 depends 'openssl'
 depends 'yum-epel'
+depends 'compat_resource', '>= 12.7.3'
 
 %w(ubuntu debian redhat centos suse opensuse scientific oracle amazon).each do |os|
   supports os
