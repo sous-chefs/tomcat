@@ -1,3 +1,5 @@
+include_recipe 'java'
+
 tomcat_install 'helloworld' do
   version '8.0.32'
   exclude_examples false

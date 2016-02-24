@@ -53,6 +53,8 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
+  run_list:
+  - recipe[apt]
 
 - name: ubuntu-14.04
   driver:
@@ -61,6 +63,8 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
+  run_list:
+  - recipe[apt]
 
 - name: ubuntu-15.10
   driver:
@@ -69,6 +73,8 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
+  run_list:
+  - recipe[apt]
 
 suites:
 - name: helloworld_example
