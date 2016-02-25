@@ -124,12 +124,4 @@ action :install do
   link "/opt/tomcat_#{instance_name}" do
     to full_install_path
   end
-
-  # create the log dir for the instance
-  directory "/var/log/tomcat_#{instance_name}" do
-    owner "tomcat_#{instance_name}"
-    mode '0770'
-    recursive true
-    action :create
-  end
 end
