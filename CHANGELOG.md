@@ -1,6 +1,17 @@
 # tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v1.2.0 (2016-02-25)
+- Added systemd and upstart support to tomcat_service custom resource
+- tomcat_install no longer creates a logs dir in /var/logs/ as logging is up to the users
+- custom paths no longer throw an error in tomcat_install
+- path property in tomcat_install is now renamed install_path to match the tomcat_service provider
+- the test cookbook now installs two different instances and includes the java setup the same way a wrapper cookbook would
+- ubuntu 15.10 has been removed from the Test Kitchen config since there is no published box for this version yet
+- debian 8 is now properly identified as a systemd based system
+- inspec tests for the test cookbook updated to pass
+- nil default properties have been removed to resolve Chef deprecation warnings
+
 ## v1.1.0 (2016-02-23)
 - Included new experimental tomcat_install and tomcat_service custom resource for pulling down any specified tomcat release from the Apache Org site and managing the service.  This allows for running any Tomcat release on any distro (no more packages) and will eventually replace the existing attribute and provider config methods
 - Added compat_resource as a cookbook dependency for the new custom resources
