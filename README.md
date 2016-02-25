@@ -8,6 +8,7 @@ Installs and configures Tomcat, Java servlet engine and webserver version 6 and 
 - Debian / Ubuntu derivatives
 - RHEL derivatives
 - Fedora
+- openSUSE / SUSE Linux Enterprises
 
 ### Chef
 - Chef 12.1+
