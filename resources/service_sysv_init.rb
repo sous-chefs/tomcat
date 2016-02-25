@@ -11,7 +11,7 @@ end
 provides :tomcat_service, platform: 'suse'
 
 property :instance_name, String, name_property: true
-property :install_path, String, default: nil
+property :install_path, String
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
