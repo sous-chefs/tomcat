@@ -126,7 +126,7 @@ action :install do
   end
 
   # create the log dir for the instance
-  directory '/var/log/tomcat_helloworld' do
+  directory '/var/log/tomcat_#{instance_name}' do
     owner "tomcat_#{instance_name}"
     mode '0770'
     recursive true
