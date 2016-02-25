@@ -8,10 +8,6 @@ provides :tomcat_service, platform: 'debian' do |node|
   node['platform_version'].to_i < 8
 end
 
-provides :tomcat_service, platform: 'ubuntu' do |node|
-  node['platform_version'].to_f < 15.04
-end
-
 provides :tomcat_service, platform: 'suse'
 
 property :instance_name, String, name_property: true
