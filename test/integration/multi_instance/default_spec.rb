@@ -3,16 +3,23 @@ describe file('/opt/tomcat_helloworld_8_0_32/LICENSE') do
   it { should be_owned_by 'tomcat_helloworld' }
 end
 
-describe user('tomcat_helloworld') do
-  it { should exist }
+describe file('/opt/special/tomcat_docs_8_0_32/LICENSE') do
+  it { should be_file }
+  it { should be_owned_by 'tomcat_docs' }
 end
 
-describe group('tomcat_helloworld') do
-  it { should exist }
-end
+%w(tomcat_helloworld tomcat_docs).each do |service_name|
+  describe user(service_name) do
+    it { should exist }
+  end
 
-describe service('tomcat_helloworld') do
-  it { should be_installed }
-  it { should be_enabled }
-  it { should be_running }
+  describe group(service_name) do
+    it { should exist }
+  end
+
+  describe service(service_name) do
+    it { should be_installed }
+    it { should be_enabled }
+    it { should be_running }
+  end
 end
