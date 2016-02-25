@@ -15,9 +15,9 @@ description "Tomcat Server <%= @instance -%>"
     <% end -%>
   <% end -%>
 
-  exec $CATALINA_HOME/bin/catalina.sh start
+  exec $CATALINA_BASE/bin/catalina.sh run
 
   # cleanup temp directory after stop
   post-stop script
-    rm -rf $CATALINA_HOME/temp/*
+    rm -rf $CATALINA_BASE/temp/*
   end script
