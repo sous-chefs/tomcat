@@ -1,4 +1,4 @@
-describe file('/opt/tomcat_helloworld_8_0_30/LICENSE') do
+describe file('/opt/tomcat_helloworld_8_0_32/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'tomcat_helloworld' }
 end

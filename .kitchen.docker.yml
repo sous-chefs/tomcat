@@ -79,12 +79,5 @@ platforms:
   - recipe[apt]
 
 suites:
-- name: helloworld_example
-  run_list: ["recipe[test::helloworld_example]"]
-  attributes:
-    java:
-      install_flavor: oracle
-      jdk_version: 8
-      set_etc_environment: true
-      oracle:
-        accept_oracle_download_terms: true
+- name: multi_instance
+  run_list: ["recipe[test::default]"]
