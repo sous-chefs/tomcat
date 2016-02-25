@@ -61,9 +61,9 @@ action :configure do
       end
     end
 
-    # config_dir needs symlinks to the files we're not going to create
+    # config_dir needs symlinks to the files we're not going to create (policy.d is actually a directory)
     %w(catalina.policy catalina.properties context.xml
-       tomcat-users.xml web.xml).each do |file|
+       tomcat-users.xml web.xml policy.d).each do |file|
       link "#{new_resource.config_dir}/#{file}" do
         to "#{node['tomcat']['config_dir']}/#{file}"
       end
@@ -72,11 +72,11 @@ action :configure do
     # The base also needs a bunch of to symlinks inside it
     %w(bin lib).each do |dir|
       link "#{new_resource.base}/#{dir}" do
-        to "#{node['tomcat']['base']}/#{dir}"
+        to "#{node['tomcat']['home']}/#{dir}"
       end
     end
     { 'conf' => 'config_dir', 'logs' => 'log_dir', 'temp' => 'tmp_dir',
-      'work' => 'work_dir', 'webapps' => 'webapp_dir' }.each do |name, attr|
+      'work' => 'work_dir' }.each do |name, attr|
       link "#{new_resource.base}/#{name}" do
         to new_resource.instance_variable_get("@#{attr}")
       end
@@ -206,6 +206,8 @@ action :configure do
       keystore_file: new_resource.keystore_file,
       keystore_type: new_resource.keystore_type,
       tomcat_auth: new_resource.tomcat_auth,
+      ajp_packetsize: new_resource.ajp_packetsize,
+      uriencoding: new_resource.uriencoding,
       client_auth: new_resource.client_auth,
       config_dir: new_resource.config_dir
     )

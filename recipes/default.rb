@@ -97,6 +97,11 @@ if node['tomcat']['run_base_instance']
     shutdown_port node['tomcat']['shutdown_port']
   end
   instance = node['tomcat']['base_instance']
+
+  execute "wait for #{instance}" do
+    command 'sleep 5'
+    action :nothing
+  end
   create_service(instance)
 end
 
@@ -147,10 +152,12 @@ node['tomcat']['instances'].each do |name, attrs|
   end
 
   instance = "#{node['tomcat']['base_instance']}-#{name}"
-  create_service(instance)
-end
 
-execute "wait for #{instance}" do
-  command 'sleep 5'
-  action :nothing
+
+  execute "wait for #{instance}" do
+    command 'sleep 5'
+    action :nothing
+  end
+
+  create_service(instance)
 end

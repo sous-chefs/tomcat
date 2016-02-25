@@ -83,6 +83,8 @@ attribute :loglevel,
 attribute :tomcat_auth,
   kind_of: String,
   equal_to: %w(true false)
+attribute :client_auth,
+  kind_of: String
 
 attribute :user,
   kind_of: String
@@ -97,4 +99,8 @@ attribute :tmp_dir,
 attribute :lib_dir,
   kind_of: String
 attribute :endorsed_dir,
+  kind_of: String
+attribute :ajp_packetsize,
+  kind_of: String
+attribute :uriencoding,
   kind_of: String
