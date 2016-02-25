@@ -9,7 +9,7 @@ provides :tomcat_service, platform: 'debian' do |node|
 end
 
 provides :tomcat_service, platform: 'ubuntu' do |node|
-  node['platform_version'].to_f >= 15.04
+  node['platform_version'].to_f >= 15.10
 end
 
 property :instance_name, String, name_property: true
