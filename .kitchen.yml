@@ -12,6 +12,7 @@ platforms:
   driver_config:
     network:
       - ["forwarded_port", {guest: 8080, host: 8080}]
+      - ["forwarded_port", {guest: 8081, host: 8081}]
   run_list:
   - recipe[apt]
 - name: ubuntu-12.04
