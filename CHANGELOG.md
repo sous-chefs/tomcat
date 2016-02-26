@@ -1,11 +1,18 @@
 # tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v1.2.1 (2016-02-25)
+- Added restart and enable actions to tomcat_service resource
+- Fixed init scripts trying to use /var/log/tomcat_INSTANCE dir that is no longer created
+- If a custom path is provided the trailing / will be stripped to prevent // in scripts
+- Start action in tomcat_service now starts the service instead of starting / enabling the service
+- Stop and disable actions no longer create the init script first.  Instead they only perform their actions if the init script exists
+
 ## v1.2.0 (2016-02-25)
 - Added systemd and upstart support to tomcat_service custom resource
 - tomcat_install no longer creates a logs dir in /var/logs/ as logging is up to the users
 - custom paths no longer throw an error in tomcat_install
-- path property in tomcat_install is now renamed install_path to match the tomcat_service provider
+- path property in tomcat_install is now renamed install_path to match the tomcat_service resource
 - the test cookbook now installs two different instances and includes the java setup the same way a wrapper cookbook would
 - ubuntu 15.10 has been removed from the Test Kitchen config since there is no published box for this version yet
 - debian 8 is now properly identified as a systemd based system
