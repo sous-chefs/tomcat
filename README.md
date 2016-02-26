@@ -162,7 +162,7 @@ This is a sample on how to set-up some environment variables:
 }
 ```
 
-## Experimental Functionality
+## New Installation Functionality
 This cookbook is currently undergoing a ground up rewrite that will convert it to a pure library cookbook, more appropriate for the multitude of ways that Tomcat can be installed.  The existing attribute driven installs and tomcat_instance provider will eventually be deprecated in favor of a provider for installation, service management, and 1 or more providers for configuration.
 
 ### tomcat_install
@@ -170,7 +170,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 
 #### properties
 - `version`: The version to install. Default: 8.0.32
-- `path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
+- `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
 - `tarball_base_path`: The base path to the apache mirror containing the tarballs. Default: '[http://archive.apache.org/dist/tomcat/](http://archive.apache.org/dist/tomcat/)'
 - `sha1_base_path`: The base path to the apache mirror containing the sha1 file. Default: '[http://archive.apache.org/dist/tomcat/](http://archive.apache.org/dist/tomcat/)'
 - `exclude_docs`: Exclude ./webapps/docs from installation. Default true.
@@ -191,12 +191,13 @@ end
 tomcat_service sets up the installed tomcat instance to run using the appropriate init system (sys-v, upstart, or systemd)
 
 #### properties
-- `path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME
+- `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME
 - `env_vars`: An array of hashes containing the environmental variables for Tomcat's setenv.sh script. Note: If CATALINA_BASE is not passed it will automatically be added as the first item in the array. Default: [ {'CATALINA_BASE' => '/opt/INSTANCE_NAME/'}, {'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid'} ]
 
 #### actions
 - `start`
 - `stop`
+- `enable`
 - `disable`
 - `restart`
 
@@ -210,6 +211,7 @@ end
 ```
 
 ## License & Authors
+- Author: Tim Smith ([tsmith@chef.io](mailto:tsmith@chef.io))
 - Author: Seth Chisamore ([schisamo@chef.io](mailto:schisamo@chef.io))
 - Author: Jamie Winsor ([jamie@vialstudios.com](mailto:jamie@vialstudios.com))
 - Author: Phillip Goldenburg ([phillip.goldenburg@sailpoint.com](mailto:phillip.goldenburg@sailpoint.com))
