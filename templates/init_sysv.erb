@@ -61,7 +61,7 @@ TOMCAT_PROG="${NAME}"
 TOMCAT_USER="${NAME}"
 
 # Define the tomcat log file
-TOMCAT_LOG="/var/log/${NAME}/catalina.out"
+TOMCAT_LOG="${INSTALL_PATH}/logs/catalina.out"
 
 # start with a return value of 0 and change if something goes wrong
 RETVAL="0"
@@ -98,7 +98,7 @@ function start() {
       chown ${TOMCAT_USER}:root $TOMCAT_LOG
       chmod 660 $TOMCAT_LOG
     fi
-    [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start ${TOMCAT_LOG}" >> /var/log/${NAME}/initd.log 2>&1 || RETVAL="4"
+    [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start ${TOMCAT_LOG}" >> ${INSTALL_PATH}/logs/initd.log 2>&1 || RETVAL="4"
     if [ "$RETVAL" -eq "0" ]; then
         log_success_msg "`cat ${CATALINA_PID}` running"
         touch ${LOCK_DIR}/${NAME}
@@ -112,7 +112,7 @@ function stop() {
     if [ -f "${LOCK_DIR}/${NAME}" ]; then
       if [ "$RETVAL" -eq "0" ]; then
          touch ${LOCK_DIR}/${NAME} 2>&1 || RETVAL="4"
-         [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop ${TOMCAT_LOG}" >> /var/log/${NAME}/initd.out 2>&1 || RETVAL="4"
+         [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop ${TOMCAT_LOG}" >> ${INSTALL_PATH}/logs/initd.out 2>&1 || RETVAL="4"
       fi
       if [ "$RETVAL" -eq "0" ]; then
          count="0"
