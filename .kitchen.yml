@@ -29,5 +29,5 @@ platforms:
     - recipe[zypper]
 
 suites:
-- name: multi_instance
+- name: multi-instance
   run_list: ["recipe[test::default]"]
