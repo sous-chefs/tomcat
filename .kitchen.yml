@@ -25,7 +25,6 @@ platforms:
   driver:
     box: opensuse-13.2
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_opensuse-13.2-x86_64_chef-provisionerless.box
-  attributes: {java: {install_flavor: openjdk, jdk_version: 7, openjdk_packages: [ "java-1_7_0-openjdk", "java-1.7.0-openjdk-devel" ], set_etc_environment: true }}
   run_list:
     - recipe[zypper]
 
