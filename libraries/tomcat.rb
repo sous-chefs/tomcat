@@ -20,8 +20,9 @@
 #
 
 # the install path of this instance of tomcat
+# make sure it doesn't end in / as well as that causes issues in init scripts
 def derived_install_path
-  install_path ? install_path : "/opt/tomcat_#{instance_name}"
+  install_path ? install_path.chomp('/') : "/opt/tomcat_#{instance_name}"
 end
 
 # make sure catalina base is in the env_var has no matter what
