@@ -11,6 +11,6 @@ end
 
 # start the tomcat docs install
 tomcat_service 'docs' do
-  action :start
+  action [:start, :enable]
   install_path '/opt/special/tomcat_docs_8_0_32/'
 end

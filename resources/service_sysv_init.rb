@@ -18,19 +18,40 @@ property :env_vars, Array, default: [
 
 action :start do
   create_init
-  create_service
+
+  service "tomcat_#{instance_name}" do
+    supports restart: true, status: true
+    action :start
+  end
 end
 
 action :stop do
-  create_init
-  s = create_service
-  s.action :stop
+  service "tomcat_#{instance_name}" do
+    supports status: true
+    action :stop
+    only_if { ::File.exist?("/etc/init.d/tomcat_#{instance_name}") }
+  end
+end
+
+action :restart do
+  action_stop
+  action_start
+end
+
+action :enable do
+  service "tomcat_#{instance_name}" do
+    supports status: true
+    action :enable
+    only_if { ::File.exist?("/etc/init.d/tomcat_#{instance_name}") }
+  end
 end
 
 action :disable do
-  create_init
-  s = create_service
-  s.action :disable
+  service "tomcat_#{instance_name}" do
+    supports status: true
+    action :disable
+    only_if { ::File.exist?("/etc/init.d/tomcat_#{instance_name}") }
+  end
 end
 
 action_class.class_eval do
@@ -71,13 +92,6 @@ action_class.class_eval do
         lock_dir: platform_lock_dir,
         install_path: derived_install_path
       )
-    end
-  end
-
-  def create_service
-    service "tomcat_#{instance_name}" do
-      supports restart: true, status: true
-      action [:start, :enable]
     end
   end
 end
