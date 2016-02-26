@@ -1,6 +1,13 @@
 # tomcat Cookbook CHANGELOG
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v1.3.0 (2016-02-25)
+- Resolve missing directory warnings on Debian based systems that use systemd (Debian 8+ and Ubuntu 15.10+)
+- Add testing and support for openSUSE 13.X
+- Expand the platforms tested in the kitchen.yml file
+- Remove the zypper_refresh cookbook. The zypper cookbook on the supermarket should be used instead
+- Resolved foodcritic warnings in the instance provider
+
 ## v1.2.1 (2016-02-25)
 - Added restart and enable actions to tomcat_service resource
 - Fixed init scripts trying to use /var/log/tomcat_INSTANCE dir that is no longer created
