@@ -12,6 +12,7 @@ cookbook_file '/opt/tomcat_helloworld/conf/server.xml' do
   owner 'root'
   group 'root'
   mode '0644'
+  notifies :restart, 'tomcat_service[helloworld]'
 end
 
 remote_file '/opt/tomcat_helloworld/webapps/sample.war' do
