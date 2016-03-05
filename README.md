@@ -40,7 +40,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `exclude_docs`: Exclude ./webapps/docs from installation. Default true.
 - `exclude_examples`: Exclude ./webapps/examples from installation. Default true.
 - `exclude_manager`: Exclude ./webapps/manager from installation. Default: false.
-- `exclude_host-manager`: Exclude ./webapps/host-manager from installation. Default: false.
+- `exclude_hostmanager`: Exclude ./webapps/host-manager from installation. Default: false.
 
 #### example
 
