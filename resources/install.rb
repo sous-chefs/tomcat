@@ -45,7 +45,8 @@ end
 # we have to do this since the sha256 chef expects isn't hosted
 def fetch_checksum
   uri = URI.join(sha1_base_path, "tomcat-#{major_version}/v#{version}/bin/apache-tomcat-#{version}.tar.gz.sha1")
-  response = Net::HTTP.get_response(uri)
+  request = Net::HTTP.new(uri.host, uri.port)
+  response = request.get(uri)
   if response.code != '200'
     Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
     raise
