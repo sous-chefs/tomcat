@@ -9,7 +9,7 @@ Type=forking
 
 <% @env_vars.each do |h| -%>
   <% h.each_pair do |k,v| -%>
-Environment=<%= k -%>=<%= v -%>
+Environment="<%= k -%>=<%= v %>"
   <% end -%>
 <% end -%>
 
