@@ -18,17 +18,17 @@ property :env_vars, Array, default: [
 action :start do
   create_init
 
-  service "tomcat_#{instance_name}" do
+  service "tomcat_#{new_resource.instance_name}" do
     supports restart: true, status: true
     action :start
   end
 end
 
 action :stop do
-  service "tomcat_#{instance_name}" do
+  service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :stop
-    only_if { ::File.exist?("/etc/init.d/tomcat_#{instance_name}") }
+    only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
   end
 end
 
@@ -41,15 +41,15 @@ action :enable do
   service "tomcat_#{instance_name}" do
     supports status: true
     action :enable
-    only_if { ::File.exist?("/etc/init.d/tomcat_#{instance_name}") }
+    only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
   end
 end
 
 action :disable do
-  service "tomcat_#{instance_name}" do
+  service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :disable
-    only_if { ::File.exist?("/etc/init.d/tomcat_#{instance_name}") }
+    only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
   end
 end
 
@@ -79,11 +79,11 @@ action_class.class_eval do
       mode '0755'
       cookbook 'tomcat'
       variables(
-        env_vars: env_vars
+        env_vars: new_resource.env_vars
       )
     end
 
-    template "/etc/init.d/tomcat_#{instance_name}" do
+    template "/etc/init.d/tomcat_#{new_resource.instance_name}" do
       mode '0755'
       source 'init_sysv.erb'
       cookbook 'tomcat'
