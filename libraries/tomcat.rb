@@ -22,12 +22,12 @@
 # the install path of this instance of tomcat
 # make sure it doesn't end in / as well as that causes issues in init scripts
 def derived_install_path
-  install_path ? install_path.chomp('/') : "/opt/tomcat_#{instance_name}"
+  new_resource.install_path ? new_resource.install_path.chomp('/') : "/opt/tomcat_#{new_resource.instance_name}"
 end
 
 # make sure catalina base is in the env_var has no matter what
 def ensure_catalina_base
-  unless env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
-    env_vars.unshift('CATALINA_BASE' => derived_install_path)
+  unless new_resource.env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
+    new_resource.env_vars.unshift('CATALINA_BASE' => derived_install_path)
   end
 end
