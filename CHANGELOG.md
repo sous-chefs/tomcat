@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.0.2 (2016-03-16)
+- Avoid namespace conflicts with other cookbooks that were causing failures. Thanks @alappe and @EdSingleton for providing the information to track this down.
+- Fix a typo that prevented passing environmental directives with systemd. - @nickptrvc
+- Depend on the latest compat_resource to avoid warnings
+
 ## v2.0.1 (2016-03-07)
 
 - Fix HTTP download of the Tomcat artifact to use a proxy server if ENV variables are defined @petracvv
