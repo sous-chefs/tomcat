@@ -7,6 +7,8 @@ property :install_path, String
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
+property :user, kind_of: String, default: lazy {|r| "tomcat_#{r.instance_name}" }
+property :group, kind_of: String, default: lazy {|r| "tomcat_#{r.instance_name}" }
 
 action :start do
   create_init
@@ -14,6 +16,7 @@ action :start do
   service "tomcat_#{new_resource.instance_name}" do
     supports restart: true, status: true
     action :start
+    only_if 'java -version'
   end
 end
 
@@ -30,7 +33,15 @@ action :restart do
   action_start
 end
 
+action :nothing do
+  create_init
+  service "tomcat_#{new_resource.instance_name}" do
+    action :nothing
+  end
+end
+
 action :enable do
+  create_init
   service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :enable
@@ -55,7 +66,9 @@ action_class.class_eval do
       variables(
         instance: new_resource.instance_name,
         env_vars: new_resource.env_vars,
-        install_path: derived_install_path
+        install_path: derived_install_path,
+        user: new_resource.user,
+        group: new_resource.group
       )
       cookbook 'tomcat'
       owner 'root'

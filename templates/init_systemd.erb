@@ -16,8 +16,8 @@ Environment="<%= k -%>=<%= v %>"
 ExecStart=<%= @install_path %>/bin/catalina.sh start
 ExecStop=<%= @install_path %>/bin/catalina.sh stop
 
-User=tomcat_<%= @instance %>
-Group=tomcat_<%= @instance %>
+User=<%= @user %>
+Group=<%= @group %>
 
 [Install]
 WantedBy=multi-user.target
