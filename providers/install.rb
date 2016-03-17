@@ -1,7 +1,7 @@
 use_inline_resources
 
 def whyrun_supported?
-   true
+  true
 end
 
 # break apart the version string to find the major version

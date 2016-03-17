@@ -14,7 +14,7 @@ property :install_path, String
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
-property :user, kind_of: String, default: lazy {|r| "tomcat_#{r.instance_name}" }
+property :user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
 action :start do
   create_init

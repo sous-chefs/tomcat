@@ -9,8 +9,8 @@ property :exclude_docs, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_examples, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_manager, kind_of: [TrueClass, FalseClass], default: false
 property :exclude_hostmanager, kind_of: [TrueClass, FalseClass], default: false
-property :owner, kind_of: String, default: lazy {|r| "tomcat_#{r.instance_name}" }
-property :group, kind_of: String, default: lazy {|r| "tomcat_#{r.instance_name}" }
+property :owner, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :group, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :service_create, kind_of: [TrueClass, FalseClass], default: false
 property :service_action, kind_of: Symbol, default: :nothing
 
