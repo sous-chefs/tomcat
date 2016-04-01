@@ -11,7 +11,7 @@ property :exclude_hostmanager, kind_of: [TrueClass, FalseClass], default: false
 action_class do
   # break apart the version string to find the major version
   def major_version
-    @@major_version ||= new_resource.version.split('.')[0]
+    @major_version ||= new_resource.version.split('.')[0]
   end
 
   # the install path of this instance of tomcat
@@ -19,7 +19,7 @@ action_class do
     if new_resource.install_path
       new_resource.install_path
     else
-      @@path ||= "/opt/tomcat_#{new_resource.instance_name}_#{new_resource.version.tr('.', '_')}/"
+      @path ||= "/opt/tomcat_#{new_resource.instance_name}_#{new_resource.version.tr('.', '_')}/"
     end
   end
 
