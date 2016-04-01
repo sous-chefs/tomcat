@@ -2,7 +2,8 @@ property :instance_name, String, name_property: true
 property :version, String, required: true, default: '8.0.32'
 property :install_path, String
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
-property :sha1_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :sha1_base_path, String # this is the legacy name for this attribute
 property :exclude_docs, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_examples, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_manager, kind_of: [TrueClass, FalseClass], default: false
@@ -45,7 +46,10 @@ action_class do
   # fetch the md5 checksum from the mirrors
   # we have to do this since the md5 chef expects isn't hosted
   def fetch_checksum
-    uri = URI.join(new_resource.sha1_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+    # preserve the legacy name of sha1_base_path
+    new_resource.checksum_base_path = new_resource.sha1_base_path if new_resource.sha1_base_path
+
+    uri = URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
     request = Net::HTTP.new(uri.host, uri.port)
     response = request.get(uri)
     if response.code != '200'
