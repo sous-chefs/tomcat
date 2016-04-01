@@ -117,6 +117,7 @@ action :install do
 
   user "tomcat_#{new_resource.instance_name}" do
     gid "tomcat_#{new_resource.instance_name}"
+    shell '/bin/nologin'
     action :create
   end
 
