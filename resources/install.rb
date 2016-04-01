@@ -42,10 +42,10 @@ action_class do
     end
   end
 
-  # fetch the sha1 checksum from the mirrors
-  # we have to do this since the sha256 chef expects isn't hosted
+  # fetch the md5 checksum from the mirrors
+  # we have to do this since the md5 chef expects isn't hosted
   def fetch_checksum
-    uri = URI.join(new_resource.sha1_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.sha1")
+    uri = URI.join(new_resource.sha1_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
     request = Net::HTTP.new(uri.host, uri.port)
     response = request.get(uri)
     if response.code != '200'
@@ -62,7 +62,7 @@ action_class do
   # return true if they match. Append .bad to the cached copy to prevent using it next time
   def validate_checksum(file_to_check)
     desired = fetch_checksum
-    actual = Digest::SHA1.hexdigest(::File.read(file_to_check))
+    actual = Digest::MD5.hexdigest(::File.read(file_to_check))
 
     if desired == actual
       true
