@@ -9,7 +9,7 @@ Provides resources for installing Tomcat and managing the Tomcat service for use
 ### Platforms
 
 - Debian / Ubuntu derivatives
-- RHEL derivatives
+- RHEL and derivatives
 - Fedora
 - openSUSE / SUSE Linux Enterprises
 
