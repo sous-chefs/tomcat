@@ -5,7 +5,7 @@ Description=<%= @instance %> Apache Tomcat Application
 After=syslog.target network.target
 
 [Service]
-Type=forking
+Type=simple
 
 <% @env_vars.each do |h| -%>
   <% h.each_pair do |k,v| -%>
@@ -13,7 +13,7 @@ Environment="<%= k -%>=<%= v %>"
   <% end -%>
 <% end -%>
 
-ExecStart=<%= @install_path %>/bin/catalina.sh start
+ExecStart=<%= @install_path %>/bin/catalina.sh run
 ExecStop=<%= @install_path %>/bin/catalina.sh stop
 
 User=tomcat_<%= @instance %>
