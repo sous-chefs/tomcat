@@ -10,6 +10,7 @@ This file is used to list changes made in each version of the tomcat cookbook.
 - rename sha1_base_path property to checksum_base_path since we're using MD5s now. The existing property name will continue to work for backwards compatibility
 - Add start/stop runlevel header to the init script
 - Reload the systemd unit file if it changes
+- Don't give the tomcat user a valid shell
 
 ## v2.0.2 (2016-03-16)
 
