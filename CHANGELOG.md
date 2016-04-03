@@ -2,7 +2,17 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.0.3 (2016-04-01)
+
+- Fix Tomcat 7 installations on systemd not starting by changing the catalina.sh action from start to run
+- Fix bug where Tomcat 7 and Tomcat 8 instances could not be installed on the same host
+- Switch from sha1 to md5 checksums as older Tomcat releases didn't include SHA1 checksums
+- rename sha1_base_path property to checksum_base_path since we're using MD5s now. The existing property name will continue to work for backwards compatibility
+- Add start/stop runlevel header to the init script
+- Reload the systemd unit file if it changes
+
 ## v2.0.2 (2016-03-16)
+
 - Avoid namespace conflicts with other cookbooks that were causing failures. Thanks @alappe and @EdSingleton for providing the information to track this down.
 - Fix a typo that prevented passing environmental directives with systemd. - @nickptrvc
 - Depend on the latest compat_resource to avoid warnings
