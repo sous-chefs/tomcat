@@ -71,6 +71,12 @@ action_class.class_eval do
       owner 'root'
       group 'root'
       mode '0644'
+      notifies :run, 'execute[Load systemd unit file]', :immediately
+    end
+
+    execute 'Load systemd unit file' do
+      command 'systemctl daemon-reload'
+      action :nothing
     end
   end
 end
