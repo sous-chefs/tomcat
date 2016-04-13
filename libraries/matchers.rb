@@ -26,7 +26,7 @@ if defined?(ChefSpec)
   ChefSpec.define_matcher :tomcat_install
 
   def install_tomcat_install(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation, :install, resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:tomcat_install, :install, resource_name)
   end
 
   ################
