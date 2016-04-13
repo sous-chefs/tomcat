@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.0.4 (2016-04-13)
+
+- Fixed a copy / paste mistake in the chefspec matchers
+
 ## v2.0.3 (2016-04-01)
 
 - Fix Tomcat 7 installations on systemd not starting by changing the catalina.sh action from start to run
