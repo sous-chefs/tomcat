@@ -28,7 +28,7 @@ action_class do
   def extraction_command
     cmd = "tar -xzf #{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz -C #{full_install_path} --strip-components=1"
     cmd << " --exclude='*webapps/examples*'" if new_resource.exclude_examples
-    cmd << " --exclude='*webapps/ROOT/*'" if new_resource.exclude_examples
+    cmd << " --exclude='*webapps/ROOT*'" if new_resource.exclude_examples
     cmd << " --exclude='*webapps/docs*'" if new_resource.exclude_docs
     cmd << " --exclude='*webapps/manager*'" if new_resource.exclude_manager
     cmd << " --exclude='*webapps/host-manager*'" if new_resource.exclude_hostmanager
