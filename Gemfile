@@ -6,7 +6,7 @@ group :rake do
 end
 
 group :lint do
-  gem 'foodcritic', '~> 6.0'
+  gem 'foodcritic', '~> 6.1'
   gem 'rubocop', '~> 0.38'
 end
 
@@ -21,7 +21,7 @@ group :kitchen_common do
 end
 
 group :kitchen_vagrant do
-  gem 'kitchen-vagrant', '~> 0.19'
+  gem 'kitchen-vagrant', '~> 0.20'
 end
 
 group :kitchen_dokken do
