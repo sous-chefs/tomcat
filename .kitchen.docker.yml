@@ -18,15 +18,15 @@ platforms:
   driver:
     image: debian:7
     pid_one_command: /sbin/init
-  run_list:
-  - recipe[apt]
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
 
 - name: debian-8
   driver:
     image: debian:8
     pid_one_command: /bin/systemd
-  run_list:
-  - recipe[apt]
+    intermediate_instructions:
+      - RUN /usr/bin/apt-get update
 
 - name: centos-5
   driver:
@@ -60,8 +60,6 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
-  run_list:
-  - recipe[apt]
 
 - name: ubuntu-14.04
   driver:
@@ -70,8 +68,6 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
-  run_list:
-  - recipe[apt]
 
 - name: ubuntu-16.04
   driver:
@@ -80,8 +76,11 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
-  run_list:
-  - recipe[apt]
+
+- name: opensuse-13.2
+  driver:
+    image: opensuse:13.2
+    pid_one_command: /bin/systemd
 
 suites:
 - name: multi_instance
