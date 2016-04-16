@@ -14,6 +14,13 @@ verifier:
   sudo: false
 
 platforms:
+- name: debian-7
+  driver:
+    image: debian:7
+    pid_one_command: /sbin/init
+  run_list:
+  - recipe[apt]
+
 - name: debian-8
   driver:
     image: debian:8
@@ -39,14 +46,12 @@ platforms:
       - RUN yum -y install net-tools lsof
     pid_one_command: /usr/lib/systemd/systemd
 
-- name: fedora-21
+- name: fedora-23
   driver:
-    image: fedora:21
-    intermediate_instructions:
-    - RUN yum clean all
+    image: fedora:23
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
-      - RUN yum -y install tar
+      - RUN dnf -y install tar yum
 
 - name: ubuntu-12.04
   driver:
@@ -68,9 +73,9 @@ platforms:
   run_list:
   - recipe[apt]
 
-- name: ubuntu-15.10
+- name: ubuntu-16.04
   driver:
-    image: ubuntu:15.10
+    image: ubuntu:16.04
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
