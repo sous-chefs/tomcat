@@ -23,6 +23,7 @@ env:
   - INSTANCE=multi-instance-ubuntu-1204
   - INSTANCE=multi-instance-ubuntu-1404
   - INSTANCE=multi-instance-ubuntu-1604
+  - INSTANCE=multi-instance-opensuse-132
 
 before_script:
   - docker --version
