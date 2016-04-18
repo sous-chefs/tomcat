@@ -35,7 +35,7 @@ action :stop do
   service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :stop
-    only_if { ::File.exist?("/lib/systemd/system/tomcat_#{new_resource.instance_name}.service") }
+    only_if { ::File.exist?("/etc/systemd/system/tomcat_#{new_resource.instance_name}.service") }
   end
 end
 
@@ -48,7 +48,7 @@ action :disable do
   service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :disable
-    only_if { ::File.exist?("/lib/systemd/system/tomcat_#{new_resource.instance_name}.service") }
+    only_if { ::File.exist?("/etc/systemd/system/tomcat_#{new_resource.instance_name}.service") }
   end
 end
 
@@ -56,7 +56,7 @@ action :enable do
   service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :enable
-    only_if { ::File.exist?("/lib/systemd/system/tomcat_#{new_resource.instance_name}.service") }
+    only_if { ::File.exist?("/etc/systemd/system/tomcat_#{new_resource.instance_name}.service") }
   end
 end
 
@@ -64,7 +64,7 @@ action_class.class_eval do
   def create_init
     ensure_catalina_base
 
-    template "/lib/systemd/system/tomcat_#{instance_name}.service" do
+    template "/etc/systemd/system/tomcat_#{instance_name}.service" do
       source 'init_systemd.erb'
       variables(
         instance: new_resource.instance_name,
