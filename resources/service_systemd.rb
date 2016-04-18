@@ -8,6 +8,10 @@ provides :tomcat_service, platform: 'debian' do |node|
   node['platform_version'].to_i >= 8
 end
 
+provides :tomcat_service, platform: 'opensuse' do |node|
+  node['platform_version'].to_f >= 13.0
+end
+
 provides :tomcat_service, platform: 'ubuntu' do |node|
   node['platform_version'].to_f >= 15.10
 end
