@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.1.0 (2016-04-18)
+
+- Added proper systemd support for opensuse 13+
+- Fixed all systemd platforms to use /etc/systemd vs. /lib/systemd for storing unit files
+- Create the init files on the enable action so that you can enable, but not start the service
+
 ## v2.0.5 (2016-04-15)
 
 - Fixed the install resource to properly remove the ROOT app that ships in the tarball when exclude_examples property is set
@@ -34,7 +40,7 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## v2.0.0 (2016-03-02)
 
-COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, and instance provider in favor of the new tomcat_install and tomcat_service resources. Why not just leave them in place? Well unfortunetly they were utterly broken for anything other than the most trivial usage. Rather than continue the user pain we've opted to remove them and point users to a more modern installation method. If you need the legacy installation methods simply pin to the 1.3.0 release.
+COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, and instance provider in favor of the new tomcat_install and tomcat_service resources. Why not just leave them in place? Well unfortunately they were utterly broken for anything other than the most trivial usage. Rather than continue the user pain we've opted to remove them and point users to a more modern installation method. If you need the legacy installation methods simply pin to the 1.3.0 release.
 
 - Add usage documentation for the new resources
 - Add chefspec matchers for the new resources
