@@ -77,13 +77,6 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
 
-- name: opensuse-13.2
-  driver:
-    image: opensuse:13.2
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN zypper --non-interactive refresh
-
 suites:
 - name: multi_instance
   run_list: ["recipe[test::default]"]
