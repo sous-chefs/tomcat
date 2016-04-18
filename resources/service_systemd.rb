@@ -53,6 +53,8 @@ action :disable do
 end
 
 action :enable do
+  create_init
+
   service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :enable
