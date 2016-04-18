@@ -81,6 +81,8 @@ platforms:
   driver:
     image: opensuse:13.2
     pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN zypper refresh
 
 suites:
 - name: multi_instance
