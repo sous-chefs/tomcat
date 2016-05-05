@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.1.1 (2016-05-05)
+
+- Create the tomcat user as a system user
+- Use platform_family instead of platform when defining the resources so we can easily support opensuse leap.
+
 ## v2.1.0 (2016-04-18)
 
 - Added proper systemd support for opensuse 13+
