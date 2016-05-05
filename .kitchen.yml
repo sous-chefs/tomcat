@@ -8,31 +8,22 @@ verifier:
   name: inspec
 
 platforms:
-- name: centos-5.11
-- name: centos-6.7
-- name: centos-7.2
-- name: debian-7.10
-  run_list: apt::default
-- name: debian-8.4
-  run_list: apt::default
-- name: fedora-22
-  run_list: yum::dnf_yum_compat
-- name: fedora-23
-  run_list: yum::dnf_yum_compat
-- name: ubuntu-12.04
-  run_list: apt::default
-- name: ubuntu-14.04
-  run_list: apt::default
-  driver_config:
-    network:
-      - ["forwarded_port", {guest: 8080, host: 8080}]
-      - ["forwarded_port", {guest: 8081, host: 8081}]
-- name: opensuse-13.2
-  driver:
-    box: opensuse-13.2
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_opensuse-13.2-x86_64_chef-provisionerless.box
-  run_list:
-    - recipe[zypper]
+  - name: centos-5.11
+  - name: centos-6.7
+  - name: centos-7.2
+  - name: debian-7.10
+    run_list: apt::default
+  - name: debian-8.4
+    run_list: apt::default
+  - name: fedora-23
+    run_list: yum::dnf_yum_compat
+  - name: ubuntu-12.04
+    run_list: apt::default
+  - name: ubuntu-14.04
+    run_list: apt::default
+  - name: ubuntu-16.04
+    run_list: apt::default
+  - name: opensuse-13.2
 
 suites:
 - name: multi-instance

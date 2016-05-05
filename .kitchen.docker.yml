@@ -10,8 +10,7 @@ provisioner:
   name: dokken
 
 verifier:
-  root_path: '/opt/verifier'
-  sudo: false
+  name: inspec
 
 platforms:
 - name: debian-7
@@ -34,28 +33,27 @@ platforms:
     platform: rhel
     run_command: /sbin/init
     provision_command:
-      - /usr/bin/yum install -y initscripts net-tools wget
+      - /usr/bin/yum install -y initscripts wget
 
 - name: centos-6
   driver:
     image: centos:6
     intermediate_instructions:
-      - RUN yum -y install tar which initscripts
+      - RUN yum -y install which initscripts
 
 - name: centos-7
   driver:
     image: centos:7
-    intermediate_instructions:
-      - RUN yum clean all
-      - RUN yum -y install net-tools lsof
     pid_one_command: /usr/lib/systemd/systemd
+    intermediate_instructions:
+      - RUN yum -y install lsof
 
 - name: fedora-23
   driver:
     image: fedora:23
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
-      - RUN dnf -y install tar yum
+      - RUN dnf -y install yum
 
 - name: ubuntu-12.04
   driver:
@@ -63,7 +61,6 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
 
 - name: ubuntu-14.04
   driver:
@@ -71,7 +68,6 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
 
 - name: ubuntu-16.04
   driver:
@@ -79,7 +75,13 @@ platforms:
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get install apt-transport-https net-tools -y
+
+- name: opensuse-13.2
+  driver:
+    image: opensuse:13.2
+    pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN zypper refresh
 
 suites:
 - name: multi_instance
