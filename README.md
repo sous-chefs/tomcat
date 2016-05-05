@@ -74,7 +74,7 @@ tomcat_service sets up the installed tomcat instance to run using the appropriat
 ```ruby
 tomcat_service 'helloworld' do
   action :start
-  env_vars [{CATALINA_PID => '/my/special/path/tomcat.pid'}]
+  env_vars [{ 'CATALINA_PID' => '/my/special/path/tomcat.pid' }]
 end
 ```
 
