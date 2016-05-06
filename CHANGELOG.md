@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.1.2 (2016-05-06)
+
+- Restore Amazon Linux compatibility
+
 ## v2.1.1 (2016-05-05)
 
 - Create the tomcat user as a system user
