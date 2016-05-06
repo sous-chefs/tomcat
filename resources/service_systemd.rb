@@ -1,6 +1,6 @@
 provides :tomcat_service, platform: 'fedora'
 
-provides :tomcat_service, platform_family: %w(rhel) do |node| # ~FC005
+provides :tomcat_service, platform: %w(redhat centos scientific oracle) do |node| # ~FC005
   node['platform_version'].to_f >= 7.0
 end
 
