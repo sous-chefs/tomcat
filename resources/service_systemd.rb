@@ -8,7 +8,7 @@ provides :tomcat_service, platform: 'debian' do |node|
   node['platform_version'].to_i >= 8
 end
 
-provides :tomcat_service, platform: 'suse' do |node|
+provides :tomcat_service, platform_family: 'suse' do |node|
   node['platform_version'].to_f >= 13.0
 end
 
