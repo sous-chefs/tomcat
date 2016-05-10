@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.1.3 (2016-05-10)
+
+- Fix regression in the service resource on suse
+
 ## v2.1.2 (2016-05-06)
 
 - Restore Amazon Linux compatibility
