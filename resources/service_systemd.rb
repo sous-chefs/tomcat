@@ -30,7 +30,7 @@ action :start do
   service "tomcat_#{new_resource.instance_name}" do
     supports restart: true, status: true
     action :start
-    only_if 'java -version'
+    only_if 'command -v java >/dev/null 2>&1 || exit 1'
   end
 end
 
