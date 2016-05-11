@@ -14,7 +14,6 @@ property :install_path, String
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
-property :user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
 action :start do
   create_init
@@ -38,15 +37,10 @@ action :restart do
   action_start
 end
 
-action :nothing do
-  create_init
-  service "tomcat_#{new_resource.instance_name}" do
-    action :nothing
-  end
-end
-
 action :enable do
-  service "tomcat_#{new_resource.instance_name}" do
+  create_init
+
+  service "tomcat_#{instance_name}" do
     supports status: true
     action :enable
     only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
@@ -97,8 +91,7 @@ action_class.class_eval do
       cookbook 'tomcat'
       variables(
         lock_dir: platform_lock_dir,
-        install_path: derived_install_path,
-        user: new_resource.user
+        install_path: derived_install_path
       )
     end
   end
