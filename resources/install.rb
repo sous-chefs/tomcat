@@ -8,6 +8,8 @@ property :exclude_docs, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_examples, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_manager, kind_of: [TrueClass, FalseClass], default: false
 property :exclude_hostmanager, kind_of: [TrueClass, FalseClass], default: false
+property :tomcat_user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_group, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
 action_class do
   # break apart the version string to find the major version
@@ -93,16 +95,29 @@ action :install do
   # some RHEL systems lack tar in their minimal install
   package 'tar'
 
-  remote_file "apache #{new_resource.version} tarball" do
-    source tarball_uri
-    path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
-    verify { |file| validate_checksum(file) }
+  group new_resource.tomcat_group do
+    action :create
+  end
+
+  user new_resource.tomcat_user do
+    gid new_resource.tomcat_group
+    shell '/bin/nologin'
+    system true
+    action :create
   end
 
   directory 'tomcat install dir' do
     mode '0750'
     path full_install_path
     recursive true
+    owner new_resource.tomcat_user
+    group new_resource.tomcat_group
+  end
+
+  remote_file "apache #{new_resource.version} tarball" do
+    source tarball_uri
+    path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
+    verify { |file| validate_checksum(file) }
   end
 
   execute 'extract tomcat tarball' do
@@ -111,22 +126,11 @@ action :install do
     creates ::File.join(full_install_path, 'LICENSE')
   end
 
-  group "tomcat_#{new_resource.instance_name}" do
-    action :create
-  end
-
-  user "tomcat_#{new_resource.instance_name}" do
-    gid "tomcat_#{new_resource.instance_name}"
-    shell '/bin/nologin'
-    system true
-    action :create
-  end
-
   # make sure the instance's user owns the instance install dir
   execute "chown install dir as tomcat_#{new_resource.instance_name}" do
-    command "chown -R tomcat_#{instance_name}:root #{full_install_path}"
+    command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{full_install_path}"
     action :run
-    not_if { Etc.getpwuid(::File.stat("#{full_install_path}/LICENSE").uid).name == "tomcat_#{new_resource.instance_name}" }
+    not_if { Etc.getpwuid(::File.stat("#{full_install_path}/LICENSE").uid).name == new_resource.tomcat_user }
   end
 
   # create a link that points to the latest version of the instance
