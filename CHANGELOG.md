@@ -2,7 +2,46 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.1.3 (2016-05-10)
+
+- Fix regression in the service resource on suse
+
+## v2.1.2 (2016-05-06)
+
+- Restore Amazon Linux compatibility
+
+## v2.1.1 (2016-05-05)
+
+- Create the tomcat user as a system user
+- Use platform_family instead of platform when defining the resources so we can easily support opensuse leap.
+
+## v2.1.0 (2016-04-18)
+
+- Added proper systemd support for opensuse 13+
+- Fixed all systemd platforms to use /etc/systemd vs. /lib/systemd for storing unit files
+- Create the init files on the enable action so that you can enable, but not start the service
+
+## v2.0.5 (2016-04-15)
+
+- Fixed the install resource to properly remove the ROOT app that ships in the tarball when exclude_examples property is set
+- Add IBM zLinux as a supported platform in the metadata
+
+## v2.0.4 (2016-04-13)
+
+- Fixed a copy / paste mistake in the chefspec matchers
+
+## v2.0.3 (2016-04-01)
+
+- Fix Tomcat 7 installations on systemd not starting by changing the catalina.sh action from start to run
+- Fix bug where Tomcat 7 and Tomcat 8 instances could not be installed on the same host
+- Switch from sha1 to md5 checksums as older Tomcat releases didn't include SHA1 checksums
+- rename sha1_base_path property to checksum_base_path since we're using MD5s now. The existing property name will continue to work for backwards compatibility
+- Add start/stop runlevel header to the init script
+- Reload the systemd unit file if it changes
+- Don't give the tomcat user a valid shell
+
 ## v2.0.2 (2016-03-16)
+
 - Avoid namespace conflicts with other cookbooks that were causing failures. Thanks @alappe and @EdSingleton for providing the information to track this down.
 - Fix a typo that prevented passing environmental directives with systemd. - @nickptrvc
 - Depend on the latest compat_resource to avoid warnings
@@ -14,7 +53,7 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## v2.0.0 (2016-03-02)
 
-COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, and instance provider in favor of the new tomcat_install and tomcat_service resources. Why not just leave them in place? Well unfortunetly they were utterly broken for anything other than the most trivial usage. Rather than continue the user pain we've opted to remove them and point users to a more modern installation method. If you need the legacy installation methods simply pin to the 1.3.0 release.
+COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, and instance provider in favor of the new tomcat_install and tomcat_service resources. Why not just leave them in place? Well unfortunately they were utterly broken for anything other than the most trivial usage. Rather than continue the user pain we've opted to remove them and point users to a more modern installation method. If you need the legacy installation methods simply pin to the 1.3.0 release.
 
 - Add usage documentation for the new resources
 - Add chefspec matchers for the new resources
@@ -34,7 +73,7 @@ COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, 
 - Fixed init scripts trying to use /var/log/tomcat_INSTANCE dir that is no longer created
 - If a custom path is provided the trailing / will be stripped to prevent // in scripts
 - Start action in tomcat_service now starts the service instead of starting / enabling the service
-- Stop and disable actions no longer create the init script first.  Instead they only perform their actions if the init script exists
+- Stop and disable actions no longer create the init script first. Instead they only perform their actions if the init script exists
 
 ## v1.2.0 (2016-02-25)
 
@@ -50,14 +89,14 @@ COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, 
 
 ## v1.1.0 (2016-02-23)
 
-- Included new experimental tomcat_install and tomcat_service custom resource for pulling down any specified tomcat release from the Apache Org site and managing the service.  This allows for running any Tomcat release on any distro (no more packages) and will eventually replace the existing attribute and provider config methods
+- Included new experimental tomcat_install and tomcat_service custom resource for pulling down any specified tomcat release from the Apache Org site and managing the service. This allows for running any Tomcat release on any distro (no more packages) and will eventually replace the existing attribute and provider config methods
 - Added compat_resource as a cookbook dependency for the new custom resources
 - Depend on java cookbook >= 1.36 to allow for OpenJDK 1.8 installs along with many bugfixes
 - Test Kitchen now tests the new providers in Travis CI using kitchen-dokken (docker)
 - Existing test suites have been removed as that functionality will be deprecated in the near future
-- UseConcMarkSweepGC is no longer hard coded in the Tomcat 6 config.  Instead this is part of the JAVAOPTS attribute so it can be overwritten
-- Added uriencoding to the instance provider.  See the readme for details
-- Added new attribute for the ajp listen IP.  See the readme for details
+- UseConcMarkSweepGC is no longer hard coded in the Tomcat 6 config. Instead this is part of the JAVAOPTS attribute so it can be overwritten
+- Added uriencoding to the instance provider. See the readme for details
+- Added new attribute for the ajp listen IP. See the readme for details
 
 ## v1.0.1 (2015-12-01)
 
@@ -207,7 +246,7 @@ COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, 
 ### New Feature
 
 - [COOK-2422]: Support disabling Tomcat auth
-- [COOK-2425]: Add  SSL connector support
+- [COOK-2425]: Add SSL connector support
 - [COOK-2533]: Ability to set loglevel
 - [COOK-2736]: Add CATALINA_OPTS for Tomcat start/run options
 

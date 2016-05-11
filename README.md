@@ -9,7 +9,7 @@ Provides resources for installing Tomcat and managing the Tomcat service for use
 ### Platforms
 
 - Debian / Ubuntu derivatives
-- RHEL derivatives
+- RHEL and derivatives
 - Fedora
 - openSUSE / SUSE Linux Enterprises
 
@@ -36,7 +36,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `version`: The version to install. Default: 8.0.32
 - `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
 - `tarball_base_path`: The base path to the apache mirror containing the tarballs. Default: '<http://archive.apache.org/dist/tomcat/>'
-- `sha1_base_path`: The base path to the apache mirror containing the sha1 file. Default: '<http://archive.apache.org/dist/tomcat/>'
+- `checksum_base_path`: The base path to the apache mirror containing the md5 file. Default: '<http://archive.apache.org/dist/tomcat/>'
 - `exclude_docs`: Exclude ./webapps/docs from installation. Default true.
 - `exclude_examples`: Exclude ./webapps/examples from installation. Default true.
 - `exclude_manager`: Exclude ./webapps/manager from installation. Default: false.
@@ -74,7 +74,7 @@ tomcat_service sets up the installed tomcat instance to run using the appropriat
 ```ruby
 tomcat_service 'helloworld' do
   action :start
-  env_vars [{CATALINA_PID => '/my/special/path/tomcat.pid'}]
+  env_vars [{ 'CATALINA_PID' => '/my/special/path/tomcat.pid' }]
 end
 ```
 

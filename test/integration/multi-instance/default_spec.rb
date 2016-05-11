@@ -3,7 +3,7 @@ describe file('/opt/tomcat_helloworld_8_0_32/LICENSE') do
   it { should be_owned_by 'tomcat_helloworld' }
 end
 
-describe file('/opt/special/tomcat_docs_8_0_32/LICENSE') do
+describe file('/opt/special/tomcat_docs_7_0_42/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'tomcat_docs' }
 end
