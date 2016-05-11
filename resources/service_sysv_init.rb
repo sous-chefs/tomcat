@@ -41,7 +41,7 @@ end
 action :enable do
   create_init
 
-  service "tomcat_#{instance_name}" do
+  service "tomcat_#{new_resource.instance_name}" do
     supports status: true
     action :enable
     only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
