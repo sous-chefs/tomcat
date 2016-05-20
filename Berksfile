@@ -9,4 +9,3 @@ group :integration do
   cookbook 'java', '>= 1.36'
 end
 
-cookbook 'test', path: 'test/cookbooks/test'
