@@ -2,7 +2,7 @@
 # Cookbook Name:: tomcat
 # Library:: matchers
 #
-# Author:: Tim Smith (<tim@chef.io>)
+# Author:: Tim Smith (<tsmith@chef.io>)
 #
 # Copyright 2016, Chef Software, Inc.
 #
