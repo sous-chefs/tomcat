@@ -8,6 +8,7 @@ property :exclude_docs, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_examples, kind_of: [TrueClass, FalseClass], default: true
 property :exclude_manager, kind_of: [TrueClass, FalseClass], default: false
 property :exclude_hostmanager, kind_of: [TrueClass, FalseClass], default: false
+property :tarball_uri, String
 
 action_class do
   # break apart the version string to find the major version
@@ -48,8 +49,11 @@ action_class do
   def fetch_checksum
     # preserve the legacy name of sha1_base_path
     new_resource.checksum_base_path = new_resource.sha1_base_path if new_resource.sha1_base_path
-
-    uri = URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+    uri = if new_resource.tarball_uri.nil?
+            URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+          else
+            URI("#{new_resource.tarball_uri}.md5")
+    end
     request = Net::HTTP.new(uri.host, uri.port)
     response = request.get(uri)
     if response.code != '200'
@@ -80,16 +84,19 @@ action_class do
   # build the complete tarball URI and handle basepath with/without trailing /
   def tarball_uri
     uri = ''
-    uri << new_resource.tarball_base_path
-    uri << '/' unless uri[-1] == '/'
-    uri << "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz"
+    if new_resource.tarball_uri.nil?
+      uri << new_resource.tarball_base_path
+      uri << '/' unless uri[-1] == '/'
+      uri << "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz"
+    else
+      uri << new_resource.tarball_uri
+    end
     uri
   end
 end
 
 action :install do
   validate_version
-
   # some RHEL systems lack tar in their minimal install
   package 'tar'
 
