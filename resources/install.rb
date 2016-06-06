@@ -53,7 +53,7 @@ action_class do
             URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
           else
             URI("#{new_resource.tarball_uri}.md5")
-    end
+          end
     request = Net::HTTP.new(uri.host, uri.port)
     response = request.get(uri)
     if response.code != '200'

@@ -9,11 +9,11 @@ describe file('/opt/special/tomcat_docs_7_0_42/LICENSE') do
 end
 
 describe command('curl http://localhost:8081/sample/') do
-  its('stdout') { should match /Hello, World/ }
+  its('stdout') { should match(/Hello, World/) }
 end
 
 describe command('curl http://localhost:8080/') do
-  its('stdout') { should match /successfully installed Tomcat/ }
+  its('stdout') { should match(/successfully installed Tomcat/) }
 end
 
 %w(tomcat_helloworld tomcat_docs).each do |service_name|
