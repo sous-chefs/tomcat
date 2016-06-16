@@ -8,7 +8,7 @@ version          '2.1.3'
 
 depends 'compat_resource', '>= 12.10'
 
-%w(ubuntu debian redhat centos suse opensuse scientific oracle amazon zlinux).each do |os|
+%w(ubuntu debian redhat centos suse opensuse opensuseleap scientific oracle amazon zlinux).each do |os|
   supports os
 end
 
