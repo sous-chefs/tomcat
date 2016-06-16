@@ -12,5 +12,5 @@ depends 'compat_resource', '>= 12.10'
   supports os
 end
 
-source_url 'https://github.com/chef-cookbooks/tomcat' if respond_to?(:source_url)
-issues_url 'https://github.com/chef-cookbooks/tomcat/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/chef-cookbooks/tomcat'
+issues_url 'https://github.com/chef-cookbooks/tomcat/issues'
