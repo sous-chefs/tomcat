@@ -9,7 +9,9 @@ addons:
     packages:
       - chefdk
 
-install: echo "skip bundle install"
+branches:
+  only:
+  - master
 
 services: docker
 
@@ -21,10 +23,10 @@ env:
   - INSTANCE=multi-instance-fedora-23
   - INSTANCE=multi-instance-debian-7
   - INSTANCE=multi-instance-debian-8
+  - INSTANCE=multi-instance-opensuse-132
   - INSTANCE=multi-instance-ubuntu-1204
   - INSTANCE=multi-instance-ubuntu-1404
   - INSTANCE=multi-instance-ubuntu-1604
-  - INSTANCE=multi-instance-opensuse-132
 
   fast_finish: true
 
