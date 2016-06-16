@@ -11,6 +11,7 @@ provisioner:
 
 verifier:
   name: inspec
+  format: doc
 
 platforms:
 - name: debian-7
@@ -40,6 +41,7 @@ platforms:
 - name: centos-6
   driver:
     image: centos:6
+    platform: rhel
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN yum -y install which initscripts
@@ -47,6 +49,7 @@ platforms:
 - name: centos-7
   driver:
     image: centos:7
+    platform: rhel
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
       - RUN yum -y install lsof which
@@ -83,8 +86,6 @@ platforms:
   driver:
     image: opensuse:13.2
     pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN zypper refresh
 
 suites:
 - name: multi_instance
