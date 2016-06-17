@@ -1,3 +1,5 @@
+provides :tomcat_service_sysvinit
+
 provides :tomcat_service, platform_family: 'suse'
 provides :tomcat_service, platform: 'amazon'
 

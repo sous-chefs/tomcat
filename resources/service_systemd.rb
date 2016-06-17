@@ -1,3 +1,5 @@
+provides :tomcat_service_systemd
+
 provides :tomcat_service, platform: 'fedora'
 
 provides :tomcat_service, platform: %w(redhat centos scientific oracle) do |node| # ~FC005

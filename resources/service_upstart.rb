@@ -1,3 +1,6 @@
+
+provides :tomcat_service_upstart
+
 provides :tomcat_service, platform: 'ubuntu' do |node|
   node['platform_version'].to_f < 15.10
 end
