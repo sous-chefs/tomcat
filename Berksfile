@@ -7,4 +7,5 @@ group :integration do
   cookbook 'zypper'
   cookbook 'yum'
   cookbook 'java', '>= 1.36'
+  cookbook 'test', path: 'test/cookbooks/test'
 end
