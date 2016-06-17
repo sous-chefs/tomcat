@@ -17,7 +17,6 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=multi-instance-centos-5
   - INSTANCE=multi-instance-centos-6
   - INSTANCE=multi-instance-centos-7
   - INSTANCE=multi-instance-debian-7
