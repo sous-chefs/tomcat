@@ -1,5 +1,5 @@
 property :instance_name, String, name_property: true
-property :version, String, required: true, default: '8.0.32'
+property :version, String, required: true, default: '8.0.36'
 property :install_path, String
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
