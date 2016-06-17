@@ -1,9 +1,9 @@
 # make sure we have java installed
 include_recipe 'java'
 
-# Install Tomcat 8.0.32 to the default location
+# Install Tomcat 8.0.36 to the default location
 tomcat_install 'helloworld' do
-  version '8.0.32'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.36/bin/apache-tomcat-8.0.36.tar.gz'
 end
 
 # Drop off our own server.xml that uses a non-default port setup
