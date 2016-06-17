@@ -20,9 +20,9 @@ env:
   - INSTANCE=multi-instance-centos-5
   - INSTANCE=multi-instance-centos-6
   - INSTANCE=multi-instance-centos-7
-  - INSTANCE=multi-instance-fedora-23
   - INSTANCE=multi-instance-debian-7
   - INSTANCE=multi-instance-debian-8
+  - INSTANCE=multi-instance-fedora-23
   - INSTANCE=multi-instance-opensuse-132
   - INSTANCE=multi-instance-ubuntu-1204
   - INSTANCE=multi-instance-ubuntu-1404

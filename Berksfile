@@ -8,4 +8,3 @@ group :integration do
   cookbook 'yum'
   cookbook 'java', '>= 1.36'
 end
-
