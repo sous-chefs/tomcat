@@ -2,6 +2,17 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.2.0 (2016-06-19)
+
+- Add a new `tarball_uri` property to the install resource to allow specifying an absolute URI for the download tar.gz file.
+- Add new resource name aliases to the individual service resources. This allows calling tomcat_service_systemd, tomcat_service_upstart, or tomcat_service_sysvinit to force the init type you desire
+- Update the default Tomcat version to install to 8.0.36
+- Increase the compat_resource cookbook dependency from 12.9 to 12.10 to resolve odd failures in 12.9
+- Added additional suse platforms to the metadata
+- Removed Chef 11 compatibility code from the metadata file
+- Update test deps to the latest
+- Switched to cookstyle for simplified Ruby linting
+
 ## v2.1.3 (2016-05-10)
 
 - Fix regression in the service resource on suse
