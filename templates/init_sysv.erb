@@ -69,6 +69,11 @@ RETVAL="0"
 # source the env file
 . ${INSTALL_PATH}/bin/setenv.sh
 
+# allow setting SHUTDOWN_WAIT to be set via the setenv file, but use 10s if not
+if [ ! -z  $SHUTDOWN_WAIT ]
+  SHUTDOWN_WAIT=10
+fi
+
 # See how we were called.
 function start() {
 
