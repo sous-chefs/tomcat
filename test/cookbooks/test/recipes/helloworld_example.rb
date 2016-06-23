@@ -26,4 +26,5 @@ end
 tomcat_service 'helloworld' do
   action [:start, :enable]
   env_vars [{ 'CATALINA_PID' => '/opt/tomcat_helloworld/bin/non_standard_location.pid' }, { 'SOMETHING' => 'some_value' }]
+  sensitive true
 end

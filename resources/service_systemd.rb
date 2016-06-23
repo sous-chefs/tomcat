@@ -23,6 +23,7 @@ property :install_path, String
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
+property :sensitive, kind_of: [TrueClass, FalseClass], default: false
 
 action :start do
   create_init
@@ -70,6 +71,7 @@ action_class.class_eval do
 
     template "/etc/systemd/system/tomcat_#{instance_name}.service" do
       source 'init_systemd.erb'
+      sensitive new_resource.sensitive
       variables(
         instance: new_resource.instance_name,
         env_vars: new_resource.env_vars,

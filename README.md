@@ -61,6 +61,7 @@ tomcat_service sets up the installed tomcat instance to run using the appropriat
 
 - `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME
 - `env_vars`: An array of hashes containing the environmental variables for Tomcat's setenv.sh script. Note: If CATALINA_BASE is not passed it will automatically be added as the first item in the array. Default: [ {'CATALINA_BASE' => '/opt/INSTANCE_NAME/'}, {'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid'} ]
+- `sensitive`: Excludes diffs that may expose ENV values from the chef-client logs. Default: false
 
 #### actions
 
