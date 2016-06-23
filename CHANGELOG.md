@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.2.2 (2016-06-23)
+
+- Allow excluding ENV values from logs by setting `sensitive` property on the tomcat_service resource
+
 ## v2.2.1 (2016-06-22)
 
 - Fix restarts on init systems
