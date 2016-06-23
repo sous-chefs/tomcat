@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.2.1 (2016-06-22)
+
+- Fix restarts on init systems
+- Allow setting SHUTDOWN_WAIT time in the ENV file
+- Add Chef 12 requirement to the metadata
+
 ## v2.2.0 (2016-06-19)
 
 - Add a new `tarball_uri` property to the install resource to allow specifying an absolute URI for the download tar.gz file.
