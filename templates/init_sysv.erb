@@ -48,9 +48,6 @@ else
     SU="/bin/su -s /bin/sh"
 fi
 
-# Define which connector port to use
-CONNECTOR_PORT="${CONNECTOR_PORT:-8080}"
-
 # Path to the tomcat launch script
 TOMCAT_SCRIPT="${INSTALL_PATH}/bin/catalina.sh"
 
@@ -70,7 +67,7 @@ RETVAL="0"
 . ${INSTALL_PATH}/bin/setenv.sh
 
 # allow setting SHUTDOWN_WAIT to be set via the setenv file, but use 10s if not
-if [ ! -z  $SHUTDOWN_WAIT ]
+if [ ! -z  $SHUTDOWN_WAIT ]; then
   SHUTDOWN_WAIT=10
 fi
 
