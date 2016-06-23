@@ -15,6 +15,7 @@ Environment="<%= k -%>=<%= v %>"
 
 ExecStart=<%= @install_path %>/bin/catalina.sh run
 ExecStop=<%= @install_path %>/bin/catalina.sh stop
+Restart=on-failure
 
 User=tomcat_<%= @instance %>
 Group=tomcat_<%= @instance %>
