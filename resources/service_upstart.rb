@@ -66,7 +66,7 @@ action_class.class_eval do
     template "/etc/init/tomcat_#{new_resource.instance_name}.conf" do
       source 'init_upstart.erb'
       sensitive new_resource.sensitive
-      notifies :restart, "service[tomcat_#{new_resource.instance_name}]", :immediately
+      notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
       variables(
         instance: new_resource.instance_name,
         env_vars: new_resource.env_vars,
