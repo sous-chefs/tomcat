@@ -78,7 +78,7 @@ action_class.class_eval do
     )
 
     # the init script will not run without redhat-lsb packages
-    if platform_family?('rhel')
+    if platform_family?('rhel','fedora')
       if node['platform_version'].to_i < 6.0
         package 'redhat-lsb'
       else
