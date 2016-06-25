@@ -103,7 +103,8 @@ action_class.class_eval do
       cookbook 'tomcat'
       variables(
         lock_dir: platform_lock_dir,
-        install_path: derived_install_path
+        install_path: derived_install_path,
+        instance_name: new_resource.instance_name
       )
     end
   end
