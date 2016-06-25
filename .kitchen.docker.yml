@@ -86,6 +86,8 @@ platforms:
   driver:
     image: opensuse:13.2
     pid_one_command: /bin/systemd
+    intermediate_instructions:
+      - RUN zypper --non-interactive install aaa_base
 
 suites:
 - name: multi_instance
