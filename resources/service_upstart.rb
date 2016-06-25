@@ -16,6 +16,7 @@ action :start do
   create_init
 
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Upstart
     supports restart: true, status: true
     action :start
   end
@@ -23,6 +24,7 @@ end
 
 action :stop do
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Upstart
     supports status: true
     action :stop
     only_if { ::File.exist?("/etc/init/tomcat_#{new_resource.instance_name}.conf") }
@@ -30,14 +32,18 @@ action :stop do
 end
 
 action :restart do
-  action_stop
-  action_start
+  service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Upstart
+    supports restart: true, status: true
+    action :restart
+  end
 end
 
 action :enable do
   create_init
 
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Upstart
     supports status: true
     action :enable
     only_if { ::File.exist?("/etc/init/tomcat_#{new_resource.instance_name}.conf") }
@@ -46,6 +52,7 @@ end
 
 action :disable do
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Upstart
     supports status: true
     action :disable
     only_if { ::File.exist?("/etc/init/tomcat_#{new_resource.instance_name}.conf") }
@@ -59,6 +66,7 @@ action_class.class_eval do
     template "/etc/init/tomcat_#{new_resource.instance_name}.conf" do
       source 'init_upstart.erb'
       sensitive new_resource.sensitive
+      notifies :restart, "service[tomcat_#{new_resource.instance_name}]", :immediately
       variables(
         instance: new_resource.instance_name,
         env_vars: new_resource.env_vars,

@@ -29,6 +29,7 @@ action :start do
   create_init
 
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Systemd
     supports restart: true, status: true
     action :start
   end
@@ -36,6 +37,7 @@ end
 
 action :stop do
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Systemd
     supports status: true
     action :stop
     only_if { ::File.exist?("/etc/systemd/system/tomcat_#{new_resource.instance_name}.service") }
@@ -43,12 +45,16 @@ action :stop do
 end
 
 action :restart do
-  action_stop
-  action_start
+  service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Systemd
+    supports status: true
+    action :restart
+  end
 end
 
 action :disable do
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Systemd
     supports status: true
     action :disable
     only_if { ::File.exist?("/etc/systemd/system/tomcat_#{new_resource.instance_name}.service") }
@@ -59,6 +65,7 @@ action :enable do
   create_init
 
   service "tomcat_#{new_resource.instance_name}" do
+    provider Chef::Provider::Service::Systemd
     supports status: true
     action :enable
     only_if { ::File.exist?("/etc/systemd/system/tomcat_#{new_resource.instance_name}.service") }
@@ -82,6 +89,7 @@ action_class.class_eval do
       group 'root'
       mode '0644'
       notifies :run, 'execute[Load systemd unit file]', :immediately
+      notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
     end
 
     execute 'Load systemd unit file' do
