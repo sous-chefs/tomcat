@@ -67,7 +67,7 @@ RETVAL="0"
 . ${INSTALL_PATH}/bin/setenv.sh
 
 # allow setting SHUTDOWN_WAIT to be set via the setenv file, but use 10s if not
-if [ ! -z  $SHUTDOWN_WAIT ]; then
+if [ -z  "$SHUTDOWN_WAIT" ]; then
   SHUTDOWN_WAIT=10
 fi
 
