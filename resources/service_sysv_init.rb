@@ -22,6 +22,7 @@ action :start do
   create_init
 
   service "tomcat_#{new_resource.instance_name}" do
+    provider platform_sysv_init_class
     supports restart: true, status: true
     action :start
   end
@@ -29,6 +30,7 @@ end
 
 action :stop do
   service "tomcat_#{new_resource.instance_name}" do
+    provider platform_sysv_init_class
     supports status: true
     action :stop
     only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
@@ -36,14 +38,18 @@ action :stop do
 end
 
 action :restart do
-  action_stop
-  action_start
+  service "tomcat_#{new_resource.instance_name}" do
+    provider platform_sysv_init_class
+    supports status: true
+    action :restart
+  end
 end
 
 action :enable do
   create_init
 
   service "tomcat_#{instance_name}" do
+    provider platform_sysv_init_class
     supports status: true
     action :enable
     only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
@@ -52,6 +58,7 @@ end
 
 action :disable do
   service "tomcat_#{new_resource.instance_name}" do
+    provider platform_sysv_init_class
     supports status: true
     action :disable
     only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
@@ -71,7 +78,7 @@ action_class.class_eval do
     )
 
     # the init script will not run without redhat-lsb packages
-    if platform_family?('rhel')
+    if platform_family?('rhel', 'fedora')
       if node['platform_version'].to_i < 6.0
         package 'redhat-lsb'
       else
@@ -84,6 +91,7 @@ action_class.class_eval do
       mode '0755'
       cookbook 'tomcat'
       sensitive new_resource.sensitive
+      notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
       variables(
         env_vars: new_resource.env_vars
       )
@@ -95,7 +103,8 @@ action_class.class_eval do
       cookbook 'tomcat'
       variables(
         lock_dir: platform_lock_dir,
-        install_path: derived_install_path
+        install_path: derived_install_path,
+        instance_name: new_resource.instance_name
       )
     end
   end

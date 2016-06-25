@@ -5,7 +5,7 @@
 # chkconfig: - 80 20
 #
 ### BEGIN INIT INFO
-# Provides: tomcat
+# Provides: tomcat_<%= @instance_name %>
 # Required-Start: $network $syslog
 # Required-Stop: $network $syslog
 # Default-Start:       2 3 4 5
@@ -32,7 +32,7 @@ fi
 DISTRIB_ID=`lsb_release -i -s 2>/dev/null`
 
 NAME="$(basename $0)"
-INSTALL_PATH="<%= @install_path -%>"
+INSTALL_PATH="<%= @install_path %>"
 LOCK_DIR="<%= @lock_dir %>"
 
 unset ISBOOT
@@ -67,7 +67,7 @@ RETVAL="0"
 . ${INSTALL_PATH}/bin/setenv.sh
 
 # allow setting SHUTDOWN_WAIT to be set via the setenv file, but use 10s if not
-if [ ! -z  $SHUTDOWN_WAIT ]; then
+if [ -z  "$SHUTDOWN_WAIT" ]; then
   SHUTDOWN_WAIT=10
 fi
 
