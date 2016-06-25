@@ -2,6 +2,15 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.2.3 (2016-06-25)
+
+- Fixed the sys-v init scripts to have a unique "provides" line, which was causing problems on Debian 7
+- Fixed specifying the specific tomat_service resource in order to use non system default init systems (ex: sys-v on a systemd system)
+- Fixed restart actions to properly pass restart instead of stop and then start
+- The Tomcat services are now restarted when the ENV values are updated
+- Use tomcat_service_sysvinit now works on fedora
+- Passing the SHUTDOWN_WAIT ENV value now works correctly
+
 ## v2.2.2 (2016-06-23)
 
 - Allow excluding ENV values from logs by setting `sensitive` property on the tomcat_service resource
