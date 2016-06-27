@@ -6,8 +6,8 @@ description "Tomcat Server <%= @instance -%>"
   respawn
   respawn limit 10 5
 
-  setuid tomcat_<%= @instance %>
-  setgid tomcat_<%= @instance %>
+  setuid <%= @user %>
+  setgid <%= @group %>
 
   <% @env_vars.each do |h| -%>
     <% h.each_pair do |k,v| -%>

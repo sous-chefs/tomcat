@@ -13,6 +13,7 @@ end
 
 property :instance_name, String, name_property: true
 property :install_path, String
+property :tomcat_user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
@@ -48,7 +49,7 @@ end
 action :enable do
   create_init
 
-  service "tomcat_#{instance_name}" do
+  service "tomcat_#{new_resource.instance_name}" do
     provider platform_sysv_init_class
     supports status: true
     action :enable
@@ -102,6 +103,7 @@ action_class.class_eval do
       source 'init_sysv.erb'
       cookbook 'tomcat'
       variables(
+        user: new_resource.tomcat_user,
         lock_dir: platform_lock_dir,
         install_path: derived_install_path,
         instance_name: new_resource.instance_name

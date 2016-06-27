@@ -17,8 +17,8 @@ ExecStart=<%= @install_path %>/bin/catalina.sh run
 ExecStop=<%= @install_path %>/bin/catalina.sh stop
 Restart=on-failure
 
-User=tomcat_<%= @instance %>
-Group=tomcat_<%= @instance %>
+User=<%= @user %>
+Group=<%= @group %>
 
 [Install]
 WantedBy=multi-user.target

@@ -7,6 +7,8 @@ end
 
 property :instance_name, String, name_property: true
 property :install_path, String
+property :tomcat_user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_group, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
@@ -68,6 +70,8 @@ action_class.class_eval do
       sensitive new_resource.sensitive
       notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
       variables(
+        user: new_resource.tomcat_user,
+        group: new_resource.tomcat_group,
         instance: new_resource.instance_name,
         env_vars: new_resource.env_vars,
         install_path: derived_install_path
