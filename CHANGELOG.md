@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.3.0 (2016-06-27)
+
+- Allow specifying the tomcat user/group in the tomcat_install and tomcat_service resources instead of using the automatically generated values
+
 ## v2.2.3 (2016-06-25)
 
 - Fixed the sys-v init scripts to have a unique "provides" line, which was causing problems on Debian 7
