@@ -18,7 +18,7 @@ cookbook_file '/opt/tomcat_helloworld/conf/server.xml' do
 end
 
 remote_file '/opt/tomcat_helloworld/webapps/sample.war' do
-  owner 'tomcat_helloworld'
+  owner 'cool_user'
   mode '0644'
   source 'https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war'
   checksum '89b33caa5bf4cfd235f060c396cb1a5acb2734a1366db325676f48c5f5ed92e5'
