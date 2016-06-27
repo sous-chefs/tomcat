@@ -24,7 +24,7 @@ env:
   - INSTANCE=multi-instance-centos-7
   - INSTANCE=multi-instance-debian-7
   - INSTANCE=multi-instance-debian-8
-  - INSTANCE=multi-instance-fedora-23
+  - INSTANCE=multi-instance-fedora-latest
   - INSTANCE=multi-instance-opensuse-132
   - INSTANCE=multi-instance-opensuse-421
   - INSTANCE=multi-instance-ubuntu-1204
