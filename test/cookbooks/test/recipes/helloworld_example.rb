@@ -4,6 +4,8 @@ include_recipe 'java'
 # Install Tomcat 8.0.36 to the default location
 tomcat_install 'helloworld' do
   tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.36/bin/apache-tomcat-8.0.36.tar.gz'
+  tomcat_user 'cool_user'
+  tomcat_group 'cool_group'
 end
 
 # Drop off our own server.xml that uses a non-default port setup
@@ -27,4 +29,6 @@ tomcat_service 'helloworld' do
   action [:start, :enable]
   env_vars [{ 'CATALINA_PID' => '/opt/tomcat_helloworld/bin/non_standard_location.pid' }, { 'SOMETHING' => 'some_value' }]
   sensitive true
+  tomcat_user 'cool_user'
+  tomcat_group 'cool_group'
 end
