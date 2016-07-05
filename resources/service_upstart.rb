@@ -34,11 +34,11 @@ action :stop do
 end
 
 action :restart do
-  service "tomcat_#{new_resource.instance_name}" do
-    provider Chef::Provider::Service::Upstart
-    supports restart: true, status: true
-    action :restart
-  end
+  # do a stop and then start because the restart action in Upstart
+  # doesn't actually reload the upstart service definition, which we
+  # need since we shove config-ish things in there
+  action_stop
+  action_start
 end
 
 action :enable do
