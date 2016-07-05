@@ -54,8 +54,9 @@ TOMCAT_SCRIPT="${INSTALL_PATH}/bin/catalina.sh"
 # Tomcat program name
 TOMCAT_PROG="${NAME}"
 
-# Define the tomcat username
+# Define the tomcat username / group
 TOMCAT_USER="<%= @user %>"
+TOMCAT_GROUP="<%= @group %>"
 
 # Define the tomcat log file
 TOMCAT_LOG="${INSTALL_PATH}/logs/catalina.out"
@@ -92,7 +93,7 @@ function start() {
     fi
     # fix permissions on the log and pid files
     if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
-      chown ${TOMCAT_USER}:${TOMCAT_USER} $CATALINA_PID
+      chown ${TOMCAT_USER}:${TOMCAT_GROUP} $CATALINA_PID > /dev/null 2>&1 || true
     fi
     [ "$RETVAL" -eq "0" ] && touch $TOMCAT_LOG 2>&1 || RETVAL="4"
     if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
@@ -161,7 +162,7 @@ function status()
       if [ "$RETVAL" -eq "2" ]; then
          log_failure_msg "${NAME} lockfile exists but process is not running"
       else
-         pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_USER} java)"
+         pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} java)"
          if [ -z "$pid" ]; then
              log_success_msg "${NAME} is stopped"
              RETVAL="3"
@@ -176,7 +177,7 @@ function status()
 function checklockfile()
 {
    if [ -f ${LOCK_DIR}/${NAME} ]; then
-      pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_USER} java)"
+      pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} java)"
 # The lockfile exists but the process is not running
       if [ -z "$pid" ]; then
          RETVAL="2"

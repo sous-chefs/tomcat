@@ -105,6 +105,7 @@ action_class.class_eval do
       cookbook 'tomcat'
       variables(
         user: new_resource.tomcat_user,
+        group: new_resource.tomcat_group,
         lock_dir: platform_lock_dir,
         install_path: derived_install_path,
         instance_name: new_resource.instance_name
