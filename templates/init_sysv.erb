@@ -91,7 +91,6 @@ function start() {
         fi
     fi
     # fix permissions on the log and pid files
-    touch $CATALINA_PID 2>&1 || RETVAL="4"
     if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
       chown ${TOMCAT_USER}:${TOMCAT_USER} $CATALINA_PID
     fi
