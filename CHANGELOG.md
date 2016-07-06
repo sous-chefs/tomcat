@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## v2.3.1 (2016-07-05)
+
+- Fix specifying user/group on init based installs
+- Fix upstart to properly reload the config when restarting
+- Avoid exit status 4 errors when restarting on init based systems
+- Support pulling the tomcat tarball from https based mirrors
+
 ## v2.3.0 (2016-06-27)
 
 - Allow specifying the tomcat user/group in the tomcat_install and tomcat_service resources instead of using the automatically generated values
