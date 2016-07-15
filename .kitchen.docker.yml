@@ -98,4 +98,5 @@ platforms:
 
 suites:
 - name: multi_instance
-  run_list: ["recipe[test::default]"]
+  run_list:
+  - recipe[test]
