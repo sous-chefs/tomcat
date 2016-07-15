@@ -1,6 +1,6 @@
 property :instance_name, String, name_property: true
-property :version, String, required: true, default: '8.0.36'
 property :install_path, String
+property :version, String, default: '8.0.36'
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :sha1_base_path, String # this is the legacy name for this attribute
