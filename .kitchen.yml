@@ -27,5 +27,5 @@ platforms:
     run_list: apt::default
 
 suites:
-- name: multi-instance
+- name: multi_instance
   run_list: ["recipe[test::default]"]
