@@ -37,7 +37,7 @@ begin
   desc 'Run ChefSpec examples'
   RSpec::Core::RakeTask.new(:spec)
 rescue LoadError => e
-    puts ">>> Gem load error: #{e}, omitting spec" unless ENV['CI']
+  puts ">>> Gem load error: #{e}, omitting spec" unless ENV['CI']
 end
 
 # Integration tests. Kitchen.ci
