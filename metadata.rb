@@ -15,4 +15,4 @@ end
 source_url 'https://github.com/chef-cookbooks/tomcat'
 issues_url 'https://github.com/chef-cookbooks/tomcat/issues'
 
-chef_version '>= 12.0' if respond_to?(:chef_version)
+chef_version '>= 12.1' if respond_to?(:chef_version)
