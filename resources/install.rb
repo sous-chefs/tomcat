@@ -105,7 +105,7 @@ action :install do
 
   user new_resource.tomcat_user do
     gid new_resource.tomcat_group
-    shell '/bin/nologin'
+    shell '/bin/false'
     system true
     action :create
   end
