@@ -30,6 +30,10 @@ end
   end
 end
 
+describe etc_group.where(name: 'cool_group') do
+  its('users') { should include 'chefed' }
+end
+
 # inspec tries to check the service status using systemd
 # we need to manually check the process exists
 describe command('ps ax | grep tomcat_doc[s]') do

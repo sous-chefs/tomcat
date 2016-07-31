@@ -101,6 +101,7 @@ action :install do
 
   group new_resource.tomcat_group do
     action :create
+    append true
   end
 
   user new_resource.tomcat_user do

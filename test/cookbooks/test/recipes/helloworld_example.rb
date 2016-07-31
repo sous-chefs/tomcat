@@ -1,6 +1,13 @@
 # make sure we have java installed
 include_recipe 'java'
 
+user 'chefed'
+
+# put chefed in the group so we can make sure we don't remove it by managing cool_group
+group 'cool_group' do
+  members 'chefed'
+end
+
 # Install Tomcat 8.0.36 to the default location
 tomcat_install 'helloworld' do
   tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.36/bin/apache-tomcat-8.0.36.tar.gz'
