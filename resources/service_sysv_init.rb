@@ -72,6 +72,9 @@ action_class.class_eval do
     # set the CATALINA_BASE value unless the user has passed it
     ensure_catalina_base
 
+    # suse is missing libraries we need for sys-v
+    package 'perl-Getopt-Long-Descriptive' if platform_family?('suse')
+
     # define the lock dir for RHEL vs. debian
     platform_lock_dir = value_for_platform_family(
       %w(rhel fedora suse) => '/var/lock/subsys',
