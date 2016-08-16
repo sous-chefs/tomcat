@@ -6,6 +6,7 @@ user 'chefed'
 # put chefed in the group so we can make sure we don't remove it by managing cool_group
 group 'cool_group' do
   members 'chefed'
+  action :create
 end
 
 # Install Tomcat 8.0.36 to the default location
