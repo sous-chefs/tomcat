@@ -45,7 +45,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 
 #### example
 
-Install an Tomcat 8.0.36 instance named 'helloworld' to /opt/tomcat_helloworld_8_0_32/ with a symlink at /opt/tomcat_helloworld/
+Install an Tomcat 8.0.36 instance named 'helloworld' to /opt/tomcat_helloworld_8_0_36/ with a symlink at /opt/tomcat_helloworld/
 
 ```ruby
 tomcat_install 'helloworld' do
