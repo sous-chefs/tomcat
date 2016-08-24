@@ -3,6 +3,7 @@ driver:
 
 provisioner:
   name: chef_zero
+  chef_omnibus_install_options: '-c current'
 
 verifier:
   name: inspec
@@ -16,7 +17,7 @@ platforms:
   - name: fedora-24
     run_list: yum::dnf_yum_compat
   - name: opensuse-13.2
-  - name: opensuse-42.1
+  - name: opensuse-leap-42.1
   - name: ubuntu-12.04
   - name: ubuntu-14.04
   - name: ubuntu-16.04
