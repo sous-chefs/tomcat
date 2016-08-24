@@ -2,6 +2,22 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 2.3.2 (2016-08-24)
+
+- Use /bin/false as the shell for the service user
+- Don't remove existing users from groups
+- Wait 2 seconds before trying to restart the service again with systemd
+- Install perl-Getopt-Long-Descriptive on suse systems using the sys-v provider
+- Version is not a required attribute in tomcat_install since we have a default
+- Lazily eval the install_path vs. helper method to reduce some code complexity in the custom resources
+- Use improved Rakefile with better failing + supermarket task. Switch Travis to test via Rake as well
+- Use the new built in formatter in inspec instead of the docs formatter
+- Update the Kitchen config to test on updated platforms and to use the current chef release vs. stable so we pull in Chef 12.14 which fixes user/group issues on opensuse 13.X
+- Clarify that we require Chef 12.1 not 12.0
+- Fix bad platform setting in the Chefspecs
+- Reduce noisy warnings during Chefspec runs
+- Fix inspec tests to pass
+
 ## v2.3.1 (2016-07-05)
 
 - Fix specifying user/group on init based installs
