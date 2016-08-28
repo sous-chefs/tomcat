@@ -1,7 +1,11 @@
-describe file('/opt/tomcat_helloworld_8_0_36/LICENSE') do
+describe file('/opt/custom/tomcat_helloworld_8_0_36/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
+end
+
+describe file('/opt/custom/tomcat_helloworld') do
+  it { should be_symlink }
 end
 
 describe file('/opt/special/tomcat_docs_7_0_42/LICENSE') do

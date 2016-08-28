@@ -14,6 +14,7 @@ tomcat_install 'helloworld' do
   tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.36/bin/apache-tomcat-8.0.36.tar.gz'
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
+  base_install_path '/opt/custom'
 end
 
 # Drop off our own server.xml that uses a non-default port setup

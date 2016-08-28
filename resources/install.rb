@@ -1,6 +1,7 @@
 property :instance_name, String, name_property: true
 property :version, String, default: '8.0.36'
-property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
+property :base_install_path, String, default: '/opt'
+property :install_path, String, default: lazy { |r| ::File.join(r.base_install_path, "tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/") }
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :sha1_base_path, String # this is the legacy name for this attribute
@@ -139,7 +140,7 @@ action :install do
   end
 
   # create a link that points to the latest version of the instance
-  link "/opt/tomcat_#{new_resource.instance_name}" do
+  link ::File.join(new_resource.base_install_path, "tomcat_#{new_resource.instance_name}") do
     to new_resource.install_path
   end
 end
