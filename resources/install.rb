@@ -4,13 +4,13 @@ property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_na
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :sha1_base_path, String # this is the legacy name for this attribute
-property :exclude_docs, kind_of: [TrueClass, FalseClass], default: true
-property :exclude_examples, kind_of: [TrueClass, FalseClass], default: true
-property :exclude_manager, kind_of: [TrueClass, FalseClass], default: false
-property :exclude_hostmanager, kind_of: [TrueClass, FalseClass], default: false
+property :exclude_docs, [true, false], default: true
+property :exclude_examples, [true, false], default: true
+property :exclude_manager, [true, false], default: false
+property :exclude_hostmanager, [true, false], default: false
 property :tarball_uri, String
-property :tomcat_user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
-property :tomcat_group, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
 action_class do
   # break apart the version string to find the major version

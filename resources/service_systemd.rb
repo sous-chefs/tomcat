@@ -20,12 +20,12 @@ end
 
 property :instance_name, String, name_property: true
 property :install_path, String
-property :tomcat_user, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
-property :tomcat_group, kind_of: String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
 ]
-property :sensitive, kind_of: [TrueClass, FalseClass], default: false
+property :sensitive, [true, false], default: false
 
 action :start do
   create_init
