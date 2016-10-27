@@ -6,7 +6,7 @@ Provides resources for installing Tomcat and managing the Tomcat service for use
 
 ## Requirements
 
-### Platforms
+### Platformssss
 
 - Debian / Ubuntu derivatives
 - RHEL and derivatives
