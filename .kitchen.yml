@@ -3,7 +3,6 @@ driver:
 
 provisioner:
   name: chef_zero
-  chef_omnibus_install_options: '-c current'
 
 verifier:
   name: inspec
