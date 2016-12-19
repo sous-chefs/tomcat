@@ -43,5 +43,5 @@ module Tomcat
   end
 end
 
-Chef::Resource.send(:include, Homebrew::Mixin)
-Chef::Recipe.send(:include, Homebrew::Mixin)
+Chef::Resource.send(:include, Tomcat::Mixin)
+Chef::Recipe.send(:include, Tomcat::Mixin)
