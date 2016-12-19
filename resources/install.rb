@@ -31,10 +31,9 @@ action_class do
 
   # ensure the version is X.Y.Z format
   def validate_version
-    unless new_resource.version =~ /\d+.\d+.\d+/
-      Chef::Log.fatal("The version must be in X.Y.Z format. Passed value: #{new_resource.version}")
-      raise
-    end
+    return if new_resource.version =~ /\d+.\d+.\d+/
+    Chef::Log.fatal("The version must be in X.Y.Z format. Passed value: #{new_resource.version}")
+    raise
   end
 
   # fetch the md5 checksum from the mirrors
