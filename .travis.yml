@@ -26,7 +26,7 @@ env:
   - INSTANCE=multi-instance-debian-8
   - INSTANCE=multi-instance-fedora-latest
   - INSTANCE=multi-instance-opensuse-132
-  - INSTANCE=multi-instance-opensuse-421
+  - INSTANCE=multi-instance-opensuse-leap
   - INSTANCE=multi-instance-ubuntu-1204
   - INSTANCE=multi-instance-ubuntu-1404
   - INSTANCE=multi-instance-ubuntu-1604
