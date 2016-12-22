@@ -43,5 +43,4 @@ module Tomcat
   end
 end
 
-Chef::Resource.send(:include, Tomcat::Mixin)
-Chef::Recipe.send(:include, Tomcat::Mixin)
+Chef::DSL::Recipe.send(:include, Tomcat::Mixin)
