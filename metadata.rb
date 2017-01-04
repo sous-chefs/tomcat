@@ -6,7 +6,7 @@ description      'Installs Apache Tomcat and manages the service'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '2.3.4'
 
-depends 'compat_resource', '>= 12.16'
+depends 'compat_resource', '>= 12.16.3'
 
 %w(ubuntu debian redhat centos suse opensuse opensuseleap scientific oracle amazon zlinux).each do |os|
   supports os
