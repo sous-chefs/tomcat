@@ -37,20 +37,25 @@ action_class do
     end
   end
 
+  # create a uri object based on properties and specified file or http scheme
+  def create_uri
+    if new_resource.tarball_uri.nil?
+      unless new_resource.tarball_base_path.start_with?('file')
+        URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+      else
+        URI.join(new_resource.checksum_base_path, "apache-tomcat-#{new_resource.version}.tar.gz.md5")
+      end
+    else
+      URI("#{new_resource.tarball_uri}.md5")
+    end
+  end
+
   # fetch the md5 checksum from the mirrors
   # we have to do this since the md5 chef expects isn't hosted
   def fetch_checksum
     # preserve the legacy name of sha1_base_path
     new_resource.checksum_base_path = new_resource.sha1_base_path if new_resource.sha1_base_path
-    uri = if new_resource.tarball_uri.nil?
-            unless new_resource.tarball_base_path.start_with?('file')
-              URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
-            else
-              URI.join(new_resource.checksum_base_path, "apache-tomcat-#{new_resource.version}.tar.gz.md5")
-            end
-          else
-            URI("#{new_resource.tarball_uri}.md5")
-          end
+    uri = create_uri()
     if uri.scheme == 'file'
       open(uri.path).read.split(' ')[0]
     else
