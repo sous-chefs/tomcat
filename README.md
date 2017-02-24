@@ -15,11 +15,11 @@ Provides resources for installing Tomcat and managing the Tomcat service for use
 
 ### Chef
 
-- Chef 12.1+
+- Chef 12.5+
 
 ### Cookbooks
 
-- compat_resource
+- none
 
 ## Usage
 
