@@ -79,6 +79,17 @@ action_class.class_eval do
   def create_init
     ensure_catalina_base
 
+    template "#{derived_install_path}/bin/setenv.sh" do
+      source 'setenv.erb'
+      mode '0755'
+      cookbook 'tomcat'
+      sensitive new_resource.sensitive
+      notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
+      variables(
+        env_vars: new_resource.env_vars
+      )
+    end
+
     template "/etc/systemd/system/tomcat_#{instance_name}.service" do
       source 'init_systemd.erb'
       sensitive new_resource.sensitive
