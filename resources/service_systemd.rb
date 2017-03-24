@@ -1,6 +1,5 @@
 provides :tomcat_service_systemd
 
-provides :tomcat_service, platform: 'fedora'
 
 provides :tomcat_service, os: 'linux' do |_node|
   Chef::Platform::ServiceHelpers.service_resource_providers.include?(:systemd)
