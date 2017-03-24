@@ -27,9 +27,8 @@ end
 
 # make sure catalina base is in the env_var has no matter what
 def ensure_catalina_base
-  unless new_resource.env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
-    new_resource.env_vars.unshift('CATALINA_BASE' => derived_install_path)
-  end
+  return if new_resource.env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
+  new_resource.env_vars.unshift('CATALINA_BASE' => derived_install_path)
 end
 
 # choose the right platform init class

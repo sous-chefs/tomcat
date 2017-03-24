@@ -35,7 +35,7 @@ platforms:
     platform: rhel
     pid_one_command: /sbin/init
     intermediate_instructions:
-      - RUN yum -y install which initscripts net-tools wget
+      - RUN yum -y install lsof which initscripts net-tools wget net-tools
 
 - name: centos-7
   driver:
@@ -50,7 +50,7 @@ platforms:
     image: fedora:latest
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
-      - RUN dnf -y install yum which systemd-sysv initscripts wget net-tools
+      - RUN dnf -y install which systemd-sysv initscripts wget net-tools
 
 - name: ubuntu-14.04
   driver:
@@ -73,7 +73,7 @@ platforms:
     image: opensuse:leap
     pid_one_command: /bin/systemd
     intermediate_instructions:
-      - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive which hostname
+      - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive which net-tools
 
 suites:
 - name: multi_instance
