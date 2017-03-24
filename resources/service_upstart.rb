@@ -1,8 +1,9 @@
 
 provides :tomcat_service_upstart
 
-provides :tomcat_service, platform: 'ubuntu' do |node|
-  node['platform_version'].to_f < 15.10
+provides :tomcat_service, platform_family: 'debian' do |_node|
+  Chef::Platform::ServiceHelpers.service_resource_providers.include?(:upstart) &&
+    !Chef::Platform::ServiceHelpers.service_resource_providers.include?(:systemd)
 end
 
 property :instance_name, String, name_property: true
@@ -10,7 +11,7 @@ property :install_path, String
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :env_vars, Array, default: [
-  { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
+  { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
 ]
 property :sensitive, kind_of: [TrueClass, FalseClass], default: false
 

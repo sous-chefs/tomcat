@@ -1,22 +1,12 @@
 provides :tomcat_service_sysvinit
-
-provides :tomcat_service, platform_family: 'suse'
-provides :tomcat_service, platform: 'amazon'
-
-provides :tomcat_service, platform: %w(redhat centos scientific oracle) do |node| # ~FC005
-  node['platform_version'].to_f < 7.0
-end
-
-provides :tomcat_service, platform: 'debian' do |node|
-  node['platform_version'].to_i < 8
-end
+provides :tomcat_service, os: 'linux'
 
 property :instance_name, String, name_property: true
 property :install_path, String
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :env_vars, Array, default: [
-  { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' }
+  { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
 ]
 property :sensitive, kind_of: [TrueClass, FalseClass], default: false
 
