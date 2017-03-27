@@ -31,6 +31,57 @@ property :tarball_uri, String
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
+action :install do
+  validate_version
+
+  # some RHEL systems lack tar in their minimal install
+  package 'tar'
+
+  group new_resource.tomcat_group do
+    action :create
+    append true
+  end
+
+  user new_resource.tomcat_user do
+    gid new_resource.tomcat_group
+    shell '/bin/false'
+    system true
+    action :create
+  end
+
+  directory 'tomcat install dir' do
+    mode '0750'
+    path new_resource.install_path
+    recursive true
+    owner new_resource.tomcat_user
+    group new_resource.tomcat_group
+  end
+
+  remote_file "apache #{new_resource.version} tarball" do
+    source tarball_uri
+    path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
+    verify { |file| validate_checksum(file) }
+  end
+
+  execute 'extract tomcat tarball' do
+    command extraction_command
+    action :run
+    creates ::File.join(new_resource.install_path, 'LICENSE')
+  end
+
+  # make sure the instance's user owns the instance install dir
+  execute "chown install dir as tomcat_#{new_resource.instance_name}" do
+    command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}"
+    action :run
+    not_if { Etc.getpwuid(::File.stat("#{new_resource.install_path}/LICENSE").uid).name == new_resource.tomcat_user }
+  end
+
+  # create a link that points to the latest version of the instance
+  link "/opt/tomcat_#{new_resource.instance_name}" do
+    to new_resource.install_path
+  end
+end
+
 action_class do
   # break apart the version string to find the major version
   def major_version
@@ -108,56 +159,5 @@ action_class do
       uri << new_resource.tarball_uri
     end
     uri
-  end
-end
-
-action :install do
-  validate_version
-
-  # some RHEL systems lack tar in their minimal install
-  package 'tar'
-
-  group new_resource.tomcat_group do
-    action :create
-    append true
-  end
-
-  user new_resource.tomcat_user do
-    gid new_resource.tomcat_group
-    shell '/bin/false'
-    system true
-    action :create
-  end
-
-  directory 'tomcat install dir' do
-    mode '0750'
-    path new_resource.install_path
-    recursive true
-    owner new_resource.tomcat_user
-    group new_resource.tomcat_group
-  end
-
-  remote_file "apache #{new_resource.version} tarball" do
-    source tarball_uri
-    path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
-    verify { |file| validate_checksum(file) }
-  end
-
-  execute 'extract tomcat tarball' do
-    command extraction_command
-    action :run
-    creates ::File.join(new_resource.install_path, 'LICENSE')
-  end
-
-  # make sure the instance's user owns the instance install dir
-  execute "chown install dir as tomcat_#{new_resource.instance_name}" do
-    command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}"
-    action :run
-    not_if { Etc.getpwuid(::File.stat("#{new_resource.install_path}/LICENSE").uid).name == new_resource.tomcat_user }
-  end
-
-  # create a link that points to the latest version of the instance
-  link "/opt/tomcat_#{new_resource.instance_name}" do
-    to new_resource.install_path
   end
 end
