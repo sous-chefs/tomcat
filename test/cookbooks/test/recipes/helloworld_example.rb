@@ -9,9 +9,9 @@ group 'cool_group' do
   action :create
 end
 
-# Install Tomcat 8.0.36 to the default location
+# Install Tomcat 8.0.42 to the default location
 tomcat_install 'helloworld' do
-  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.36/bin/apache-tomcat-8.0.36.tar.gz'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.42/bin/apache-tomcat-8.0.42.tar.gz'
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
 end
