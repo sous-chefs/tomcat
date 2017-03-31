@@ -28,6 +28,7 @@ property :exclude_examples, [true, false], default: true
 property :exclude_manager, [true, false], default: false
 property :exclude_hostmanager, [true, false], default: false
 property :tarball_uri, String
+property :tarball_validate_ssl, [true, false], default: true
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
@@ -66,12 +67,11 @@ action_class do
             URI("#{new_resource.tarball_uri}.md5")
           end
     request = Net::HTTP.new(uri.host, uri.port)
-    response = request.get(uri)
     if uri.to_s.start_with?('https')
       request.use_ssl = true
-      request.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request.verify_mode = OpenSSL::SSL::VERIFY_NONE unless new_resource.tarball_validate_ssl
     end
-
+    response = request.get(uri)
     if response.code != '200'
       Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
       raise
