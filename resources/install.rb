@@ -22,6 +22,7 @@ property :version, String, default: '8.0.36'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :verify_checksum, [true, false], default: true
 property :sha1_base_path, String # this is the legacy name for this attribute
 property :exclude_docs, [true, false], default: true
 property :exclude_examples, [true, false], default: true
@@ -60,7 +61,7 @@ action :install do
   remote_file "apache #{new_resource.version} tarball" do
     source tarball_uri
     path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
-    verify { |file| validate_checksum(file) }
+    verify { |file| validate_checksum(file) } if new_resource.verify_checksum
   end
 
   execute 'extract tomcat tarball' do
