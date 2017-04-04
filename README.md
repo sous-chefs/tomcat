@@ -33,7 +33,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 
 #### properties
 
-- `version`: The version to install. Default: 8.0.36
+- `version`: The version to install. Default: 8.0.42
 - `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
 - `tarball_base_path`: The base path to the apache mirror containing the tarballs. Default: '<http://archive.apache.org/dist/tomcat/>'
 - `checksum_base_path`: The base path to the apache mirror containing the md5 file. Default: '<http://archive.apache.org/dist/tomcat/>'

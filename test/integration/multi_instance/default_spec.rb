@@ -1,4 +1,4 @@
-describe file('/opt/tomcat_helloworld_8_0_36/LICENSE') do
+describe file('/opt/tomcat_helloworld_8_0_42/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }

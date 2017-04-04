@@ -18,7 +18,7 @@
 #
 
 property :instance_name, String, name_property: true
-property :version, String, default: '8.0.36'
+property :version, String, default: '8.0.42'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
