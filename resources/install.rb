@@ -107,14 +107,20 @@ action_class.class_eval do
     raise
   end
 
+  # returns the URI of the apache.org generated checksum based on either
+  # an absolute path to the tarball or the tarball based path.
+  def checksum_uri
+    if new_resource.tarball_uri.nil?
+      URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+    else
+      URI("#{new_resource.tarball_uri}.md5")
+    end
+  end
+
   # fetch the md5 checksum from the mirrors
   # we have to do this since the md5 chef expects isn't hosted
   def fetch_checksum
-    uri = if new_resource.tarball_uri.nil?
-            URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
-          else
-            URI("#{new_resource.tarball_uri}.md5")
-          end
+    uri = checksum_uri
     request = Net::HTTP.new(uri.host, uri.port)
     if uri.to_s.start_with?('https')
       request.use_ssl = true
