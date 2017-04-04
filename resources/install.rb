@@ -22,7 +22,7 @@ property :version, String, default: '8.0.42'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
 property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
-property :sha1_base_path, String # this is the legacy name for this attribute
+property :verify_checksum, [true, false], default: true
 property :exclude_docs, [true, false], default: true
 property :exclude_examples, [true, false], default: true
 property :exclude_manager, [true, false], default: false
@@ -60,7 +60,7 @@ action :install do
   remote_file "apache #{new_resource.version} tarball" do
     source tarball_uri
     path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
-    verify { |file| validate_checksum(file) }
+    verify { |file| validate_checksum(file) } if new_resource.verify_checksum
   end
 
   execute 'extract tomcat tarball' do
@@ -109,8 +109,6 @@ action_class.class_eval do
   # fetch the md5 checksum from the mirrors
   # we have to do this since the md5 chef expects isn't hosted
   def fetch_checksum
-    # preserve the legacy name of sha1_base_path
-    new_resource.checksum_base_path = new_resource.sha1_base_path if new_resource.sha1_base_path
     uri = if new_resource.tarball_uri.nil?
             URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
           else
@@ -161,3 +159,6 @@ action_class.class_eval do
     uri
   end
 end
+
+# retain backwards compatibility with the old property name
+alias_method :sha1_base_path, :checksum_base_path
