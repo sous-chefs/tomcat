@@ -27,7 +27,7 @@ property :exclude_docs, [true, false], default: true
 property :exclude_examples, [true, false], default: true
 property :exclude_manager, [true, false], default: false
 property :exclude_hostmanager, [true, false], default: false
-property :tarball_uri, String
+property :tarball_uri, String, default: ''
 property :tarball_path, String, default: lazy { |r| "#{Chef::Config['file_cache_path']}/apache-tomcat-#{r.version}.tar.gz" }
 property :tarball_validate_ssl, [true, false], default: true
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
@@ -161,7 +161,7 @@ action_class.class_eval do
   # build the complete tarball URI and handle basepath with/without trailing /
   def tarball_uri
     uri = ''
-    if new_resource.tarball_uri.nil?
+    if new_resource.tarball_uri.empty?
       uri << new_resource.tarball_base_uri
       uri << '/' unless uri[-1] == '/'
       uri << "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz"
