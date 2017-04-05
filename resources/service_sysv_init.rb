@@ -76,6 +76,8 @@ action :disable do
 end
 
 action_class.class_eval do
+  include ::TomcatCookbook::ServiceHelpers
+
   def create_init
     # set the CATALINA_BASE value unless the user has passed it
     ensure_catalina_base
