@@ -20,20 +20,24 @@
 property :instance_name, String, name_property: true
 property :version, String, default: '8.0.42'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
-property :tarball_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
-property :checksum_base_path, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/'
+property :checksum_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :verify_checksum, [true, false], default: true
 property :exclude_docs, [true, false], default: true
 property :exclude_examples, [true, false], default: true
 property :exclude_manager, [true, false], default: false
 property :exclude_hostmanager, [true, false], default: false
 property :tarball_uri, String
+property :tarball_path, String, default: lazy { |r| "#{Chef::Config['file_cache_path']}/apache-tomcat-#{r.version}.tar.gz" }
 property :tarball_validate_ssl, [true, false], default: true
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 
 action :install do
   validate_version
+
+  # Support file:// uri moniker but short-circuit into a better pattern.
+  new_resource.tarball_path = new_resource.tarball_uri[7..-1] if new_resource.tarball_uri.start_with?('file://')
 
   # some RHEL systems lack tar in their minimal install
   package 'tar'
@@ -60,8 +64,10 @@ action :install do
 
   remote_file "apache #{new_resource.version} tarball" do
     source tarball_uri
-    path "#{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz"
+    path new_resource.tarball_path
     verify { |file| validate_checksum(file) } if new_resource.verify_checksum
+    # If a file already exists at the path specified, and we skip checksum verification, then we can assume that the file was laid down by the user.
+    not_if { ::File.exist?(new_resource.tarball_path) } unless new_resource.verify_checksum
   end
 
   execute 'extract tomcat tarball' do
@@ -91,7 +97,7 @@ action_class.class_eval do
 
   # build the extraction command based on the passed properties
   def extraction_command
-    cmd = "tar -xzf #{Chef::Config['file_cache_path']}/apache-tomcat-#{new_resource.version}.tar.gz -C #{new_resource.install_path} --strip-components=1"
+    cmd = "tar -xzf #{new_resource.tarball_path} -C #{new_resource.install_path} --strip-components=1"
     cmd << " --exclude='*webapps/examples*'" if new_resource.exclude_examples
     cmd << " --exclude='*webapps/ROOT*'" if new_resource.exclude_examples
     cmd << " --exclude='*webapps/docs*'" if new_resource.exclude_docs
@@ -111,7 +117,7 @@ action_class.class_eval do
   # an absolute path to the tarball or the tarball based path.
   def checksum_uri
     if new_resource.tarball_uri.nil?
-      URI.join(new_resource.checksum_base_path, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+      URI.join(new_resource.checksum_base_uri, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
     else
       URI("#{new_resource.tarball_uri}.md5")
     end
@@ -156,7 +162,7 @@ action_class.class_eval do
   def tarball_uri
     uri = ''
     if new_resource.tarball_uri.nil?
-      uri << new_resource.tarball_base_path
+      uri << new_resource.tarball_base_uri
       uri << '/' unless uri[-1] == '/'
       uri << "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz"
     else
@@ -168,3 +174,7 @@ end
 
 # retain backwards compatibility with the old property name
 alias_method :sha1_base_path, :checksum_base_path
+
+# Semantically, these are uris, not paths.
+alias :tarball_base_path :tarball_base_uri
+alias :checksum_base_path :checksum_base_uri
