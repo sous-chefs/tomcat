@@ -80,6 +80,8 @@ action :enable do
 end
 
 action_class.class_eval do
+  include ::TomcatCookbook::ServiceHelpers
+
   def create_init
     ensure_catalina_base
 
