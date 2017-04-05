@@ -116,7 +116,7 @@ action_class.class_eval do
   # returns the URI of the apache.org generated checksum based on either
   # an absolute path to the tarball or the tarball based path.
   def checksum_uri
-    if new_resource.tarball_uri.nil?
+    if new_resource.tarball_uri.empty?
       URI.join(new_resource.checksum_base_uri, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
     else
       URI("#{new_resource.tarball_uri}.md5")
