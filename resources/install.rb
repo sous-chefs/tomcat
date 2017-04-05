@@ -173,8 +173,8 @@ action_class.class_eval do
 end
 
 # retain backwards compatibility with the old property name
-alias_method :sha1_base_path, :checksum_base_path
+alias_method :sha1_base_path, :checksum_base_uri
 
 # Semantically, these are uris, not paths.
-alias :tarball_base_path :tarball_base_uri
-alias :checksum_base_path :checksum_base_uri
+alias_method :tarball_base_path, :tarball_base_uri
+alias_method :checksum_base_path, :checksum_base_uri
