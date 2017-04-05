@@ -35,9 +35,11 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 
 - `version`: The version to install. Default: 8.0.42
 - `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
-- `tarball_base_path`: The base path to the apache mirror containing the tarballs. Default: '<http://archive.apache.org/dist/tomcat/>'
-- `checksum_base_path`: The base path to the apache mirror containing the md5 file. Default: '<http://archive.apache.org/dist/tomcat/>'
-- `tarball_uri`: The complete path to the tarball. If specified would override (`tarball_base_path` and `checksum_base_path`). checksum will be loaded from "#{tarball_uri}.md5". This attribute is useful, if you are hosting tomcat tarballs from artifact repositories such as nexus.
+- `tarball_base_uri`: The base uri to the apache mirror containing the tarballs. Default: '<http://archive.apache.org/dist/tomcat/>'
+- `checksum_base_uri`: The base uri to the apache mirror containing the md5 file. Default: '<http://archive.apache.org/dist/tomcat/>'
+- `verify_checksum`: Whether the checksum should be verified against `checksum_base_uri`.  Default: true.
+- `tarball_uri`: The complete uri to the tarball. If specified would override (`tarball_base_uri` and `checksum_base_uri`). checksum will be loaded from "#{tarball_uri}.md5". This attribute is useful, if you are hosting tomcat tarballs from artifact repositories such as nexus.
+- `tarball_path`: Local path on disk to the tarball.  If the file does not exist, or the checksum does not match, it will be downloaded from `tarball_uri`.
 - `tarball_validate_ssl`: Validate the SSL certificate, if `tarball_uri` is using HTTPS. Default true.
 - `exclude_docs`: Exclude ./webapps/docs from installation. Default true.
 - `exclude_examples`: Exclude ./webapps/examples from installation. Default true.
@@ -51,6 +53,15 @@ Install an Tomcat 8.0.36 instance named 'helloworld' to /opt/tomcat_helloworld_8
 ```ruby
 tomcat_install 'helloworld' do
   version '8.0.36'
+end
+```
+
+Install an Tomcat instance named 'helloworld' from a local tarball to /opt/tomcat_helloworld_8_0_36/ with a symlink at /opt/tomcat_helloworld/
+```ruby
+tomcat_install 'helloworld' do
+  version '8.0.36'
+  verify_checksum false
+  tarball_path '/tmp/apache-tomcat-8.0.36.tar.gz'
 end
 ```
 
