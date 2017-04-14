@@ -1,3 +1,0 @@
-Lint/AmbiguousRegexpLiteral:
-  Exclude:
-    - 'test/integration/multi-instance/default_spec.rb'
