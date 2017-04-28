@@ -16,6 +16,14 @@ tomcat_install 'helloworld' do
   tomcat_group 'cool_group'
 end
 
+# Install Tomcat 8.0.43 to the default location mode 0755
+tomcat_install 'dirworld' do
+  dir_mode '0755'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.43/bin/apache-tomcat-8.0.43.tar.gz'
+  tomcat_user 'cool_user'
+  tomcat_group 'cool_group'
+end
+
 # Drop off our own server.xml that uses a non-default port setup
 cookbook_file '/opt/tomcat_helloworld/conf/server.xml' do
   source 'helloworld_server.xml'
