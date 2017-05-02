@@ -28,9 +28,12 @@ module TomcatCookbook
     end
 
     # make sure catalina base is in the env_var has no matter what
-    def ensure_catalina_base
-      return if new_resource.env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }
-      new_resource.env_vars.unshift('CATALINA_BASE' => derived_install_path)
+    def envs_with_catalina_base
+      new_resource.env_vars if new_resource.env_vars.any? { |env_hash| env_hash.key?('CATALINA_BASE') }\
+
+      env_vars = new_resource.env_vars.dup
+      env_vars.unshift('CATALINA_BASE' => derived_install_path)
+      env_vars
     end
 
     # choose the right platform init class
