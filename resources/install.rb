@@ -23,6 +23,7 @@ property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_na
 property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :checksum_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/'
 property :verify_checksum, [true, false], default: true
+property :dir_mode, String, default: '0750'
 property :exclude_docs, [true, false], default: true
 property :exclude_examples, [true, false], default: true
 property :exclude_manager, [true, false], default: false
@@ -55,7 +56,7 @@ action :install do
   end
 
   directory 'tomcat install dir' do
-    mode '0750'
+    mode new_resource.dir_mode.to_s
     path new_resource.install_path
     recursive true
     owner new_resource.tomcat_user
