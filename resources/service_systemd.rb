@@ -83,14 +83,12 @@ action_class.class_eval do
   include ::TomcatCookbook::ServiceHelpers
 
   def create_init
-    ensure_catalina_base
-
     template "/etc/systemd/system/tomcat_#{instance_name}.service" do
       source 'init_systemd.erb'
       sensitive new_resource.sensitive
       variables(
         instance: new_resource.instance_name,
-        env_vars: new_resource.env_vars,
+        env_vars: envs_with_catalina_base,
         install_path: derived_install_path,
         user: new_resource.tomcat_user,
         group: new_resource.tomcat_group
