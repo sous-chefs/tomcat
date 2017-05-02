@@ -2,8 +2,18 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## 2.4.1 (2017-04-28)
+## 2.5.0 (2017-05-02)
 
+- Move the action_class after the actions to workaround a 12.5/12.6 bug
+- Fix HTTPS checksums add tarball_validate_ssl param
+- Use class_eval for chef 12.5/12.6 compatibility
+- Allow skipping the download of the checksum entirely for certain tarball hosting scenarios
+- Add tarball_path property, and allow for local tarballs provided outside of this resource.
+- Properly place the helper methods into a module so we don't polute the global namespace
+- Update the default Tomcat release to 8.0.43
+- Remove unnecessary configs for foodcritic and rubocop
+- Use a SPDX standard license string
+- Fix catalina_base ENV var injection for Chef 13
 - Add new `dir_mode` property to set the installation directory permission
 
 ## 2.4.0 (2017-03-24)
