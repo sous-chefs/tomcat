@@ -114,12 +114,13 @@ function stop() {
     if [ -f "${LOCK_DIR}/${NAME}" ]; then
       if [ "$RETVAL" -eq "0" ]; then
          touch ${LOCK_DIR}/${NAME} 2>&1 || RETVAL="4"
+         # we should read ${CATALINA_PID} here, because ${TOMCAT_SCRIPT} may overwrite ${CATALINA_PID}
+         read kpid < ${CATALINA_PID}
          [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop ${TOMCAT_LOG}" >> ${INSTALL_PATH}/logs/initd.out 2>&1 || RETVAL="4"
       fi
       if [ "$RETVAL" -eq "0" ]; then
          count="0"
          if [ -f "${CATALINA_PID}" ]; then
-            read kpid < ${CATALINA_PID}
             until [ "$(ps --pid $kpid | grep -c $kpid)" -eq "0" ] || \
                       [ "$count" -gt "$SHUTDOWN_WAIT" ]; do
                     if [ "$SHUTDOWN_VERBOSE" = "true" ]; then
