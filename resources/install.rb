@@ -90,7 +90,7 @@ action :install do
   end
 end
 
-action_class.class_eval do
+action_class do
   # break apart the version string to find the major version
   def major_version
     @major_version ||= new_resource.version.split('.')[0]

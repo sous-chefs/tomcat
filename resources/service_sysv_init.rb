@@ -75,7 +75,7 @@ action :disable do
   end
 end
 
-action_class.class_eval do
+action_class do
   include ::TomcatCookbook::ServiceHelpers
 
   def create_init
