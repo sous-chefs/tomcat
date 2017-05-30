@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 2.5.1 (2017-05-30)
+
+- Remove class_eval usage to prevent failures
+
 ## 2.5.0 (2017-05-02)
 
 - Move the action_class after the actions to workaround a 12.5/12.6 bug
