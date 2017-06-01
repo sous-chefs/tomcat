@@ -74,9 +74,4 @@ platforms:
     image: opensuse:leap
     pid_one_command: /bin/systemd
     intermediate_instructions:
-      - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive which net-tools
-
-suites:
-- name: multi_instance
-  run_list:
-  - recipe[test]
+      - RUN zypper --non-interactive install aaa_base perl-Getopt-Long-Descriptive which net-tools systemd-sysvinit
