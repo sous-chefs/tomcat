@@ -1,5 +1,5 @@
 puts 'Sleeping to make sure the services are started'
-# sleep 10
+sleep 10
 
 describe file('/opt/tomcat_helloworld_8_0_43') do
   it { should be_directory }
