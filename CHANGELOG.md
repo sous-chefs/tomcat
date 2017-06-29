@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 2.5.2 (2017-06-28)
+
+- Test on multiple versions of chef
+- Fix double catalina_base env vars being included if you provided you own catalina_base
+
 ## 2.5.1 (2017-05-30)
 
 - Remove class_eval usage to prevent failures
