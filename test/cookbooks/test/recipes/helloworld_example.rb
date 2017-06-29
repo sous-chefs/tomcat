@@ -43,7 +43,7 @@ end
 # start the helloworld tomcat service using a non-standard pic location
 tomcat_service 'helloworld' do
   action [:start, :enable]
-  env_vars [{ 'CATALINA_PID' => '/opt/tomcat_helloworld/bin/non_standard_location.pid' }, { 'SOMETHING' => 'some_value' }]
+  env_vars [{'CATALINA_BASE' => '/opt/tomcat_helloworld/' }, { 'CATALINA_PID' => '/opt/tomcat_helloworld/bin/non_standard_location.pid' }, { 'SOMETHING' => 'some_value' }]
   sensitive true
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
