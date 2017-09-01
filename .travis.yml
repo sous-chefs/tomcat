@@ -25,6 +25,7 @@ env:
   - INSTANCE=multi-instance-centos-7 CHEF_VERSION=12.5.1
   - INSTANCE=multi-instance-debian-7
   - INSTANCE=multi-instance-debian-8
+  - INSTANCE=multi-instance-debian-9
   - INSTANCE=multi-instance-fedora-latest
   - INSTANCE=multi-instance-opensuse-leap
   - INSTANCE=multi-instance-ubuntu-1404
