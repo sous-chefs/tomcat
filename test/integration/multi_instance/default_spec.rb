@@ -33,14 +33,14 @@ describe file('/opt/tomcat_dirworld_8_0_43/LICENSE') do
   its('group') { should eq 'cool_group' }
 end
 
-describe file('/opt/special/tomcat_docs_7_0_42') do
+describe file('/opt/special/tomcat_docs_7_0_81') do
   it { should be_directory }
   it { should be_owned_by 'tomcat_docs' }
   its('group') { should eq 'tomcat_docs' }
   its('mode') { should cmp '0750' }
 end
 
-describe file('/opt/special/tomcat_docs_7_0_42/LICENSE') do
+describe file('/opt/special/tomcat_docs_7_0_81/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'tomcat_docs' }
   its('group') { should eq 'tomcat_docs' }
