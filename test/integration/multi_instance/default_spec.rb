@@ -57,7 +57,7 @@ end
 %w(cool_user tomcat_docs).each do |user_name|
   describe user(user_name) do
     it { should exist }
-    its('shell') should eq '/bin/false'
+    its('shell') { should eq '/bin/false' }
   end
 end
 
