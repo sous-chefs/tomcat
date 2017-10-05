@@ -33,6 +33,7 @@ property :tarball_path, String, default: lazy { |r| "#{Chef::Config['file_cache_
 property :tarball_validate_ssl, [true, false], default: true
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :tomcat_user_shell, String, default: '/bin/false'
 
 action :install do
   validate_version
@@ -50,7 +51,7 @@ action :install do
 
   user new_resource.tomcat_user do
     gid new_resource.tomcat_group
-    shell '/bin/false'
+    shell new_resource.tomcat_user_shell
     system true
     action :create
   end

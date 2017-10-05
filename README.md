@@ -46,6 +46,9 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `exclude_examples`: Exclude ./webapps/examples from installation. Default `true`.
 - `exclude_manager`: Exclude ./webapps/manager from installation. Default: `false`.
 - `exclude_hostmanager`: Exclude ./webapps/host-manager from installation. Default: `false`.
+- `tomcat_user`: User to run tomcat as. Default: `tomcat_INSTANCENAME`
+- `tomcat_group`: Group of the tomcat user. Default: `tomcat_INSTANCENAME`
+- `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
 
 #### example
 
