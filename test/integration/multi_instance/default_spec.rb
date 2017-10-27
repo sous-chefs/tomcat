@@ -1,7 +1,7 @@
 puts 'Sleeping to make sure the services are started'
 sleep 10
 
-describe file('/opt/tomcat_helloworld_8_0_43') do
+describe file('/opt/tomcat_helloworld_8_0_47') do
   it { should be_directory }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
@@ -16,20 +16,20 @@ if file('/etc/init/tomcat_helloworld.conf').exist?
   end
 end
 
-describe file('/opt/tomcat_dirworld_8_0_43') do
+describe file('/opt/tomcat_dirworld_8_0_47') do
   it { should be_directory }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
   its('mode') { should cmp '0755' }
 end
 
-describe file('/opt/tomcat_helloworld_8_0_43/LICENSE') do
+describe file('/opt/tomcat_helloworld_8_0_47/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
 end
 
-describe file('/opt/tomcat_dirworld_8_0_43/LICENSE') do
+describe file('/opt/tomcat_dirworld_8_0_47/LICENSE') do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
