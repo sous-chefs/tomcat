@@ -60,7 +60,7 @@ action :install do
     mode new_resource.dir_mode.to_s
     path new_resource.install_path
     recursive true
-    owner new_resource.tomcat_user
+    owner 'root'
     group new_resource.tomcat_group
   end
 
@@ -79,10 +79,17 @@ action :install do
   end
 
   # make sure the instance's user owns the instance install dir
-  execute "chown install dir as tomcat_#{new_resource.instance_name}" do
-    command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}"
+  bash "chown install dir as tomcat_#{new_resource.instance_name}" do
+    code <<-EOH
+      set -e
+      chown -R root:#{new_resource.tomcat_group} #{new_resource.install_path}
+      find #{new_resource.install_path} -type f -exec chmod g+r,g-w,o-w {} \\;
+      find #{new_resource.install_path} -type d -exec chmod g+rx,g-w,o-w {} \\;
+      find #{new_resource.install_path} -type f -perm /u+x -exec chmod g+x {} \\;
+      chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}/{work,webapps,temp,logs}
+    EOH
     action :run
-    not_if { Etc.getpwuid(::File.stat("#{new_resource.install_path}/LICENSE").uid).name == new_resource.tomcat_user }
+    not_if { Etc.getgrgid(::File.stat("#{new_resource.install_path}/LICENSE").gid).name == new_resource.tomcat_group }
   end
 
   # create a link that points to the latest version of the instance
