@@ -13,6 +13,12 @@ Environment="<%= k -%>=<%= v %>"
   <% end -%>
 <% end -%>
 
+<% @service_vars.each do |h| -%>
+  <% h.each_pair do |k,v| -%>
+<%= k -%>=<%= v %>
+  <% end -%>
+<% end -%>
+
 ExecStart=<%= @install_path %>/bin/catalina.sh start
 ExecStop=<%= @install_path %>/bin/catalina.sh stop
 SuccessExitStatus=0 143
