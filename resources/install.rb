@@ -20,17 +20,17 @@
 property :instance_name, String, name_property: true
 property :version, String, default: '8.0.47'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
-property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/'
-property :checksum_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/'
-property :verify_checksum, [true, false], default: true
+property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
+property :checksum_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
+property :verify_checksum, [true, false], default: true, desired_state: false
 property :dir_mode, String, default: '0750'
-property :exclude_docs, [true, false], default: true
-property :exclude_examples, [true, false], default: true
-property :exclude_manager, [true, false], default: false
-property :exclude_hostmanager, [true, false], default: false
-property :tarball_uri, String, default: ''
-property :tarball_path, String, default: lazy { |r| "#{Chef::Config['file_cache_path']}/apache-tomcat-#{r.version}.tar.gz" }
-property :tarball_validate_ssl, [true, false], default: true
+property :exclude_docs, [true, false], default: true, desired_state: false
+property :exclude_examples, [true, false], default: true, desired_state: false
+property :exclude_manager, [true, false], default: false, desired_state: false
+property :exclude_hostmanager, [true, false], default: false, desired_state: false
+property :tarball_uri, String, default: '', desired_state: false
+property :tarball_path, String, default: lazy { |r| "#{Chef::Config['file_cache_path']}/apache-tomcat-#{r.version}.tar.gz" }, desired_state: false
+property :tarball_validate_ssl, [true, false], default: true, desired_state: false
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_user_shell, String, default: '/bin/false'
