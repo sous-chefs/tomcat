@@ -15,7 +15,7 @@ Provides resources for installing Tomcat and managing the Tomcat service for use
 
 ### Chef
 
-- Chef 12.7+
+- Chef 13+
 
 ### Cookbooks
 
