@@ -49,6 +49,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `tomcat_user`: User to run tomcat as. Default: `tomcat_INSTANCENAME`
 - `tomcat_group`: Group of the tomcat user. Default: `tomcat_INSTANCENAME`
 - `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
+- `service_vars`: An array of hashes containing additional systemd directives when setting up a service under systemd.
 
 #### example
 
