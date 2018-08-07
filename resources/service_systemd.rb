@@ -30,6 +30,7 @@ property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" 
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
 ]
+property :service_vars, Array, default: []
 
 action :start do
   create_init
@@ -89,6 +90,7 @@ action_class do
       variables(
         instance: new_resource.instance_name,
         env_vars: envs_with_catalina_base,
+        service_vars: new_resource.service_vars,
         install_path: derived_install_path,
         user: new_resource.tomcat_user,
         group: new_resource.tomcat_group
