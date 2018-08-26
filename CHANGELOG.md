@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 3.1.0 (2018-08-07)
+
+- Allow setting custom properties for systemd services, for instance to set open file descriptors with LimitNOFILE
+- Set multiple properties to be desired_state: false to prevent them showing up in Analytics / Automate
+
 ## 3.0.0 (2017-10-27)
 
 - Add ability to set the tomcat user's shell
