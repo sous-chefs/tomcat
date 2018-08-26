@@ -14,10 +14,15 @@ verifier:
   name: inspec
 
 platforms:
-- name: amazonlinux
+- name: amazonlinux-1
   driver:
     image: dokken/amazonlinux
     pid_one_command: /sbin/init
+
+- name: amazonlinux-2
+  driver:
+    image: dokken/amazonlinux-2
+    pid_one_command: /bin/systemd
 
 - name: debian-8
   driver:
