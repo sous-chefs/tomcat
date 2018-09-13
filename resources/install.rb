@@ -22,6 +22,7 @@ property :version, String, default: '8.0.47'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
 property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
 property :checksum_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
+property :checksum_type, String, default: ''
 property :verify_checksum, [true, false], default: true, desired_state: false
 property :dir_mode, String, default: '0750'
 property :exclude_docs, [true, false], default: true, desired_state: false
@@ -117,29 +118,46 @@ action_class do
 
   # returns the URI of the apache.org generated checksum based on either
   # an absolute path to the tarball or the tarball based path.
-  def checksum_uri
+  def checksum_uri(checksum_type)
     if new_resource.tarball_uri.empty?
-      URI.join(new_resource.checksum_base_uri, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+      URI.join(new_resource.checksum_base_uri, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.#{checksum_type}")
     else
-      URI("#{new_resource.tarball_uri}.md5")
+      URI("#{new_resource.tarball_uri}.#{checksum_type}")
     end
   end
 
   # fetch the md5 checksum from the mirrors
   # we have to do this since the md5 chef expects isn't hosted
   def fetch_checksum
-    uri = checksum_uri
-    request = Net::HTTP.new(uri.host, uri.port)
-    if uri.to_s.start_with?('https')
-      request.use_ssl = true
-      request.verify_mode = OpenSSL::SSL::VERIFY_NONE unless new_resource.tarball_validate_ssl
+    ctypes = if new_resource.checksum_type.empty?
+               %w( sha512 sha256 sha1 md5 )
+             else
+               [new_resource.checksum_type]
+             end
+
+    ctypes.each do |checksum_type|
+      uri = checksum_uri(checksum_type)
+      request = Net::HTTP.new(uri.host, uri.port)
+      if uri.to_s.start_with?('https')
+        request.use_ssl = true
+        request.verify_mode = OpenSSL::SSL::VERIFY_NONE unless new_resource.tarball_validate_ssl
+      end
+      response = request.get(uri)
+
+      next if response.code == '404'
+
+      if response.code != '200'
+        Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
+        raise
+      end
+
+      new_resource.checksum_type = checksum_type
+
+      return response.body.split(' ')[0]
     end
-    response = request.get(uri)
-    if response.code != '200'
-      Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
-      raise
-    end
-    response.body.split(' ')[0]
+
+    Chef::Log.fatal("Unable to find any checksums for tomcat #{new_resource.version}")
+    raise
   rescue => e
     Chef::Log.fatal("Could not fetch the checksum due to an error: #{e}")
     raise
@@ -149,7 +167,19 @@ action_class do
   # return true if they match. Append .bad to the cached copy to prevent using it next time
   def validate_checksum(file_to_check)
     desired = fetch_checksum
-    actual = Digest::MD5.hexdigest(::File.read(file_to_check))
+    actual = case new_resource.checksum_type
+             when 'md5' then
+               Digest::MD5.hexdigest(::File.read(file_to_check))
+             when 'sha1' then
+               Digest::SHA1.hexdigest(::File.read(file_to_check))
+             when 'sha256' then
+               Digest::SHA256.hexdigest(::File.read(file_to_check))
+             when 'sha512' then
+               Digest::SHA512.hexdigest(::File.read(file_to_check))
+             else
+               Chef::Log.fatal("Invalid checksum type '#{new_resource.checksum_type}' expecting sha512, sha256, sha1, or md5")
+               raise
+             end
 
     if desired == actual
       true
