@@ -23,3 +23,7 @@ suites:
 - name: multi_instance
   run_list:
   - recipe[test]
+
+- name: checksum_examples
+  run_list:
+  - recipe[test::sum_examples]
