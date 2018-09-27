@@ -32,6 +32,8 @@ env:
   - INSTANCE=multi-instance-ubuntu-1604 CHEF_VERSION=13
   - INSTANCE=multi-instance-ubuntu-1804
   - INSTANCE=multi-instance-ubuntu-1804 CHEF_VERSION=13
+  - INSTANCE=multi-instance-amazonlinux-1
+  - INSTANCE=multi-instance-amazonlinux-2
 
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
