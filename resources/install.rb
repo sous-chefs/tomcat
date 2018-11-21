@@ -124,18 +124,18 @@ action_class do
 
   # returns the URI of the apache.org generated checksum based on either
   # an absolute path to the tarball or the tarball based path.
-  def checksum_uri
+  def checksum_uri(sum_form)
     if new_resource.tarball_uri.empty?
-      URI.join(new_resource.checksum_base_uri, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.md5")
+      URI.join(new_resource.checksum_base_uri, "tomcat-#{major_version}/v#{new_resource.version}/bin/apache-tomcat-#{new_resource.version}.tar.gz.#{sum_form}")
     else
-      URI("#{new_resource.tarball_uri}.md5")
+      URI("#{new_resource.tarball_uri}.#{sum_form}")
     end
   end
 
   # fetch the md5 checksum from the mirrors
   # we have to do this since the md5 chef expects isn't hosted
-  def fetch_checksum
-    uri = checksum_uri
+  def fetch_checksum(form)
+    uri = checksum_uri(form)
     request = Net::HTTP.new(uri.host, uri.port)
     if uri.to_s.start_with?('https')
       request.use_ssl = true
@@ -155,8 +155,24 @@ action_class do
   # validate the mirror checksum against the on disk checksum
   # return true if they match. Append .bad to the cached copy to prevent using it next time
   def validate_checksum(file_to_check)
-    desired = fetch_checksum
-    actual = Digest::MD5.hexdigest(::File.read(file_to_check))
+    # Apache started using sha512 (replacing md5) in these versions and now
+    # only publishes sha512 checksums
+    sum_form = case Gem::Version.new(new_resource.version)
+               when -> (v) { Gem::Requirement.new('~> 7.0.84').satisfied_by?(v) }
+                 'sha512'
+               when -> (v) { Gem::Requirement.new('~> 8.0.48').satisfied_by?(v) }
+                 'sha512'
+               when -> (v) { Gem::Requirement.new('~> 8.5.24').satisfied_by?(v) }
+                 'sha512'
+               when -> (v) { Gem::Requirement.new('~> 9.0.10').satisfied_by?(v) }
+                 'sha512'
+               else
+                 'md5'
+               end
+
+    desired = fetch_checksum(sum_form)
+    klass = Object.const_get("Digest::#{sum_form.upcase}")
+    actual = klass.hexdigest(::File.read(file_to_check))
 
     if desired == actual
       true
