@@ -162,7 +162,7 @@ function status()
       if [ "$RETVAL" -eq "2" ]; then
          log_failure_msg "${NAME} lockfile exists but process is not running"
       else
-         pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} java)"
+         pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} -f "catalina\.home=${INSTALL_PATH//\//\\/}\s")"
          if [ -z "$pid" ]; then
              log_success_msg "${NAME} is stopped"
              RETVAL="3"
@@ -177,7 +177,7 @@ function status()
 function checklockfile()
 {
    if [ -f ${LOCK_DIR}/${NAME} ]; then
-      pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} java)"
+      pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} -f "catalina\.home=${INSTALL_PATH//\//\\/}\s")"
 # The lockfile exists but the process is not running
       if [ -z "$pid" ]; then
          RETVAL="2"
