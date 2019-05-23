@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 3.2.1 (2019-05-23)
+
+- add support for multiple tomcat instances with the same user - [@safematix](https://github.com/safematix)
+- Add Amazon Linux testing - [@tas50](https://github.com/tas50)
+- Remove Ubuntu 14.04 testing - [@tas50](https://github.com/tas50)
+
 ## 3.2.0 (2018-09-26)
 
 - Verify with sha512 sums for versions ~> 7.0.84, 8.0.48, 8.5.24, 9.0.10
