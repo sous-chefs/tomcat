@@ -3,7 +3,7 @@ addons:
     sources:
       - chef-current-xenial
     packages:
-      - chefdk
+      - chef-workstation
 
 install: echo "skip bundle install"
 
