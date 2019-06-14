@@ -55,6 +55,7 @@ examples/*
 Guardfile
 Procfile
 .kitchen*
+kitchen*
 .rubocop.yml
 spec/*
 Rakefile
