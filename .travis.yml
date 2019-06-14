@@ -1,14 +1,14 @@
-sudo: required
-
 addons:
   apt:
     sources:
-      - chef-current-trusty
+      - chef-current-xenial
     packages:
       - chefdk
 
-# Don't `bundle install` which takes about 1.5 mins
 install: echo "skip bundle install"
+
+env:
+  - CHEF_LICENSE=accept
 
 branches:
   only:
@@ -19,21 +19,21 @@ services: docker
 env:
   matrix:
   - INSTANCE=multi-instance-amazonlinux
-  - INSTANCE=multi-instance-amazonlinux CHEF_VERSION=13
+  - INSTANCE=multi-instance-amazonlinux CHEF_VERSION=14
   - INSTANCE=multi-instance-amazonlinux-2
-  - INSTANCE=multi-instance-amazonlinux-2 CHEF_VERSION=13
+  - INSTANCE=multi-instance-amazonlinux-2 CHEF_VERSION=14
   - INSTANCE=multi-instance-centos-6
-  - INSTANCE=multi-instance-centos-6 CHEF_VERSION=13
+  - INSTANCE=multi-instance-centos-6 CHEF_VERSION=14
   - INSTANCE=multi-instance-centos-7
-  - INSTANCE=multi-instance-centos-7 CHEF_VERSION=13
+  - INSTANCE=multi-instance-centos-7 CHEF_VERSION=14
   - INSTANCE=multi-instance-debian-8
   - INSTANCE=multi-instance-debian-9
   - INSTANCE=multi-instance-fedora-latest
-  - INSTANCE=multi-instance-opensuse-leap
+  - INSTANCE=multi-instance-opensuse-leap-42
   - INSTANCE=multi-instance-ubuntu-1604
-  - INSTANCE=multi-instance-ubuntu-1604 CHEF_VERSION=13
+  - INSTANCE=multi-instance-ubuntu-1604 CHEF_VERSION=14
   - INSTANCE=multi-instance-ubuntu-1804
-  - INSTANCE=multi-instance-ubuntu-1804 CHEF_VERSION=13
+  - INSTANCE=multi-instance-ubuntu-1804 CHEF_VERSION=14
 
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
@@ -48,4 +48,6 @@ matrix:
   include:
     - script:
       - chef exec delivery local all
-      env: UNIT_AND_LINT=1
+      env:
+        - UNIT_AND_LINT=1
+        - CHEF_LICENSE=accept
