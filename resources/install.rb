@@ -34,6 +34,8 @@ property :tarball_validate_ssl, [true, false], default: true, desired_state: fal
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_user_shell, String, default: '/bin/false'
+property :create_user, [true, false], default: true, desired_state: false
+property :create_group, [true, false], default: true, desired_state: false
 
 action :install do
   validate_version
@@ -47,6 +49,7 @@ action :install do
   group new_resource.tomcat_group do
     action :create
     append true
+    only_if { new_resource.create_group }
   end
 
   user new_resource.tomcat_user do
@@ -54,6 +57,7 @@ action :install do
     shell new_resource.tomcat_user_shell
     system true
     action :create
+    only_if { new_resource.create_user }
   end
 
   directory 'tomcat install dir' do
