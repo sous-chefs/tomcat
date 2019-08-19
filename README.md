@@ -49,6 +49,8 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `tomcat_user`: User to run tomcat as. Default: `tomcat_INSTANCENAME`
 - `tomcat_group`: Group of the tomcat user. Default: `tomcat_INSTANCENAME`
 - `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
+- `create_user`: Creates the specified tomcat_user within the OS.  Default `true`.
+- `create_group`: Creates the specified tomcat_group within the OS. Default `true`.
 
 #### example
 
