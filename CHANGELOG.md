@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 3.2.2 (2019-08-19)
+
+- Accept the license in the Travis config - [@tas50](https://github.com/tas50)
+- Switch to openjdk in the test cookbook - [@tas50](https://github.com/tas50)
+- [ISSUE-337] Make user and group creation optional
+- Test on Debian 9/10 instead of 8/9 - [@tas50](https://github.com/tas50)
+- Remove the long_description metadata field - [@tas50](https://github.com/tas50)
+
 ## 3.2.1 (2019-05-23)
 
 - add support for multiple tomcat instances with the same user - [@safematix](https://github.com/safematix)
