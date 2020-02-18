@@ -29,7 +29,7 @@ env:
   - INSTANCE=multi-instance-debian-9
   - INSTANCE=multi-instance-debian-10
   - INSTANCE=multi-instance-fedora-latest
-  - INSTANCE=multi-instance-opensuse-leap-42
+  - INSTANCE=multi-instance-opensuse-leap-15
   - INSTANCE=multi-instance-ubuntu-1604
   - INSTANCE=multi-instance-ubuntu-1604 CHEF_VERSION=14
   - INSTANCE=multi-instance-ubuntu-1804
