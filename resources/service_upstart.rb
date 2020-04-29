@@ -32,6 +32,9 @@ property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
 ]
 
+property :service_template_source, String, default: 'init_upstart.erb'
+property :service_template_cookbook, String, default: 'tomcat'
+
 action :start do
   create_init
 
@@ -84,7 +87,7 @@ action_class do
 
   def create_init
     template "/etc/init/tomcat_#{new_resource.instance_name}.conf" do
-      source 'init_upstart.erb'
+      source new_resource.service_template_source
       sensitive new_resource.sensitive
       notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
       variables(
@@ -94,7 +97,7 @@ action_class do
         env_vars: envs_with_catalina_base,
         install_path: derived_install_path
       )
-      cookbook 'tomcat'
+      cookbook new_resource.service_template_cookbook
       owner 'root'
       group 'root'
       mode '0644'

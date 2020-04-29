@@ -51,6 +51,10 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
 - `create_user`: Creates the specified tomcat_user within the OS.  Default `true`.
 - `create_group`: Creates the specified tomcat_group within the OS. Default `true`.
+- `service_template_source`: Source template file for the sys-v/upstart/systemd service definition. Default: 'init_sysv.erb'
+- `service_template_cookbook`: Cookbook from which to source the sys-v/upstart/systemd service definition template. Default: 'tomcat'
+- `setenv_template_source`: Source template file for the sys-v 'setenv' file. Default: 'setenv.erb'
+- `setenv_template_cookbook`: Cookbook from which to source the sys-v 'setenv' file. Default: 'tomcat'
 
 #### example
 

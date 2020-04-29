@@ -84,3 +84,10 @@ describe service('tomcat_helloworld') do
   it { should be_enabled }
   it { should be_running }
 end
+
+describe service('tomcat_template') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should be_running }
+  its('description') { should cmp 'template My Apache Tomcat Application' }
+end
