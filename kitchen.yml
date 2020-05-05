@@ -1,3 +1,4 @@
+---
 driver:
   name: vagrant
 
@@ -22,10 +23,10 @@ platforms:
   - name: ubuntu-20.04
 
 suites:
-- name: multi_instance
-  run_list:
-  - recipe[test]
+  - name: multi_instance
+    run_list:
+      - recipe[test]
 
-- name: checksum_examples
-  run_list:
-  - recipe[test::sum_examples]
+  - name: checksum_examples
+    run_list:
+      - recipe[test::sum_examples]
