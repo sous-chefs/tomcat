@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 3.3.0 (2020-05-05)
+
+- Migration to Sous-Chefs
+
 ## 3.2.2 (2019-08-19)
 
 - Accept the license in the Travis config - [@tas50](https://github.com/tas50)
