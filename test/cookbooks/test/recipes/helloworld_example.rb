@@ -9,34 +9,40 @@ group 'cool_group' do
   action :create
 end
 
-# Install Tomcat 8.0.47 to the default location
+# Install Tomcat 8.5.54 to the default location
 tomcat_install 'helloworld' do
-  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.47/bin/apache-tomcat-8.0.47.tar.gz'
+  version '8.5.54'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz'
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
 end
 
-# Install Tomcat 8.0.47 to the default location mode 0755
+# Install Tomcat 8.5.54 to the default location mode 0755
 tomcat_install 'dirworld' do
+  version '8.5.54'
   dir_mode '0755'
-  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.47/bin/apache-tomcat-8.0.47.tar.gz'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz'
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
 end
 
 # Drop off our own server.xml that uses a non-default port setup
-cookbook_file '/opt/tomcat_helloworld/conf/server.xml' do
-  source 'helloworld_server.xml'
+template '/opt/tomcat_helloworld/conf/server.xml' do
   owner 'root'
   group 'root'
   mode '0644'
+  variables(
+    shutdown_port: 8006,
+    http_port: 8081,
+    https_port: 8444
+  )
   notifies :restart, 'tomcat_service[helloworld]'
 end
 
 remote_file '/opt/tomcat_helloworld/webapps/sample.war' do
   owner 'cool_user'
   mode '0644'
-  source 'https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war'
+  source 'https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/sample.war'
   checksum '89b33caa5bf4cfd235f060c396cb1a5acb2734a1366db325676f48c5f5ed92e5'
 end
 

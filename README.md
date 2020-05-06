@@ -37,7 +37,7 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 
 #### properties
 
-- `version`: The version to install. Default: 8.0.47
+- `version`: The version to install. Default: 8.5.54
 - `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
 - `tarball_base_uri`: The base uri to the apache mirror containing the tarballs. Default: '<http://archive.apache.org/dist/tomcat/>'
 - `checksum_base_uri`: The base uri to the apache mirror containing the md5 or sha512 file. Default: '<http://archive.apache.org/dist/tomcat/>'
@@ -55,6 +55,10 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
 - `create_user`: Creates the specified tomcat_user within the OS.  Default `true`.
 - `create_group`: Creates the specified tomcat_group within the OS. Default `true`.
+- `service_template_source`: Source template file for the sys-v/upstart/systemd service definition. Default: 'init_sysv.erb'
+- `service_template_cookbook`: Cookbook from which to source the sys-v/upstart/systemd service definition template. Default: 'tomcat'
+- `setenv_template_source`: Source template file for the sys-v 'setenv' file. Default: 'setenv.erb'
+- `setenv_template_cookbook`: Cookbook from which to source the sys-v 'setenv' file. Default: 'tomcat'
 
 #### example
 
