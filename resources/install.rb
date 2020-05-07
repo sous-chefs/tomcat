@@ -18,7 +18,7 @@
 #
 
 property :instance_name, String, name_property: true
-property :version, String, default: '8.0.47'
+property :version, String, default: '8.5.54'
 property :install_path, String, default: lazy { |r| "/opt/tomcat_#{r.instance_name}_#{r.version.tr('.', '_')}/" }
 property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
 property :checksum_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
@@ -44,7 +44,7 @@ action :install do
   new_resource.tarball_path = new_resource.tarball_uri.sub(%r{^file://}, '') if new_resource.tarball_uri.start_with?('file://')
 
   # some RHEL systems lack tar in their minimal install
-  package 'tar'
+  package %w(tar gzip)
 
   group new_resource.tomcat_group do
     action :create

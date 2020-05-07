@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## 3.4.0 (2020-05-06)
+
+- Sync platforms in kitchen w/ Github Actions
+- Support CHEF_VERSION testing via kitchen.yml
+- Default to tomcat 8.5.54
+- Allow service resource to accept service definition template & cookbook
+
 ## 3.3.0 (2020-05-05)
 
 - Migration to Sous-Chefs

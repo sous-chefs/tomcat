@@ -1,0 +1,19 @@
+---
+name: multi_instance
+title: Multiple Tomcat Instances Profile
+version: 0.1
+copyright: Sous Chefs
+copyright_email: help@sous-chefs.org
+license: Apache 2.0
+summary: A set of tests surrounding running multiple tomcat instances
+
+attributes:
+  - name: tomcat_version_8_5
+    description: if audit is running alongside splunk
+    value: 8.5.54
+    type: string
+
+  - name: tomcat_version_7
+    description: if audit is running alongside splunk
+    value: 7.0.103
+    type: string

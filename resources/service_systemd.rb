@@ -32,6 +32,9 @@ property :env_vars, Array, default: [
 ]
 property :service_vars, Array, default: []
 
+property :service_template_source, String, default: 'init_systemd.erb'
+property :service_template_cookbook, String, default: 'tomcat'
+
 action :start do
   create_init
 
@@ -85,7 +88,7 @@ action_class do
 
   def create_init
     template "/etc/systemd/system/tomcat_#{new_resource.instance_name}.service" do
-      source 'init_systemd.erb'
+      source new_resource.service_template_source
       sensitive new_resource.sensitive
       variables(
         instance: new_resource.instance_name,
@@ -95,7 +98,7 @@ action_class do
         user: new_resource.tomcat_user,
         group: new_resource.tomcat_group
       )
-      cookbook 'tomcat'
+      cookbook new_resource.service_template_cookbook
       owner 'root'
       group 'root'
       mode '0644'

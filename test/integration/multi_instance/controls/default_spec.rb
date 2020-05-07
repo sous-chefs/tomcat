@@ -1,7 +1,10 @@
 puts 'Sleeping to make sure the services are started'
 sleep 10
 
-describe file('/opt/tomcat_helloworld_8_0_47') do
+version_8_5 = attribute('tomcat_version_8_5').tr('.', '_')
+version_7 = attribute('tomcat_version_7').tr('.', '_')
+
+describe file("/opt/tomcat_helloworld_#{version_8_5}") do
   it { should be_directory }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
@@ -16,33 +19,33 @@ if file('/etc/init/tomcat_helloworld.conf').exist?
   end
 end
 
-describe file('/opt/tomcat_dirworld_8_0_47') do
+describe file("/opt/tomcat_dirworld_#{version_8_5}") do
   it { should be_directory }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
   its('mode') { should cmp '0755' }
 end
 
-describe file('/opt/tomcat_helloworld_8_0_47/LICENSE') do
+describe file("/opt/tomcat_helloworld_#{version_8_5}/LICENSE") do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
 end
 
-describe file('/opt/tomcat_dirworld_8_0_47/LICENSE') do
+describe file("/opt/tomcat_dirworld_#{version_8_5}/LICENSE") do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
 end
 
-describe file('/opt/special/tomcat_docs_7_0_42') do
+describe file("/opt/special/tomcat_docs_#{version_7}") do
   it { should be_directory }
   it { should be_owned_by 'tomcat_docs' }
   its('group') { should eq 'tomcat_docs' }
   its('mode') { should cmp '0750' }
 end
 
-describe file('/opt/special/tomcat_docs_7_0_42/LICENSE') do
+describe file("/opt/special/tomcat_docs_#{version_7}/LICENSE") do
   it { should be_file }
   it { should be_owned_by 'tomcat_docs' }
   its('group') { should eq 'tomcat_docs' }

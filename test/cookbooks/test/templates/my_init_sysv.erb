@@ -1,0 +1,250 @@
+#!/bin/bash
+#
+# tomcat      This shell script takes care of starting and stopping Tomcat
+#
+# chkconfig: - 80 20
+#
+### BEGIN INIT INFO
+# Provides: tomcat_<%= @instance_name %>
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Default-Start:       2 3 4 5
+# Default-Stop:        0 1 6
+# Description: My Apache Tomcat Application
+# Short-Description: My Apache Tomcat Application
+### END INIT INFO
+#
+# - This init script is based off the work of Bryan W. Berry who based his
+# - work off Redhat's init script for Tomcat6. Bryan's work can be found
+# - at: https://github.com/bryanwb/tomcat-init/blob/master/tomcat
+#
+
+## Source function library.
+#. /etc/rc.d/init.d/functions
+# Source LSB function library.
+if [ -r /lib/lsb/init-functions ]; then
+    . /lib/lsb/init-functions
+else
+    echo 'Could not find necessary /lib/lsb/init-functions'
+    exit 1
+fi
+
+DISTRIB_ID=`lsb_release -i -s 2>/dev/null`
+
+NAME="$(basename $0)"
+INSTALL_PATH="<%= @install_path %>"
+LOCK_DIR="<%= @lock_dir %>"
+
+unset ISBOOT
+if [ "${NAME:0:1}" = "S" -o "${NAME:0:1}" = "K" ]; then
+    NAME="${NAME:3}"
+    ISBOOT="1"
+fi
+
+# For SELinux we need to use 'runuser' not 'su'
+if [ -x "/sbin/runuser" ]; then
+    SU="/sbin/runuser -s /bin/sh"
+else
+    SU="/bin/su -s /bin/sh"
+fi
+
+# Path to the tomcat launch script
+TOMCAT_SCRIPT="${INSTALL_PATH}/bin/catalina.sh"
+
+# Tomcat program name
+TOMCAT_PROG="${NAME}"
+
+# Define the tomcat username / group
+TOMCAT_USER="<%= @user %>"
+TOMCAT_GROUP="<%= @group %>"
+
+# Define the tomcat log file
+TOMCAT_LOG="${INSTALL_PATH}/logs/catalina.out"
+
+# start with a return value of 0 and change if something goes wrong
+RETVAL="0"
+
+# source the env file
+. ${INSTALL_PATH}/bin/setenv.sh
+
+# allow setting SHUTDOWN_WAIT to be set via the setenv file, but use 10s if not
+if [ -z  "$SHUTDOWN_WAIT" ]; then
+  SHUTDOWN_WAIT=10
+fi
+
+# See how we were called.
+function start() {
+
+   echo -n "Starting ${NAME}: "
+   if [ "$RETVAL" != "0" ]; then
+     log_failure_msg
+     return
+   fi
+   # check to see if tomcat is already started
+   if [ -f "${LOCK_DIR}/${NAME}" ]; then
+        if [ -f "${CATALINA_PID}" ]; then
+            read kpid < ${CATALINA_PID}
+            if [ ! -z "$kpid" ] && [ -d "/proc/${kpid}" ]; then
+                log_success_msg
+                RETVAL="0"
+                return
+            fi
+        fi
+    fi
+    # fix permissions on the log and pid files
+    if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
+      chown ${TOMCAT_USER}:${TOMCAT_GROUP} $CATALINA_PID > /dev/null 2>&1 || true
+    fi
+    [ "$RETVAL" -eq "0" ] && touch $TOMCAT_LOG 2>&1 || RETVAL="4"
+    if [ "$RETVAL" -eq "0" -a "$?" -eq "0" ]; then
+      chown ${TOMCAT_USER}:root $TOMCAT_LOG
+      chmod 660 $TOMCAT_LOG
+    fi
+    [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} start ${TOMCAT_LOG}" >> ${INSTALL_PATH}/logs/initd.log 2>&1 || RETVAL="4"
+    if [ "$RETVAL" -eq "0" ]; then
+        log_success_msg "`cat ${CATALINA_PID}` running"
+        touch ${LOCK_DIR}/${NAME}
+    else
+        log_failure_msg "Error code ${RETVAL}"
+    fi
+}
+
+function stop() {
+    echo -n "Stopping ${NAME}: "
+    if [ -f "${LOCK_DIR}/${NAME}" ]; then
+      if [ "$RETVAL" -eq "0" ]; then
+         touch ${LOCK_DIR}/${NAME} 2>&1 || RETVAL="4"
+         [ "$RETVAL" -eq "0" ] && $SU - $TOMCAT_USER -c "${TOMCAT_SCRIPT} stop ${TOMCAT_LOG}" >> ${INSTALL_PATH}/logs/initd.out 2>&1 || RETVAL="4"
+      fi
+      if [ "$RETVAL" -eq "0" ]; then
+         count="0"
+         if [ -f "${CATALINA_PID}" ]; then
+            read kpid < ${CATALINA_PID}
+            until [ "$(ps --pid $kpid | grep -c $kpid)" -eq "0" ] || \
+                      [ "$count" -gt "$SHUTDOWN_WAIT" ]; do
+                    if [ "$SHUTDOWN_VERBOSE" = "true" ]; then
+                        echo "waiting for processes $kpid to exit"
+                    fi
+                    sleep 1
+                    let count="${count}+1"
+                done
+                if [ "$count" -gt "$SHUTDOWN_WAIT" ]; then
+                    if [ "$SHUTDOWN_VERBOSE" = "true" ]; then
+                        log_warning_msg "killing processes which did not stop after ${SHUTDOWN_WAIT} seconds"
+                    fi
+                    kill -9 $kpid
+                fi
+                log_success_msg
+            fi
+            rm -f ${LOCK_DIR}/${NAME} ${CATALINA_PID}
+        else
+            log_failure_msg
+            RETVAL="4"
+        fi
+    else
+        log_success_msg
+        RETVAL="0"
+    fi
+    if [ "$DISTRIB_ID" = "MandrivaLinux" ]; then
+        echo
+    fi
+}
+
+function status()
+{
+   checkpidfile
+   if [ "$RETVAL" -eq "0" ]; then
+      log_success_msg "${NAME} (pid ${kpid}) is running..."
+   elif [ "$RETVAL" -eq "1" ]; then
+      log_failure_msg "PID file exists, but process is not running"
+   else
+      checklockfile
+      if [ "$RETVAL" -eq "2" ]; then
+         log_failure_msg "${NAME} lockfile exists but process is not running"
+      else
+         pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} -f "catalina\.home=${INSTALL_PATH//\//\\/}\s")"
+         if [ -z "$pid" ]; then
+             log_success_msg "${NAME} is stopped"
+             RETVAL="3"
+         else
+             log_success_msg "${NAME} (pid $pid) is running..."
+             RETVAL="0"
+         fi
+      fi
+  fi
+}
+
+function checklockfile()
+{
+   if [ -f ${LOCK_DIR}/${NAME} ]; then
+      pid="$(/usr/bin/pgrep -d , -u ${TOMCAT_USER} -G ${TOMCAT_GROUP} -f "catalina\.home=${INSTALL_PATH//\//\\/}\s")"
+# The lockfile exists but the process is not running
+      if [ -z "$pid" ]; then
+         RETVAL="2"
+      fi
+   fi
+}
+
+function checkpidfile()
+{
+   if [ -f "${CATALINA_PID}" ]; then
+      read kpid < ${CATALINA_PID}
+      if [ ! -z ${kpid} ] && [ -d "/proc/${kpid}" ]; then
+# The pid file exists and the process is running
+          RETVAL="0"
+      else
+# The pid file exists but the process is not running
+         RETVAL="1"
+         return
+      fi
+   fi
+# pid file does not exist and program is not running
+   RETVAL="3"
+}
+
+function usage()
+{
+   echo "Usage: $0 {start|stop|restart|condrestart|try-restart|reload|force-reload|status|version}"
+   RETVAL="2"
+}
+
+# See how we were called.
+RETVAL="0"
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    condrestart|try-restart)
+        if [ -f "${CATALINA_PID}" ]; then
+            stop
+            start
+        fi
+        ;;
+    reload)
+        RETVAL="3"
+        ;;
+    force-reload)
+        if [ -f "${CATALINA_PID}" ]; then
+            stop
+            start
+        fi
+        ;;
+    status)
+        status
+        ;;
+    version)
+        ${TOMCAT_SCRIPT} version
+        ;;
+    *)
+      usage
+      ;;
+esac
+
+exit $RETVAL

@@ -42,13 +42,16 @@ jobs:
         os:
           - 'amazonlinux'
           - 'amazonlinux-2'
-          - 'debian-9'
-          - 'debian-10'
           - 'centos-7'
+          - 'centos-8'
+          - 'debian-10'
+          - 'debian-9'
           - 'ubuntu-1804'
+          - 'ubuntu-2004'
         suite:
-          - 'multi-instance'
           - 'checksum-examples'
+          - 'multi-instance'
+          - 'templated-service'
       fail-fast: false
 
     steps:

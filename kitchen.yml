@@ -4,6 +4,8 @@ driver:
 
 provisioner:
   name: chef_zero
+  product_name: chef
+  product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
   deprecations_as_errors: true
   chef_license: accept-no-persist
 
@@ -23,10 +25,14 @@ platforms:
   - name: ubuntu-20.04
 
 suites:
+  - name: checksum_examples
+    run_list:
+      - recipe[test::sum_examples]
+
   - name: multi_instance
     run_list:
       - recipe[test]
 
-  - name: checksum_examples
+  - name: templated_service
     run_list:
-      - recipe[test::sum_examples]
+      - recipe[test::template_example]

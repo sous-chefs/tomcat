@@ -28,6 +28,12 @@ property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
 ]
 
+property :service_template_source, String, default: 'init_sysv.erb'
+property :service_template_cookbook, String, default: 'tomcat'
+
+property :setenv_template_source, String, default: 'setenv.erb'
+property :setenv_template_cookbook, String, default: 'tomcat'
+
 action :start do
   create_init
 
@@ -82,6 +88,9 @@ action_class do
     # suse is missing libraries we need for sys-v
     package 'perl-Getopt-Long-Descriptive' if platform_family?('suse')
 
+    # fedora can be missing chkconfig
+    package 'chkconfig' if node.platform?('fedora')
+
     # define the lock dir for RHEL vs. debian
     platform_lock_dir = value_for_platform_family(
       %w(rhel fedora suse) => '/var/lock/subsys',
@@ -99,9 +108,9 @@ action_class do
     end
 
     template "#{derived_install_path}/bin/setenv.sh" do
-      source 'setenv.erb'
+      source new_resource.setenv_template_source
       mode '0755'
-      cookbook 'tomcat'
+      cookbook new_resource.setenv_template_cookbook
       sensitive new_resource.sensitive
       notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
       variables(
@@ -111,8 +120,8 @@ action_class do
 
     template "/etc/init.d/tomcat_#{new_resource.instance_name}" do
       mode '0755'
-      source 'init_sysv.erb'
-      cookbook 'tomcat'
+      source new_resource.service_template_source
+      cookbook new_resource.service_template_cookbook
       variables(
         user: new_resource.tomcat_user,
         group: new_resource.tomcat_group,
