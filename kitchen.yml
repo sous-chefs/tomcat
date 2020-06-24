@@ -23,6 +23,12 @@ platforms:
   - name: debian-10
   - name: ubuntu-18.04
   - name: ubuntu-20.04
+  - name: windows2016
+    driver_config:
+      box: tas50/windows_2016
+  - name: windows2019
+    driver_config:
+      box: tas50/windows_2019
 
 suites:
   - name: checksum_examples
