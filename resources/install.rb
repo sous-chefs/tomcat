@@ -47,71 +47,50 @@ action :install do
   # Support file:// uri moniker but short-circuit into a better pattern.
   new_resource.tarball_path = new_resource.tarball_uri.sub(%r{^file://}, '') if new_resource.tarball_uri.start_with?('file://')
 
-  if platform?('windows')
-    directory 'tomcat install dir' do
-      path new_resource.install_path
-      recursive true
-    end
+  # some RHEL systems lack tar in their minimal install
+  package %w(tar gzip)
 
-    remote_file "apache #{new_resource.version} zip" do
-      source new_resource.tarball_uri
-      path new_resource.tarball_path
-      verify { |file| validate_tomcat_checksum(file, new_resource.version, new_resource.checksum_uri, new_resource.tarball_validate_ssl) } if new_resource.verify_checksum
-      # If a file already exists at the path specified, and we skip checksum verification, then we can assume that the file was laid down by the user.
-      not_if { ::File.exist?(new_resource.tarball_path) } unless new_resource.verify_checksum
-    end
+  group new_resource.tomcat_group do
+    action :create
+    append true
+    only_if { new_resource.create_group }
+  end
 
-    powershell_script 'extract tomcat zip' do
-      code generate_extraction_command
-      action :run
-      creates ::File.join(new_resource.install_path, 'LICENSE')
-    end
-  else
-    # some RHEL systems lack tar in their minimal install
-    package %w(tar gzip)
+  user new_resource.tomcat_user do
+    gid new_resource.tomcat_group
+    shell new_resource.tomcat_user_shell
+    system true
+    action :create
+    only_if { new_resource.create_user }
+  end
 
-    group new_resource.tomcat_group do
-      action :create
-      append true
-      only_if { new_resource.create_group }
-    end
+  directory 'tomcat install dir' do
+    mode new_resource.dir_mode.to_s
+    path new_resource.install_path
+    recursive true
+    owner new_resource.tomcat_user
+    group new_resource.tomcat_group
+  end
 
-    user new_resource.tomcat_user do
-      gid new_resource.tomcat_group
-      shell new_resource.tomcat_user_shell
-      system true
-      action :create
-      only_if { new_resource.create_user }
-    end
+  remote_file "apache #{new_resource.version} tarball" do
+    source new_resource.tarball_uri
+    path new_resource.tarball_path
+    verify { |file| validate_tomcat_checksum(file, new_resource.version, new_resource.checksum_uri, new_resource.tarball_validate_ssl) } if new_resource.verify_checksum
+    # If a file already exists at the path specified, and we skip checksum verification, then we can assume that the file was laid down by the user.
+    not_if { ::File.exist?(new_resource.tarball_path) } unless new_resource.verify_checksum
+  end
 
-    directory 'tomcat install dir' do
-      mode new_resource.dir_mode.to_s
-      path new_resource.install_path
-      recursive true
-      owner new_resource.tomcat_user
-      group new_resource.tomcat_group
-    end
+  execute 'extract tomcat tarball' do
+    command extraction_command
+    action :run
+    creates ::File.join(new_resource.install_path, 'LICENSE')
+  end
 
-    remote_file "apache #{new_resource.version} tarball" do
-      source new_resource.tarball_uri
-      path new_resource.tarball_path
-      verify { |file| validate_tomcat_checksum(file, new_resource.version, new_resource.checksum_uri, new_resource.tarball_validate_ssl) } if new_resource.verify_checksum
-      # If a file already exists at the path specified, and we skip checksum verification, then we can assume that the file was laid down by the user.
-      not_if { ::File.exist?(new_resource.tarball_path) } unless new_resource.verify_checksum
-    end
-
-    execute 'extract tomcat tarball' do
-      command extraction_command
-      action :run
-      creates ::File.join(new_resource.install_path, 'LICENSE')
-    end
-
-    # make sure the instance's user owns the instance install dir
-    execute "chown install dir as tomcat_#{new_resource.instance_name}" do
-      command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}"
-      action :run
-      not_if { Etc.getpwuid(::File.stat("#{new_resource.install_path}/LICENSE").uid).name == new_resource.tomcat_user }
-    end
+  # make sure the instance's user owns the instance install dir
+  execute "chown install dir as tomcat_#{new_resource.instance_name}" do
+    command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}"
+    action :run
+    not_if { Etc.getpwuid(::File.stat("#{new_resource.install_path}/LICENSE").uid).name == new_resource.tomcat_user }
   end
 
   # create a link that points to the latest version of the instance
