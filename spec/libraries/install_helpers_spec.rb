@@ -97,4 +97,8 @@ RSpec.describe TomcatCookbook::InstallHelpers do
       end
     end
   end
+
+  # TODO: Add test for fetch_tomcat_checksum
+
+  # TODO: Add test for validate_tomcat_checksum
 end
