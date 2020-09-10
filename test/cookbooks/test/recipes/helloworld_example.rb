@@ -24,6 +24,17 @@ tomcat_install 'dirworld' do
   tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz'
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
+  create_symlink false
+end
+
+# Install Tomcat 8.5.54 to a custom symlink path
+tomcat_install 'symworld' do
+  version '8.5.54'
+  dir_mode '0755'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz'
+  tomcat_user 'cool_user'
+  tomcat_group 'cool_group'
+  symlink_path '/opt/tomcat_symworld_custom'
 end
 
 # Drop off our own server.xml that uses a non-default port setup
