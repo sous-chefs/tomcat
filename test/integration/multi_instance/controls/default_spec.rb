@@ -4,12 +4,12 @@ sleep 10
 version_8_5 = attribute('tomcat_version_8_5').tr('.', '_')
 version_7 = attribute('tomcat_version_7').tr('.', '_')
 
-describe file("/opt/tomcat_symworld_custom") do
+describe file('/opt/tomcat_symworld_custom') do
   it { should be_symlink }
   it { should be_linked_to "/opt/tomcat_symworld_#{version_8_5}" }
 end
 
-describe file("/opt/tomcat_helloworld") do
+describe file('/opt/tomcat_helloworld') do
   it { should be_symlink }
   it { should be_linked_to "/opt/tomcat_helloworld_#{version_8_5}" }
 end
@@ -29,7 +29,7 @@ if file('/etc/init/tomcat_helloworld.conf').exist?
   end
 end
 
-describe file("/opt/tomcat_dirworld") do
+describe file('/opt/tomcat_dirworld') do
   it { should_not exist }
 end
 
