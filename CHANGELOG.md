@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## Unreleased
+## 3.5.0 (2020-09-11)
 
 - Adds `create_symlink` property to `tomcat_install` to allow opting out of creation - [@jakauppila](https://github.com/jakauppila)
 - Adds `symlink_path` property to `tomcat_install` to customize symlink path - [@jakauppila](https://github.com/jakauppila)
