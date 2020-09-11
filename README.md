@@ -38,12 +38,14 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 #### properties
 
 - `version`: The version to install. Default: 8.5.54
-- `install_path`: Full path to the install directory. Default: /opt/tomcat_INSTANCENAME_VERSION
-- `tarball_base_uri`: The base uri to the apache mirror containing the tarballs. Default: '<http://archive.apache.org/dist/tomcat/>'
+- `version_archive`: The filename of the versioned archive to install. Default: apache-tomcat-VERSION.tar.gz
+- `install_path`: Full path to the install directory. Default: `/opt/tomcat_INSTANCENAME_VERSION`
+- `tarball_base_uri`: The base uri to the apache mirror containing the tarballs. Default: `<http://archive.apache.org/dist/tomcat/>'
 - `checksum_base_uri`: The base uri to the apache mirror containing the md5 or sha512 file. Default: '<http://archive.apache.org/dist/tomcat/>'
 - `verify_checksum`: Whether the checksum should be verified against `checksum_base_uri`. Default: `true`.
 - `dir_mode`: Directory permissions of the `install_path`. Default: `'0750'`.
-- `tarball_uri`: The complete uri to the tarball. If specified would override (`tarball_base_uri` and `checksum_base_uri`). checksum will be loaded from "#{tarball_uri}.{md5,sha512}". This attribute is useful, if you are hosting tomcat tarballs from artifact repositories such as nexus. `sha512` sums are used for version constraints: `~> 7.0.84`, `~> 8.0.48`, `~> 8.5.24`, `~> 9.0.10`.
+- `tarball_uri`: The complete uri to the tarball. Default: `TARBALL_BASE_URI/tomcat-#{major_version(version)}/v#{version}/bin/#{version_archive}.#{version_checksum_algorithm(version)}`
+- `checksum_uri`: The complete uri to the tarball checksum. Default: `CHECKSUM_BASE_URI/tomcat-#{major_version(version)}/v#{version}/bin/#{version_archive}.#{version_checksum_algorithm(version)}`
 - `tarball_path`: Local path on disk to the tarball. If the file does not exist, or the checksum does not match, it will be downloaded from `tarball_uri`.
 - `tarball_validate_ssl`: Validate the SSL certificate, if `tarball_uri` is using HTTPS. Default `true`.
 - `exclude_docs`: Exclude ./webapps/docs from installation. Default `true`.
@@ -55,10 +57,12 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
 - `create_user`: Creates the specified tomcat_user within the OS.  Default `true`.
 - `create_group`: Creates the specified tomcat_group within the OS. Default `true`.
-- `service_template_source`: Source template file for the sys-v/upstart/systemd service definition. Default: 'init_sysv.erb'
-- `service_template_cookbook`: Cookbook from which to source the sys-v/upstart/systemd service definition template. Default: 'tomcat'
-- `setenv_template_source`: Source template file for the sys-v 'setenv' file. Default: 'setenv.erb'
-- `setenv_template_cookbook`: Cookbook from which to source the sys-v 'setenv' file. Default: 'tomcat'
+- `service_template_source`: Source template file for the sys-v/upstart/systemd service definition. Default: `init_sysv.erb`
+- `service_template_cookbook`: Cookbook from which to source the sys-v/upstart/systemd service definition template. Default: `tomcat`
+- `setenv_template_source`: Source template file for the sys-v 'setenv' file. Default: `setenv.erb`
+- `setenv_template_cookbook`: Cookbook from which to source the sys-v 'setenv' file. Default: `tomcat`
+- `create_symlink`: Creates symlink at SYMLINK_PATH to INSTALL_PATH. Default: `true`
+- `symlink_path`: Full path to where the symlink will be created targetting INSTALL_PATH. Default: `/opt/tomcat_INSTANCE_NAME`
 
 #### example
 
