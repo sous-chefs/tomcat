@@ -1,7 +1,7 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
 
-require_relative '../libraries/install_helpers.rb'
+require_relative '../libraries/install_helpers'
 
 RSpec.configure do |config|
   config.color = true               # Use color in STDOUT
