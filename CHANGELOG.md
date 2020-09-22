@@ -8,6 +8,7 @@ This file is used to list changes made in each version of the tomcat cookbook.
 - Adds `service_name` property to `tomcat_service` to allow customizing service name
 - Adds `create` action to `tomcat_service` to allow creating a tomcat service without starting
 - Adds `service_template_local` property to `tomcat_service` to allow utilizing a local path for service template
+- Remove support for `sysv_init` and thus `amazonlinux` from tests
 
 ## 3.5.0 (2020-09-11)
 

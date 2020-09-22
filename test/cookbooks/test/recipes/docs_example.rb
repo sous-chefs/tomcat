@@ -9,8 +9,8 @@ tomcat_install 'docs' do
   install_path '/opt/special/tomcat_docs_7_0_103/'
 end
 
-# start the tomcat docs install as a sys-v init service (because we hate ourselves)
-tomcat_service_sysv_init 'docs' do
+# start the tomcat docs install
+tomcat_service 'docs' do
   action [:start, :enable]
   install_path '/opt/special/tomcat_docs_7_0_103/'
 end
