@@ -24,6 +24,7 @@ property :instance_name, String, name_property: true
 property :install_path, String
 property :tomcat_user, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :tomcat_group, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
+property :service_name, String, default: lazy { |r| "tomcat_#{r.instance_name}" }
 property :env_vars, Array, default: [
   { 'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid' },
 ]
@@ -33,28 +34,77 @@ property :service_template_cookbook, String, default: 'tomcat'
 
 property :setenv_template_source, String, default: 'setenv.erb'
 property :setenv_template_cookbook, String, default: 'tomcat'
+property :service_template_local, [true, false], default: false
 
 action :start do
-  create_init
+  action_create
 
-  service "tomcat_#{new_resource.instance_name}" do
+  service new_resource.service_name do
     provider platform_sysv_init_class
     supports restart: true, status: true
     action :start
   end
 end
 
+action :create do
+  # suse is missing libraries we need for sys-v
+  package 'perl-Getopt-Long-Descriptive' if platform_family?('suse')
+
+  # fedora can be missing chkconfig
+  package 'chkconfig' if node.platform?('fedora')
+
+  # define the lock dir for RHEL vs. debian
+  platform_lock_dir = value_for_platform_family(
+    %w(rhel fedora suse) => '/var/lock/subsys',
+    'debian' => '/var/lock',
+    'default' => '/var/lock'
+  )
+
+  # the init script will not run without redhat-lsb packages
+  if platform_family?('rhel', 'fedora')
+    if node['platform_version'].to_i < 6.0
+      package 'redhat-lsb'
+    else
+      package 'redhat-lsb-core'
+    end
+  end
+
+  template "#{derived_install_path}/bin/setenv.sh" do
+    source new_resource.setenv_template_source
+    mode '0755'
+    cookbook new_resource.setenv_template_cookbook
+    sensitive new_resource.sensitive
+    variables(
+      env_vars: envs_with_catalina_base
+    )
+  end
+
+  template "/etc/init.d/#{new_resource.service_name}" do
+    mode '0755'
+    source new_resource.service_template_source
+    cookbook new_resource.service_template_cookbook unless new_resource.service_template_local
+    local new_resource.service_template_local
+    variables(
+      user: new_resource.tomcat_user,
+      group: new_resource.tomcat_group,
+      lock_dir: platform_lock_dir,
+      install_path: derived_install_path,
+      instance_name: new_resource.instance_name
+    )
+  end
+end
+
 action :stop do
-  service "tomcat_#{new_resource.instance_name}" do
+  service new_resource.service_name do
     provider platform_sysv_init_class
     supports status: true
     action :stop
-    only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
+    only_if { ::File.exist?("/etc/init.d/#{new_resource.service_name}") }
   end
 end
 
 action :restart do
-  service "tomcat_#{new_resource.instance_name}" do
+  service new_resource.service_name do
     provider platform_sysv_init_class
     supports status: true
     action :restart
@@ -62,73 +112,25 @@ action :restart do
 end
 
 action :enable do
-  create_init
+  action_create
 
-  service "tomcat_#{new_resource.instance_name}" do
+  service new_resource.service_name do
     provider platform_sysv_init_class
     supports status: true
     action :enable
-    only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
+    only_if { ::File.exist?("/etc/init.d/#{new_resource.service_name}") }
   end
 end
 
 action :disable do
-  service "tomcat_#{new_resource.instance_name}" do
+  service new_resource.service_name do
     provider platform_sysv_init_class
     supports status: true
     action :disable
-    only_if { ::File.exist?("/etc/init.d/tomcat_#{new_resource.instance_name}") }
+    only_if { ::File.exist?("/etc/init.d/#{new_resource.service_name}") }
   end
 end
 
 action_class do
   include ::TomcatCookbook::ServiceHelpers
-
-  def create_init
-    # suse is missing libraries we need for sys-v
-    package 'perl-Getopt-Long-Descriptive' if platform_family?('suse')
-
-    # fedora can be missing chkconfig
-    package 'chkconfig' if node.platform?('fedora')
-
-    # define the lock dir for RHEL vs. debian
-    platform_lock_dir = value_for_platform_family(
-      %w(rhel fedora suse) => '/var/lock/subsys',
-      'debian' => '/var/lock',
-      'default' => '/var/lock'
-    )
-
-    # the init script will not run without redhat-lsb packages
-    if platform_family?('rhel', 'fedora')
-      if node['platform_version'].to_i < 6.0
-        package 'redhat-lsb'
-      else
-        package 'redhat-lsb-core'
-      end
-    end
-
-    template "#{derived_install_path}/bin/setenv.sh" do
-      source new_resource.setenv_template_source
-      mode '0755'
-      cookbook new_resource.setenv_template_cookbook
-      sensitive new_resource.sensitive
-      notifies :restart, "service[tomcat_#{new_resource.instance_name}]"
-      variables(
-        env_vars: envs_with_catalina_base
-      )
-    end
-
-    template "/etc/init.d/tomcat_#{new_resource.instance_name}" do
-      mode '0755'
-      source new_resource.service_template_source
-      cookbook new_resource.service_template_cookbook
-      variables(
-        user: new_resource.tomcat_user,
-        group: new_resource.tomcat_group,
-        lock_dir: platform_lock_dir,
-        install_path: derived_install_path,
-        instance_name: new_resource.instance_name
-      )
-    end
-  end
 end

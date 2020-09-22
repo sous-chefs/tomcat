@@ -94,12 +94,17 @@ tomcat_service sets up the installed tomcat instance to run using the appropriat
 - `env_vars`: An array of hashes containing the environmental variables for Tomcat's setenv.sh script. Note: If CATALINA_BASE is not passed it will automatically be added as the first item in the array. Default: [ {'CATALINA_BASE' => '/opt/INSTANCE_NAME/'}, {'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid'} ]
 - `service_vars`: An array of hashes containing additional systemd directives when setting up a service under systemd.
 - `sensitive`: Excludes diffs that may expose ENV values from the chef-client logs. Default: `false`
+- `service_name`: The service name to configure. Default: `tomcat_INSTANCE_NAME`
 - `tomcat_user`: The user the service runs under
 - `tomcat_group`: The group the service runs under
+- `service_template_source`: The service template source for the appropriate init system.
+- `service_template_cookbook`: The cookbook that contains the service template source template. Default: `tomcat`
+- `service_template_local`: Specifies if `service_template_source` is a local path rather than sourced from a cookbook. Default: `false`
 
 #### actions
 
 - `start`
+- `create`
 - `stop`
 - `enable`
 - `disable`

@@ -73,6 +73,10 @@ describe command('curl http://localhost:8080/') do
   its('stdout') { should match(/successfully installed Tomcat/) }
 end
 
+describe command('curl http://localhost:8082/sample/') do
+  its('stdout') { should match(/Hello, World/) }
+end
+
 %w(cool_user tomcat_docs).each do |user_name|
   describe user(user_name) do
     it { should exist }
@@ -100,4 +104,16 @@ describe service('tomcat_helloworld') do
   it { should be_installed }
   it { should be_enabled }
   it { should be_running }
+end
+
+describe service('tomcat_my_custom_service_name') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should be_running }
+end
+
+describe service('tomcat_dirworld') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should_not be_running }
 end

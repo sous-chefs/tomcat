@@ -65,3 +65,64 @@ tomcat_service 'helloworld' do
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
 end
+
+template '/opt/tomcat_symworld_custom/conf/server.xml' do
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables(
+    shutdown_port: 8007,
+    http_port: 8082,
+    https_port: 8445
+  )
+  notifies :restart, 'tomcat_service[symworld]'
+end
+
+remote_file '/opt/tomcat_symworld_custom/webapps/sample.war' do
+  owner 'cool_user'
+  mode '0644'
+  source 'https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/sample.war'
+  checksum '89b33caa5bf4cfd235f060c396cb1a5acb2734a1366db325676f48c5f5ed92e5'
+end
+
+cookbook_file "#{Chef::Config['file_cache_path']}/my_custom_systemd.erb" do
+  source 'my_custom_systemd.erb'
+  owner 'cool_user'
+  group 'cool_group'
+  mode '0755'
+  action :create
+end
+
+# Create a service with a custom service name, and sourcing the service_template from a local file path
+tomcat_service 'symworld' do
+  action [:start, :enable]
+  install_path '/opt/tomcat_symworld_custom'
+  env_vars [{ 'CATALINA_BASE' => '/opt/tomcat_symworld_custom' }]
+  sensitive true
+  tomcat_user 'cool_user'
+  tomcat_group 'cool_group'
+  service_name 'tomcat_my_custom_service_name'
+  service_template_source "#{Chef::Config['file_cache_path']}/my_custom_systemd.erb"
+  service_template_local true
+end
+
+template '/opt/tomcat_dirworld_8_5_54/conf/server.xml' do
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables(
+    shutdown_port: 8008,
+    http_port: 8083,
+    https_port: 8446
+  )
+end
+
+# Create a service that is created/enabled, but not started
+tomcat_service 'dirworld' do
+  action [:create, :enable]
+  install_path '/opt/tomcat_dirworld_8_5_54'
+  env_vars [{ 'CATALINA_BASE' => '/opt/tomcat_dirworld' }]
+  sensitive true
+  tomcat_user 'cool_user'
+  tomcat_group 'cool_group'
+end
