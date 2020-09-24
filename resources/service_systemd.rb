@@ -49,6 +49,7 @@ action :start do
 end
 
 action :create do
+  # TODO: Consider utilizing `systemd_unit` if there is a way to continue to source the content from templates. Discussed in https://github.com/sous-chefs/tomcat/pull/358#discussion_r492897903
   template "/etc/systemd/system/#{new_resource.service_name}.service" do
     source new_resource.service_template_source
     sensitive new_resource.sensitive
