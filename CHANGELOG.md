@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## Unreleased
+## 4.0.0 (2020-09-28)
 
 - resolved cookstyle error: spec/spec_helper.rb:4:18 convention: `Style/RedundantFileExtensionInRequire`
 - Adds `service_name` property to `tomcat_service` to allow customizing service name
