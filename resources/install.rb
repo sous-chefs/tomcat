@@ -87,7 +87,7 @@ action :install do
   end
 
   # make sure the instance's user owns the instance install dir
-  execute "chown install dir as tomcat_#{new_resource.instance_name}" do
+  execute "chown #{new_resource.install_path} as #{new_resource.tomcat_user}" do
     command "chown -R #{new_resource.tomcat_user}:#{new_resource.tomcat_group} #{new_resource.install_path}"
     action :run
     not_if { Etc.getpwuid(::File.stat("#{new_resource.install_path}/LICENSE").uid).name == new_resource.tomcat_user }

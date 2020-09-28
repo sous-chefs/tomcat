@@ -19,12 +19,7 @@ template "/opt/#{service_name}/conf/server.xml" do
   notifies :restart, "tomcat_service[#{instance_name}]"
 end
 
-init_template = case node['init_package']
-                when 'systemd', 'upstart'
-                  "my_init_#{node['init_package']}.erb"
-                else
-                  'my_init_sysv.erb'
-                end
+init_template = "my_init_#{node['init_package']}.erb"
 
 tomcat_service instance_name do
   service_template_source init_template

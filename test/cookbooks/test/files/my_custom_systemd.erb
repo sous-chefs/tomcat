@@ -1,0 +1,32 @@
+# Systemd unit file for tomcat_<%= @instance %>
+
+[Unit]
+Description=My Apache Tomcat Application
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+<% @env_vars.each do |h| -%>
+  <% h.each_pair do |k,v| -%>
+Environment="<%= k -%>=<%= v %>"
+  <% end -%>
+<% end -%>
+
+<% @service_vars.each do |h| -%>
+  <% h.each_pair do |k,v| -%>
+<%= k -%>=<%= v %>
+  <% end -%>
+<% end -%>
+
+ExecStart=<%= @install_path %>/bin/catalina.sh start
+ExecStop=<%= @install_path %>/bin/catalina.sh stop
+SuccessExitStatus=0 143
+Restart=on-failure
+RestartSec=2
+
+User=<%= @user %>
+Group=<%= @group %>
+
+[Install]
+WantedBy=multi-user.target

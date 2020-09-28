@@ -57,10 +57,8 @@ tomcat_install installs an instance of the tomcat binary direct from Apache's mi
 - `tomcat_user_shell`: Shell of the tomcat user. Default: `/bin/false`
 - `create_user`: Creates the specified tomcat_user within the OS.  Default `true`.
 - `create_group`: Creates the specified tomcat_group within the OS. Default `true`.
-- `service_template_source`: Source template file for the sys-v/upstart/systemd service definition. Default: `init_sysv.erb`
-- `service_template_cookbook`: Cookbook from which to source the sys-v/upstart/systemd service definition template. Default: `tomcat`
-- `setenv_template_source`: Source template file for the sys-v 'setenv' file. Default: `setenv.erb`
-- `setenv_template_cookbook`: Cookbook from which to source the sys-v 'setenv' file. Default: `tomcat`
+- `service_template_source`: Source template file for the upstart/systemd service definition. Default: `init_#{node['init_package']}.erb`
+- `service_template_cookbook`: Cookbook from which to source the upstart/systemd service definition template. Default: `tomcat`
 - `create_symlink`: Creates symlink at SYMLINK_PATH to INSTALL_PATH. Default: `true`
 - `symlink_path`: Full path to where the symlink will be created targetting INSTALL_PATH. Default: `/opt/tomcat_INSTANCE_NAME`
 
@@ -86,7 +84,7 @@ end
 
 ### tomcat_service
 
-tomcat_service sets up the installed tomcat instance to run using the appropriate init system (sys-v, upstart, or systemd)
+tomcat_service sets up the installed tomcat instance to run using the appropriate init system (upstart or systemd)
 
 #### properties
 
@@ -94,12 +92,17 @@ tomcat_service sets up the installed tomcat instance to run using the appropriat
 - `env_vars`: An array of hashes containing the environmental variables for Tomcat's setenv.sh script. Note: If CATALINA_BASE is not passed it will automatically be added as the first item in the array. Default: [ {'CATALINA_BASE' => '/opt/INSTANCE_NAME/'}, {'CATALINA_PID' => '$CATALINA_BASE/bin/tomcat.pid'} ]
 - `service_vars`: An array of hashes containing additional systemd directives when setting up a service under systemd.
 - `sensitive`: Excludes diffs that may expose ENV values from the chef-client logs. Default: `false`
+- `service_name`: The service name to configure. Default: `tomcat_INSTANCE_NAME`
 - `tomcat_user`: The user the service runs under
 - `tomcat_group`: The group the service runs under
+- `service_template_source`: The service template source for the appropriate init system.
+- `service_template_cookbook`: The cookbook that contains the service template source template. Default: `tomcat`
+- `service_template_local`: Specifies if `service_template_source` is a local path rather than sourced from a cookbook. Default: `false`
 
 #### actions
 
 - `start`
+- `create`
 - `stop`
 - `enable`
 - `disable`
