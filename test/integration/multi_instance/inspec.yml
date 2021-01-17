@@ -8,6 +8,11 @@ license: Apache 2.0
 summary: A set of tests surrounding running multiple tomcat instances
 
 attributes:
+  - name: tomcat_version_10
+    description: if audit is running alongside splunk
+    value: 10.0.0
+    type: string
+
   - name: tomcat_version_8_5
     description: if audit is running alongside splunk
     value: 8.5.54

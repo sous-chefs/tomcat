@@ -1,6 +1,7 @@
 puts 'Sleeping to make sure the services are started'
 sleep 10
 
+version_10 = attribute('tomcat_version_10').tr('.', '_')
 version_8_5 = attribute('tomcat_version_8_5').tr('.', '_')
 version_7 = attribute('tomcat_version_7').tr('.', '_')
 
@@ -11,10 +12,10 @@ end
 
 describe file('/opt/tomcat_helloworld') do
   it { should be_symlink }
-  it { should be_linked_to "/opt/tomcat_helloworld_#{version_8_5}" }
+  it { should be_linked_to "/opt/tomcat_helloworld_#{version_10}" }
 end
 
-describe file("/opt/tomcat_helloworld_#{version_8_5}") do
+describe file("/opt/tomcat_helloworld_#{version_10}") do
   it { should be_directory }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
@@ -40,7 +41,7 @@ describe file("/opt/tomcat_dirworld_#{version_8_5}") do
   its('mode') { should cmp '0755' }
 end
 
-describe file("/opt/tomcat_helloworld_#{version_8_5}/LICENSE") do
+describe file("/opt/tomcat_helloworld_#{version_10}/LICENSE") do
   it { should be_file }
   it { should be_owned_by 'cool_user' }
   its('group') { should eq 'cool_group' }
