@@ -79,8 +79,16 @@ RSpec.describe TomcatCookbook::InstallHelpers do
       end
     end
 
-    context '9.0.37' do
-      let(:version) { '9.0.37' }
+    context '9.0.9' do
+      let(:version) { '9.0.9' }
+
+      it 'returns the correct uri algorithm' do
+        expect(subject.version_checksum_algorithm(version)).to eq 'md5'
+      end
+    end
+
+    context '9.0.10' do
+      let(:version) { '9.0.10' }
 
       it 'returns the correct uri' do
         expect(subject.version_checksum_algorithm(version)).to eq 'sha512'

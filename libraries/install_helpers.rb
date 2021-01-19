@@ -33,7 +33,7 @@ module TomcatCookbook
         'sha512'
       when -> (v) { Gem::Requirement.new('~> 8.5.24').satisfied_by?(v) }
         'sha512'
-      when -> (v) { Gem::Requirement.new('~> 9.0.10').satisfied_by?(v) }
+      when -> (v) { Gem::Requirement.new('>= 9.0.10').satisfied_by?(v) }
         'sha512'
       else
         'md5'

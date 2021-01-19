@@ -11,8 +11,8 @@ end
 
 # Install Tomcat 8.5.54 to the default location
 tomcat_install 'helloworld' do
-  version '8.5.54'
-  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz'
+  version '10.0.0'
+  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-10/v10.0.0/bin/apache-tomcat-10.0.0.tar.gz'
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
 end
@@ -53,7 +53,7 @@ end
 remote_file '/opt/tomcat_helloworld/webapps/sample.war' do
   owner 'cool_user'
   mode '0644'
-  source 'https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/sample.war'
+  source 'https://tomcat.apache.org/tomcat-10.0-doc/appdev/sample/sample.war'
   checksum '89b33caa5bf4cfd235f060c396cb1a5acb2734a1366db325676f48c5f5ed92e5'
 end
 

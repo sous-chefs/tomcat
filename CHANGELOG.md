@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## Unreleased
+
+- Added Tomcat 10 support for `tomcat_install`
+
 ## 4.0.0 (2020-09-28)
 
 - resolved cookstyle error: spec/spec_helper.rb:4:18 convention: `Style/RedundantFileExtensionInRequire`
