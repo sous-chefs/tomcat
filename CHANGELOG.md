@@ -4,7 +4,7 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## Unreleased
 
-- Adds Tomcat 10 support for `tomcat_install`
+- Added Tomcat 10 support for `tomcat_install`
 
 ## 4.0.0 (2020-09-28)
 
