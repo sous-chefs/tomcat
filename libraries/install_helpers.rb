@@ -49,17 +49,29 @@ module TomcatCookbook
     # we have to do this since the md5 chef expects isn't hosted
     def fetch_tomcat_checksum(checksum_uri, validate_ssl)
       uri = URI(checksum_uri)
-      request = Net::HTTP.new(uri.host, uri.port)
-      if uri.to_s.start_with?('https')
-        request.use_ssl = true
-        request.verify_mode = OpenSSL::SSL::VERIFY_NONE unless validate_ssl
+
+      case uri.scheme
+      when 'file'
+        checksum_content = IO.read(uri.path)
+      when 'http', 'https'
+        request = Net::HTTP.new(uri.host, uri.port)
+
+        if uri.scheme == 'https'
+          request.use_ssl = true
+          request.verify_mode = OpenSSL::SSL::VERIFY_NONE unless validate_ssl
+        end
+
+        response = request.get(uri)
+
+        if response.code != '200'
+          Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
+          raise
+        end
+
+        checksum_content = response.body
       end
-      response = request.get(uri)
-      if response.code != '200'
-        Chef::Log.fatal("Fetching the Tomcat tarball checksum at #{uri} resulted in an error #{response.code}")
-        raise
-      end
-      response.body.split(' ')[0]
+
+      checksum_content.split(' ')[0]
     rescue => e
       Chef::Log.fatal("Could not fetch the checksum due to an error: #{e}")
       raise
