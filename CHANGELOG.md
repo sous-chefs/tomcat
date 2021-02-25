@@ -2,6 +2,8 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
+## Unreleased
+
 ## 4.2.0 - *2021-02-25*
 
 - Adds support for specifying `file://` paths for `checksum_uri` on `tomcat_install`
