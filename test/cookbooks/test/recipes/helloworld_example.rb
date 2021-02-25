@@ -9,10 +9,21 @@ group 'cool_group' do
   action :create
 end
 
+remote_file "#{Chef::Config['file_cache_path']}/apache-tomcat-10.0.0.tar.gz" do
+  source 'http://archive.apache.org/dist/tomcat/tomcat-10/v10.0.0/bin/apache-tomcat-10.0.0.tar.gz'
+  action :create
+end
+
+remote_file "#{Chef::Config['file_cache_path']}/apache-tomcat-10.0.0.tar.gz.sha512" do
+  source 'http://archive.apache.org/dist/tomcat/tomcat-10/v10.0.0/bin/apache-tomcat-10.0.0.tar.gz.sha512'
+  action :create
+end
+
 # Install Tomcat 8.5.54 to the default location
 tomcat_install 'helloworld' do
   version '10.0.0'
-  tarball_uri 'http://archive.apache.org/dist/tomcat/tomcat-10/v10.0.0/bin/apache-tomcat-10.0.0.tar.gz'
+  tarball_uri "file://#{Chef::Config['file_cache_path']}/apache-tomcat-10.0.0.tar.gz"
+  checksum_uri "file://#{Chef::Config['file_cache_path']}/apache-tomcat-10.0.0.tar.gz.sha512"
   tomcat_user 'cool_user'
   tomcat_group 'cool_group'
 end
