@@ -4,6 +4,8 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## Unreleased
 
+- resolved cookstyle error: resources/service_systemd.rb:1:1 refactor: `Chef/Deprecations/ResourceWithoutUnifiedTrue`
+- resolved cookstyle error: resources/service_upstart.rb:1:1 refactor: `Chef/Deprecations/ResourceWithoutUnifiedTrue`
 ## 4.2.0 - *2021-02-25*
 
 - Adds support for specifying `file://` paths for `checksum_uri` on `tomcat_install`
