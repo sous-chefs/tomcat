@@ -1,9 +1,9 @@
 puts 'Sleeping to make sure the services are started'
 sleep 10
 
-version_10 = attribute('tomcat_version_10').tr('.', '_')
-version_8_5 = attribute('tomcat_version_8_5').tr('.', '_')
-version_7 = attribute('tomcat_version_7').tr('.', '_')
+version_10 = input('tomcat_version_10').tr('.', '_')
+version_8_5 = input('tomcat_version_8_5').tr('.', '_')
+version_7 = input('tomcat_version_7').tr('.', '_')
 
 describe file('/opt/tomcat_symworld_custom') do
   it { should be_symlink }
