@@ -18,6 +18,7 @@
 #
 
 provides :tomcat_service_upstart
+unified_mode true
 
 provides :tomcat_service, platform_family: 'debian' do |_node|
   Chef::Platform::ServiceHelpers.service_resource_providers.include?(:upstart) &&

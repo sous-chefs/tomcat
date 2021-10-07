@@ -4,6 +4,11 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## Unreleased
 
+- resolved cookstyle error: resources/service_systemd.rb:1:1 refactor: `Chef/Deprecations/ResourceWithoutUnifiedTrue`
+- resolved cookstyle error: resources/service_upstart.rb:1:1 refactor: `Chef/Deprecations/ResourceWithoutUnifiedTrue`
+- resolved cookstyle error: test/integration/multi_instance/controls/default_spec.rb:4:14 warning: `InSpec/Deprecations/AttributeHelper`
+- resolved cookstyle error: test/integration/multi_instance/controls/default_spec.rb:5:15 warning: `InSpec/Deprecations/AttributeHelper`
+- resolved cookstyle error: test/integration/multi_instance/controls/default_spec.rb:6:13 warning: `InSpec/Deprecations/AttributeHelper`
 ## 4.2.2 - *2021-08-30*
 
 - Standardise files with files in sous-chefs/repo-management

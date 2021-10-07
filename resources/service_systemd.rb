@@ -18,6 +18,7 @@
 #
 
 provides :tomcat_service_systemd
+unified_mode true
 
 provides :tomcat_service, os: 'linux' do |_node|
   Chef::Platform::ServiceHelpers.service_resource_providers.include?(:systemd)
