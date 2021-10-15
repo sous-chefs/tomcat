@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true if respond_to?(:unified_mode)
+
 include TomcatCookbook::InstallHelpers
 
 property :instance_name, String, name_property: true
