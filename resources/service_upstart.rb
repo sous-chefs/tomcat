@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-unified_mode true if respond_to?(:unified_mode)
+unified_mode true
 
 provides :tomcat_service_upstart
 
