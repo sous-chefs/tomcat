@@ -1,5 +1,5 @@
 # make sure we have java installed
-include_recipe 'java'
+include_recipe 'test::install_java'
 
 user 'chefed'
 

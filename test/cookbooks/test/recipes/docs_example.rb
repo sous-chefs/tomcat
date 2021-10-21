@@ -1,5 +1,5 @@
 # make sure we have java installed
-include_recipe 'java'
+include_recipe 'test::install_java'
 
 # Install Tomcat 7.0.103 to a custom path and install the example content / docs
 tomcat_install 'docs' do

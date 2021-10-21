@@ -1,4 +1,4 @@
-include_recipe 'java'
+include_recipe 'test::install_java'
 
 instance_name = 'template'
 service_name = "tomcat_#{instance_name}"
