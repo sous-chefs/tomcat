@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 provides :tomcat_service_systemd
 
 provides :tomcat_service, os: 'linux' do |_node|

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 provides :tomcat_service_upstart
 
 provides :tomcat_service, platform_family: 'debian' do |_node|

@@ -6,5 +6,4 @@ version '1.0.0'
 
 depends 'tomcat'
 
-# final version to support a default recipe and chef < 13.4
-depends 'java', '<= 6.0.0'
+depends 'java', '<= 11.0.0'

@@ -1,5 +1,5 @@
 # make sure we have java installed
-include_recipe 'java'
+include_recipe 'test::install_java'
 
 # Install Tomcat 9.0.34 (and verify against sha512 sums since we're 9.0.34 or later)
 tomcat_install 'docs_90' do
