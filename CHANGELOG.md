@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## Unreleased
+## 5.0.0 - *2021-10-26*
 
 - Enabled `unified_mode` for all resources.
 - Dropped support for Chef < 15.3
