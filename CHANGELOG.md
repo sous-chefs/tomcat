@@ -4,6 +4,7 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## Unreleased
 
+- resolved cookstyle error: resources/install.rb:80:5 refactor: `Chef/RedundantCode/UseCreateIfMissing`
 - resolved cookstyle error: resources/service_systemd.rb:1:1 refactor: `Chef/Deprecations/ResourceWithoutUnifiedTrue`
 - resolved cookstyle error: resources/service_upstart.rb:1:1 refactor: `Chef/Deprecations/ResourceWithoutUnifiedTrue`
 - resolved cookstyle error: test/integration/multi_instance/controls/default_spec.rb:4:14 warning: `InSpec/Deprecations/AttributeHelper`
