@@ -4,6 +4,8 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## Unreleased
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 5.0.0 - *2021-10-26*
 
 - Enabled `unified_mode` for all resources.
