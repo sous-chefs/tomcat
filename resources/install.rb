@@ -79,7 +79,7 @@ action :install do
     path new_resource.tarball_path
     verify { |file| validate_tomcat_checksum(file, new_resource.version, new_resource.checksum_uri, new_resource.tarball_validate_ssl) } if new_resource.verify_checksum
     # If a file already exists at the path specified, and we skip checksum verification, then we can assume that the file was laid down by the user.
-    not_if { ::File.exist?(new_resource.tarball_path) } unless new_resource.verify_checksum
+    action :create_if_missing unless new_resource.verify_checksum
   end
 
   execute 'extract tomcat tarball' do

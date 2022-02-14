@@ -1,9 +1,8 @@
-name 'test'
-maintainer 'Chef Software, Inc.'
-maintainer_email 'cookbooks@chef.io'
-license 'Apache-2.0'
-version '1.0.0'
+name             'test'
+maintainer       'test cookbook'
+license          'Apache-2.0'
+description      'A test cookbook for the Tomcat cookbook'
+version          '0.1.0'
 
+depends 'java'
 depends 'tomcat'
-
-depends 'java', '<= 11.0.0'
