@@ -31,6 +31,8 @@ platforms:
     driver:
       image: dokken/centos-8
       pid_one_command: /usr/lib/systemd/systemd
+      intermediate_instructions:
+        - RUN dnf --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
 
   - name: debian-9
     driver:
