@@ -8,7 +8,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@0.0.34
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@0.0.3
 
   integration:
     needs: lint-unit
