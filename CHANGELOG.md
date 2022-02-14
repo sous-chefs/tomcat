@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## Unreleased
+## 5.0.2 - *2022-02-14*
 
 - resolved cookstyle error: resources/install.rb:82:5 refactor: `Chef/RedundantCode/UseCreateIfMissing`
 - Switch to using the GItHub reuable workflow
