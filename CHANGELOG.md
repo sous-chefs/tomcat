@@ -2,7 +2,7 @@
 
 This file is used to list changes made in each version of the tomcat cookbook.
 
-## Unreleased
+## 5.0.10 - *2023-04-01*
 
 ## 5.0.9 - *2023-03-01*
 
