@@ -4,9 +4,15 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 ## Unreleased
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 5.0.9 - *2023-03-01*
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 5.0.8 - *2023-02-27*
+
+Standardise files with files in sous-chefs/repo-management
 
 ## 5.0.7 - *2023-02-23*
 
