@@ -6,6 +6,10 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 Standardise files with files in sous-chefs/repo-management
 
+## 5.0.10 - *2023-04-01*
+
+Standardise files with files in sous-chefs/repo-management
+
 ## 5.0.9 - *2023-03-01*
 
 Standardise files with files in sous-chefs/repo-management
