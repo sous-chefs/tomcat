@@ -6,10 +6,6 @@ This file is used to list changes made in each version of the tomcat cookbook.
 
 Standardise files with files in sous-chefs/repo-management
 
-## 5.0.10 - *2023-04-01*
-
-Standardise files with files in sous-chefs/repo-management
-
 ## 5.0.9 - *2023-03-01*
 
 Standardise files with files in sous-chefs/repo-management
@@ -401,13 +397,13 @@ COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, 
 
 ### Improvement
 
-- **[COOK-4258](https://tickets.chef.io/browse/COOK-4258)** - tomcat: support for Apache mod_jk load balancing with jvmRoute
-- **[COOK-3370](https://tickets.chef.io/browse/COOK-3370)** - Don't install the tomcat manager apps package if we're not going to use it
+- [COOK-4258] - tomcat: support for Apache mod_jk load balancing with jvmRoute
+- [COOK-3370] - Don't install the tomcat manager apps package if we're not going to use it
 
 ### Bug
 
-- **[COOK-4257](https://tickets.chef.io/browse/COOK-4257)** - tomcat: broken on SmartOS SmartMachine images 13.3.0+
-- **[COOK-4097](https://tickets.chef.io/browse/COOK-4097)** - default["tomcat"]["keytool"] is set to non-existent file on Debian/Ubuntu
+- [COOK-4257] - tomcat: broken on SmartOS SmartMachine images 13.3.0+
+- [COOK-4097] - default["tomcat"]["keytool"] is set to non-existent file on Debian/Ubuntu
 
 ## v0.15.2
 
@@ -424,24 +420,24 @@ COMPATIBILIY WARNING!!!! This version removes the existing recipes, attributes, 
 
 ### Improvement
 
-- **[COOK-3565](https://tickets.chef.io/browse/COOK-3565)** - Make server.xml connectors maxThreads params configurable via attributes
+- [COOK-3565] - Make server.xml connectors maxThreads params configurable via attributes
 
 ### New Feature
 
-- **[COOK-3333](https://tickets.chef.io/browse/COOK-3333)** - Add SmartOS support
+- [COOK-3333] - Add SmartOS support
 
 ## v0.14.4
 
 ### Bug
 
-- **[COOK-3378](https://tickets.chef.io/browse/COOK-3378)** - Use keystore in the port 8443 connector
-- **[COOK-3204](https://tickets.chef.io/browse/COOK-3204)** - Fix hard-coded path to `tomcat-users.xml`
-- **[COOK-3203](https://tickets.chef.io/browse/COOK-3203)** - Support "reload" on Ubuntu 12.04
+- [COOK-3378] - Use keystore in the port 8443 connector
+- [COOK-3204] - Fix hard-coded path to `tomcat-users.xml`
+- [COOK-3203] - Support "reload" on Ubuntu 12.04
 
 ### Improvement
 
-- **[COOK-3195](https://tickets.chef.io/browse/COOK-3195)** - Fix error for creating endorsed dir
-- **[COOK-3083](https://tickets.chef.io/browse/COOK-3083)** - Add an attribute to lib directory
+- [COOK-3195] - Fix error for creating endorsed dir
+- [COOK-3083] - Add an attribute to lib directory
 
 ## v0.14.2
 
