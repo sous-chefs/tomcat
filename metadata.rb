@@ -8,6 +8,13 @@ issues_url        'https://github.com/sous-chefs/tomcat/issues'
 chef_version      '>= 15.3'
 version           '5.0.10'
 
-%w(ubuntu debian redhat centos suse opensuseleap scientific oracle amazon zlinux).each do |os|
-  supports os
-end
+supports 'ubuntu'
+supports 'debian'
+supports 'redhat'
+supports 'centos'
+supports 'suse'
+supports 'opensuseleap'
+supports 'scientific'
+supports 'oracle'
+supports 'amazon'
+supports 'zlinux'
