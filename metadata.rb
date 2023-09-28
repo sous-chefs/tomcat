@@ -6,7 +6,7 @@ description       'Installs Apache Tomcat and manages the service'
 source_url        'https://github.com/sous-chefs/tomcat'
 issues_url        'https://github.com/sous-chefs/tomcat/issues'
 chef_version      '>= 15.3'
-version           '5.0.14'
+version           '5.0.15'
 
 supports 'ubuntu'
 supports 'debian'
