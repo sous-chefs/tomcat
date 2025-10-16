@@ -2,7 +2,7 @@ module TomcatCookbook
   module InstallHelpers
     # break apart the version string to find the major version
     def major_version(version)
-      @major_version ||= version.split('.')[0]
+      @major_version ||= version.split('.').first
     end
 
     def default_tomcat_install_path(instance_name, version)
@@ -71,7 +71,7 @@ module TomcatCookbook
         checksum_content = response.body
       end
 
-      checksum_content.split(' ')[0]
+      checksum_content.split(' ').first
     rescue => e
       Chef::Log.fatal("Could not fetch the checksum due to an error: #{e}")
       raise
