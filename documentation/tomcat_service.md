@@ -4,28 +4,28 @@ Manages a Tomcat instance as a systemd service.
 
 ## Actions
 
-| Action     | Description                                    |
-|------------|------------------------------------------------|
-| `:create`  | Creates the systemd unit. Default action.      |
-| `:start`   | Creates and starts the systemd unit.           |
-| `:stop`    | Stops the systemd unit.                        |
-| `:restart` | Restarts the systemd unit.                     |
-| `:enable`  | Creates and enables the systemd unit.          |
-| `:disable` | Disables the systemd unit.                     |
-| `:delete`  | Stops, disables, and deletes the systemd unit. |
+| Action | Description |
+| --- | --- |
+| `:create` | Creates the systemd unit. Default action. |
+| `:start` | Creates and starts the systemd unit. |
+| `:stop` | Stops the systemd unit. |
+| `:restart` | Restarts the systemd unit. |
+| `:enable` | Creates and enables the systemd unit. |
+| `:disable` | Disables the systemd unit. |
+| `:delete` | Stops, disables, and deletes the systemd unit. |
 
 ## Properties
 
-| Property        | Type               | Default                                     | Description                                  |
-|-----------------|--------------------|---------------------------------------------|----------------------------------------------|
-| `instance_name` | String             | name property                               | Tomcat instance name.                        |
-| `install_path`  | String             | `/opt/tomcat_INSTANCE`                      | Tomcat install or symlink path.              |
-| `tomcat_user`   | String             | `tomcat_INSTANCE`                           | User the service runs as.                    |
-| `tomcat_group`  | String             | `tomcat_INSTANCE`                           | Group the service runs as.                   |
-| `service_name`  | String             | `tomcat_INSTANCE`                           | systemd service name without `.service`.     |
-| `env_vars`      | Array              | `CATALINA_PID=$CATALINA_BASE/bin/tomcat.pid` | Environment entries for the unit.            |
-| `service_vars`  | Array              | `[]`                                        | Additional systemd `[Service]` directives.   |
-| `unit_content`  | Hash, String, nil  | `nil`                                       | Full custom systemd unit content.            |
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `instance_name` | String | name property | Tomcat instance name. |
+| `install_path` | String | `/opt/tomcat_INSTANCE` | Tomcat install or symlink path. |
+| `tomcat_user` | String | `tomcat_INSTANCE` | User the service runs as. |
+| `tomcat_group` | String | `tomcat_INSTANCE` | Group the service runs as. |
+| `service_name` | String | `tomcat_INSTANCE` | systemd service name without `.service`. |
+| `env_vars` | Array | `CATALINA_PID=$CATALINA_BASE/bin/tomcat.pid` | Environment entries for the unit. |
+| `service_vars` | Array | `[]` | Additional systemd `[Service]` directives. |
+| `unit_content` | Hash, String, nil | `nil` | Full custom systemd unit content. |
 
 ## Examples
 
