@@ -8,9 +8,11 @@ java_package =
     else
       'openjdk-17-jdk'
     end
+  when 'ubuntu'
+    'openjdk-17-jdk'
   when 'fedora'
-    'java-21-openjdk-devel'
-  when 'almalinux', 'centos_stream', 'oracle', 'rocky'
+    'java-latest-openjdk-devel'
+  when 'almalinux', 'centos', 'centos_stream', 'oracle', 'rocky'
     if node['platform_version'].to_i >= 10
       'java-21-openjdk-devel'
     else
