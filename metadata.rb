@@ -8,7 +8,7 @@ description       'Provides resources for installing Apache Tomcat and managing 
 source_url        'https://github.com/sous-chefs/tomcat'
 issues_url        'https://github.com/sous-chefs/tomcat/issues'
 chef_version      '>= 15.3'
-version           '5.0.23'
+version           '6.0.0'
 
 supports 'almalinux', '>= 8.0'
 supports 'amazon', '>= 2023.0'

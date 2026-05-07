@@ -5,6 +5,22 @@ This file is used to list changes made in each version of the tomcat cookbook.
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [6.0.0](https://github.com/sous-chefs/tomcat/compare/v5.0.23...v6.0.0) (2026-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate tomcat to custom resources ([#425](https://github.com/sous-chefs/tomcat/issues/425))
+
+### Features
+
+* migrate tomcat to custom resources ([#425](https://github.com/sous-chefs/tomcat/issues/425)) ([9ff21bf](https://github.com/sous-chefs/tomcat/commit/9ff21bf06e6703e70b65ff04afd260c0ac40a499))
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#419](https://github.com/sous-chefs/tomcat/issues/419)) ([7e9d8f2](https://github.com/sous-chefs/tomcat/commit/7e9d8f25d414b8f1c1f4237ab69e3802dfe8c649))
+
 ## [5.0.23](https://github.com/sous-chefs/tomcat/compare/5.0.22...v5.0.23) (2025-10-16)
 
 
