@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tomcat
 # Resource:: install
@@ -17,12 +18,14 @@
 # limitations under the License.
 #
 
+provides :tomcat_install
 unified_mode true
+default_action :install
 
 include TomcatCookbook::InstallHelpers
 
 property :instance_name, String, name_property: true
-property :version, String, default: '8.5.54', regex: /^\d+.\d+.\d+$/
+property :version, String, default: '9.0.117', regex: /^\d+.\d+.\d+$/
 property :version_archive, String, default: lazy { tomcat_archive_name(version) }
 property :install_path, String, default: lazy { default_tomcat_install_path(instance_name, version) }
 property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
@@ -99,6 +102,22 @@ action :install do
   link new_resource.symlink_path.to_s do
     to new_resource.install_path
     only_if { new_resource.create_symlink }
+  end
+end
+
+action :delete do
+  link new_resource.symlink_path.to_s do
+    action :delete
+    only_if { new_resource.create_symlink }
+  end
+
+  directory new_resource.install_path do
+    recursive true
+    action :delete
+  end
+
+  file new_resource.tarball_path do
+    action :delete
   end
 end
 

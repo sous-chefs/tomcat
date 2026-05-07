@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook:: tomcat
 # Library:: service_helpers
