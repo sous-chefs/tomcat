@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TomcatCookbook
   module InstallHelpers
     # break apart the version string to find the major version

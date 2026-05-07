@@ -73,7 +73,7 @@ Standardise files with files in sous-chefs/repo-management
 
 * Enabled `unified_mode` for all resources.
 * Dropped support for Chef < 15.3
-* Updated __java__ test cookbook dependency to `< 11.0.0` (previously was `<= 6.0.0`)
+* Updated **java** test cookbook dependency to `< 11.0.0` (previously was `<= 6.0.0`)
 
 ## 4.2.2 - *2021-08-30*
 

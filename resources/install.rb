@@ -1,28 +1,11 @@
-#
-# Cookbook:: tomcat
-# Resource:: install
-#
-# Copyright:: 2016-2019, Chef Software, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
+provides :tomcat_install
 unified_mode true
+default_action :install
 
 include TomcatCookbook::InstallHelpers
 
 property :instance_name, String, name_property: true
-property :version, String, default: '8.5.54', regex: /^\d+.\d+.\d+$/
+property :version, String, default: '9.0.117', regex: /^\d+.\d+.\d+$/
 property :version_archive, String, default: lazy { tomcat_archive_name(version) }
 property :install_path, String, default: lazy { default_tomcat_install_path(instance_name, version) }
 property :tarball_base_uri, String, default: 'http://archive.apache.org/dist/tomcat/', desired_state: false
@@ -99,6 +82,22 @@ action :install do
   link new_resource.symlink_path.to_s do
     to new_resource.install_path
     only_if { new_resource.create_symlink }
+  end
+end
+
+action :delete do
+  link new_resource.symlink_path.to_s do
+    action :delete
+    only_if { new_resource.create_symlink }
+  end
+
+  directory new_resource.install_path do
+    recursive true
+    action :delete
+  end
+
+  file new_resource.tarball_path do
+    action :delete
   end
 end
 
