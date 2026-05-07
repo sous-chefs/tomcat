@@ -37,6 +37,9 @@ No Zypper repository is used for Tomcat. Tested platforms use upstream tarballs:
 
 * openSUSE Leap 16
 
+The `dokken/opensuse-leap-16` image is not published, so openSUSE Leap 16 remains in metadata and
+non-Dokken Kitchen definitions but is excluded from Dokken CI until an image is available.
+
 ## Architecture Limitations
 
 Apache publishes Tomcat tarballs as architecture-independent Java archives. This cookbook does not
